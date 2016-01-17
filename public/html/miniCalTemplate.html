@@ -1,0 +1,36 @@
+
+<div style="float:left" ng-transclude>
+</div>
+
+<button ng-click="toggleShowMiniCalendar($event)">O</button>
+
+<div ng-click="$event.stopPropagation()"  class="miniCalDisplay" ng-show="showMiniCalendar">
+    <div style="margin:10px">
+       <div>
+            <button style="float:left" ng-click="previous()"><=</button>
+            <div style="float:left; font-size:14px; margin-left:5px; margin-right:5px">{{selected.format('MMMM, YYYY')}}</div>
+            <button style="float:left" ng-click="next()">=></button>
+        </div>
+        <br>
+        
+        <table class="miniCalPar">
+            <tr>
+                <td><span class="miniDaysL">Sun</span></td>
+                <td><span class="miniDaysL">Mon</span></td>
+                <td><span class="miniDaysL">Tue</span></td>
+                <td><span class="miniDaysL">Wed</span></td>
+                <td><span class="miniDaysL">Thu</span></td>
+                <td><span class="miniDaysL">Fri</span></td>
+                <td><span class="miniDaysL">Sat</span></td>
+            </tr>
+        </table> 
+        
+        <table class="miniCalPar">
+            <tr ng-repeat="week in weeks">
+                <td ng-repeat="day in week.days"><span class="miniDays" ng-click="miniCalCtrl.select(day)">{{day.dateOfMonth}}</span></td>
+            </tr>
+        </table>    
+    </div>
+    
+</div>
+        

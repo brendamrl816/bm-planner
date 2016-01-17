@@ -1,0 +1,262 @@
+ 
+body {
+    background-color: #E6F5EB;
+    color:#663300;
+}
+
+
+#viewDiv{
+    width:100%;
+}
+
+#listCalToolsDiv{
+    width:20%;
+    float:left;
+    margin-left:5px;
+}
+
+#calendarDiv{
+   width:75%; 
+   float:left;
+   margin-left:10px;
+}
+
+
+
+
+#colorPickerTable{
+    width:100px;
+    height:80px;
+    font-size: 8px;
+}
+.theDays {
+     margin: 15px;
+ }
+ 
+ .calendarDiv{
+     display: inline-block;
+     margin:10px;
+ }
+ 
+.miniCalDisplay {
+    background-color: pink;
+    position:absolute;
+    float:left;
+    z-index: 10;
+    width: 200px;
+    height: 155px;
+}
+
+
+.miniCalPar{
+    font-size: 12px;
+    text-align:center;
+}
+
+.bigCalStyle{
+    width:100%;
+    height:100%;
+}
+
+
+
+
+#bigCalTable{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+#bigCalTable td{
+    position:relative; 
+    vertical-align:top;
+}
+
+#bigCalTable tr{
+    height:150px;
+}
+
+#bigCalTable th, td{
+    border: 1px solid black;
+}
+
+.bigcalDays{
+    padding:10px;
+    font-size: 14px;
+}
+
+.bigCalDates{
+    
+    position:absolute;
+    font-size:14px;
+}
+
+.events{
+    color:black;
+    font-size:90%;
+}
+
+.miniDays{
+    margin:5px;
+}
+
+.miniDaysL{
+    margin:1.5px;
+    color:blue;
+}
+
+.completedStyle{
+    text-decoration: line-through;
+    font-style: oblique;
+    color: gray;
+}
+
+.allDayStyle{
+    background-color:pink;
+}
+
+
+.weekViewOuterTable{
+    border-collapse: collapse;
+    width:100% ; 
+  
+}
+
+
+.weekViewOuterTr{
+    
+  border:1px solid transparent;
+}
+
+.weekViewOuterTd{
+    border:none;
+}
+
+
+.weekViewInnerTable{
+    width:100%; 
+    table-layout:fixed;  
+    border-collapse: collapse;
+}
+
+
+
+.weekViewInnerTr{
+    font-size:65%;
+    height:15px;
+    border: 1px solid gray;
+    border-right:none;
+    border-left:none;
+
+}
+
+.weekViewInnerTd{
+    position:relative;
+    font-weight:bold;
+    border:none;
+   
+}
+
+.weekViewInnerTdEmpty{
+  border:none;
+}
+
+
+
+/*.startMinutesWeekView{*/
+/*    position:absolute;*/
+/*    background-color:#E6F5EB; */
+/*    border:none;*/
+/*    width:100%; */
+/*    top:0px; */
+/*    right:0px;*/
+ 
+/*}*/
+
+/*.endMinutesWeekView{*/
+/*    position:absolute;*/
+/*    background-color:#E6F5EB; */
+/*    border:none;*/
+/*    width:100%;*/
+/*    bottom:0px;*/
+/*    right:0px; */
+ 
+/*}*/
+
+
+.createEventModal-dark {
+    position: absolute;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    opacity: 0.8;
+}
+
+
+.createEventModal-style{
+    z-index: 10000;
+    position: absolute;
+    
+    width: 700px;
+    height: 300px;
+    
+    /* to center the content */
+    /*top: 50%;*/
+    /*left: 50%;*/
+    
+    /*margin-left: -300px;*/
+    /*margin-top: -150px;*/
+    background-color: #fff;
+    box-shadow: 4px 4px 80px #000;
+}
+
+.createEventModal-style-content{
+    padding: 15px;
+    text-align: left;
+}
+
+.createEventModal-close {
+    position: absolute;
+    top: 3px;
+    right: 5px;
+    padding: 5px;
+    cursor: pointer;
+    font-size: 120%;
+    display: inline-block;
+    font-weight: bold;
+    font-family: 'arial', 'sans-serif';
+}
+
+.createQuestionModal-style{
+    
+    z-index: 100;
+    position: absolute;
+    width: 350px;
+    height: 200px;
+
+    background-color: #fff;
+}
+
+.createQuestionModal-style-content{
+    padding: 5px;
+    font-size: 18px;
+    text-align: left;
+    color: 000000;
+}
+
+.createQuestionModal-close{
+    position: absolute;
+    top: 3px;
+    right: 5px;
+    padding: 5px;
+    cursor: pointer;
+    font-size: 120%;
+    display: inline-block;
+    font-weight: bold;
+}
+
+
+
