@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+
+use App\User;
 use App\Todolist;
 use Response;
 use Input;
@@ -10,10 +13,6 @@ use DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-
-
-
 
 
 class TodolistsController extends Controller
@@ -25,7 +24,9 @@ class TodolistsController extends Controller
      */
     public function index()
     {
-        $todoLists =Todolist::all();
+        $user_id = Auth::id();
+        
+        $todoLists = Todolist::where('user_id', '=', $user_id)->get();
         return Response::json($todoLists->toArray());
     }
 
@@ -35,11 +36,15 @@ class TodolistsController extends Controller
     {
         $name= Input::get('name');
         $color = Input::get('color');
+        $user_id = Auth::id();
         
-        Todolist::create(array(
+        $todolist = new Todolist(array(
+            'user_id'=>$user_id,
             'name'=> $name,
             'color'=>$color
             ));
+        
+        $todolist->save();
             
         $addedListId= DB::table('todolists')->where('name', '=', $name)->value('id');
         return Response::json(['name'=>$name, 'color'=>$color, 'id'=>$addedListId]);

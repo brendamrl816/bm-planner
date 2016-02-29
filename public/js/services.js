@@ -2,6 +2,25 @@
 
 var bmPlannerServices = angular.module('bmPlannerServices', []);
 
+bmPlannerServices.factory('Style', function($http) {
+    var Style ={};
+    Style.css= {};
+    
+    $http.get('/styles').success(function(response){
+        Style.css = response;
+    });
+    
+    Style.getStyle = function(){
+        return $http.get('/styles');
+    };
+    
+    Style.update = function(data, id) {
+           $http.put('/styles/' + id, data).success(function(response){
+           });
+    };
+    
+    return Style;
+});
 
 
 bmPlannerServices.factory('Lists', function($http) {
@@ -73,7 +92,6 @@ bmPlannerServices.factory('Lists', function($http) {
     };
 
     return Lists;
-
 });
 
 
@@ -87,11 +105,6 @@ bmPlannerServices.factory('Events', function($http, $q) {
                 params: data
             });
         },
-
-        deleteCalendarEvents: function(calendarId) {
-            return $http.delete('/deleteEvents/' + calendarId);
-        },
-
         addEvent: function(data) {
             return $http.post('/events', data);
         },
@@ -116,13 +129,14 @@ bmPlannerServices.factory('Repeats', function($http) {
             return $http.put('/repetitions/' + id, data);
         },
 
-        changeEndDate: function(data, id) {
+        changeEndDate: function(data) {
             return $http.put('/repetitionsChangeEnd', data);
         },
-
-        deleteRepeat: function(id) {
+        deleteRepeat : function(id)
+        {
             return $http.delete('/repetitions/' + id);
         }
+        
     };
 });
 
@@ -132,7 +146,8 @@ bmPlannerServices.factory('RepetitionUpdates', function($http) {
         saveEventToChange: function(data) {
             return $http.post('/eventchanges', data);
         },
-        deleteUpdatedEvent: function(id) {
+        deleteExclusions : function(id)
+        {
             return $http.delete('/eventchanges/' + id);
         }
     };
@@ -144,11 +159,17 @@ bmPlannerServices.factory('Calendars', function($http) {
     var Calendars = {};
 
     Calendars.calendars = [];
+    Calendars.mainCalendar = {};
 
     $http.get('/calendars').success(function(response) {
         Calendars.calendars = response;
+        
     });
-
+    
+    $http.get('/mainCalendar').success(function(response) {
+        Calendars.mainCalendar = response;
+    });
+    
     Calendars.addCalendar = function(data) {
         $http.post('/calendars', data).success(function(response) {
             Calendars.calendars.push(response);
@@ -160,7 +181,7 @@ bmPlannerServices.factory('Calendars', function($http) {
             Calendars.calendars[index] = response;
         });
     };
-
+    
 
     Calendars.deleteCalendar = function(id, index) {
         return $http.delete('/calendars/' + id).success(function(response) {
@@ -169,9 +190,7 @@ bmPlannerServices.factory('Calendars', function($http) {
     };
 
     return Calendars;
-
 });
-
 
 
 
@@ -184,7 +203,6 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
     var weekIndex = 0;
 
 
-    EventsCalendar.event2update = {};
 
     EventsCalendar.selected = removeTime(moment());
     EventsCalendar.weekSelected = removeTime(moment());
@@ -361,14 +379,6 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
     };
 
 
-    EventsCalendar.editEventInfo = function(event, day, editionType) {
-        EventsCalendar.event2update = event;
-        EventsCalendar.event2update.editionType = editionType;
-        EventsCalendar.dayOfUpdate = day;
-    };
-
-
-
 
     function createMonth(theStartDate) {
         var the_date = EventsCalendar.selected.clone();
@@ -398,11 +408,12 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                 month: the_date.month(),
                 itsDate: the_date,
                 hours: createHours(),
-                max_td: 0
+                longEvents:[],
+                events:[]
             };
+            
             the_date = the_date.clone();
             the_date.add(1, "d");
-            days[i].events = null;
         }
 
         //create an object with information to send to backend in order to get the events of this week.
@@ -416,24 +427,32 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
         Events.getEvents(request).success(function(response) {
 
                 for (i = 0; i < response.length; i++) {
-
+                    
+                    var indexes = [];//to order long events
+                    
                     for (var n = 0; n < response[i]['events'].length; n++) {
-                        if (response[i]['events'][n].eventLength == 1) {
-                            var startTime = response[i]['events'][n].startTime.split(":");
+                        
+                        if (response[i]['events'][n]['event'].eventLength == 1 && response[i]['events'][n]['event'].allDay == false) {
+                            
+                            var startTime = response[i]['events'][n]['event'].startTime.split(":");
                             var start = (startTime[0] * 60) + parseInt(startTime[1], 10);
-                            var endTime = response[i]['events'][n].endTime.split(":");
+                            var endTime = response[i]['events'][n]['event'].endTime.split(":");
                             var end = (endTime[0] * 60) + parseInt(endTime[1], 10);
                             var startMinutes = parseInt(startTime[1], 10);
                             var endMinutes = parseInt(endTime[1], 10);
-
-                            var eventIntervalLength =((end - start) /30);
+                 
+                            var rowspan = Math.round((end - start) /30); // Math.round(endTime[0] - startTime[0]) * 2; 
                             if (startMinutes >= 30) {
                                 startMinutes = startMinutes - 30;
                             }
-                            // if (endMinutes > 30) {
-                            //     endMinutes = endMinutes - 30;
-                            // }
-
+                            if(endMinutes !== 0)
+                            {
+                                rowspan = rowspan + 1;
+                                if (endMinutes >= 30) {
+                                    endMinutes = endMinutes - 30;
+                                }
+                            }
+    
                             var x2;
                             
                             for (var x = 0; x < days[i].hours.length; x++) {
@@ -443,8 +462,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                     
                                     x2 = x;
                                     var tds = days[i].hours[x].tds;
-                                    
-                                    var j = x + eventIntervalLength; 
+                                    var j = x + rowspan; 
                                    
                                    while(x <= j)
                                     {
@@ -457,7 +475,6 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                         
                                        x++;
                                     }
-                                    
                                     x = x2;
                                     var m = 1;
                                     
@@ -471,63 +488,49 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                         
                                         var event = {
                                             //backend:
-                                            id: response[i]['events'][n].id,
-                                            name: response[i]['events'][n].name,
-                                            startDate:response[i]['events'][n].startDate,
-                                            endDate:response[i]['events'][n].endDate ,
-                                            eventLength:response[i]['events'][n].eventLength,
-                                            startTime:response[i]['events'][n].startTime,
-                                            endTime:response[i]['events'][n].endTime ,
-                                            allDay:response[i]['events'][n].allDay ,
-                                            startTimeDisplay:response[i]['events'][n].startTimeDisplay,
-                                            endTimeDisplay: response[i]['events'][n].endTimeDisplay,
-                                            repeats:response[i]['events'][n].repeats,
-                                            calendarId: response[i]['events'][n].calendarId,
-                                            neverEnds: response[i]['events'][n].neverEnds,
-                                            repeatDaily: response[i]['events'][n].repeatDaily,
-                                            repeatMonthly: response[i]['events'][n].repeatMonthly,
-                                            repeatOccurrence: response[i]['events'][n].repeatOccurrence,
-                                            repeatWeekdays:response[i]['events'][n].repeatWeekdays,
-                                            repeatWeekly: response[i]['events'][n].repeatWeekly,
-                                            repeatYearly: response[i]['events'][n].repeatYearly,
-                                            more: response[i]['events'][n].more,
-                                            startDay: response[i]['events'][n].startDay,
+                                            id: response[i]['events'][n]['event'].id,
+                                            calendar_id: response[i]['events'][n]['event'].calendar_id,
+                                            name: response[i]['events'][n]['event'].name,
+                                            startDate:response[i]['events'][n]['event'].startDate,
+                                            endDate:response[i]['events'][n]['event'].endDate ,
+                                            eventLength:response[i]['events'][n]['event'].eventLength,
+                                            startTime:response[i]['events'][n]['event'].startTime,
+                                            endTime:response[i]['events'][n]['event'].endTime ,
+                                            allDay:response[i]['events'][n]['event'].allDay ,
+                                            startTimeDisplay:response[i]['events'][n]['event'].startTimeDisplay,
+                                            endTimeDisplay: response[i]['events'][n]['event'].endTimeDisplay,
+                                            repeats:response[i]['events'][n]['event'].repeats,
+                                            repeatEndDate: response[i]['events'][n]['event'].repeatEndDate,
+                                            neverEnds: response[i]['events'][n]['event'].neverEnds,
+                                            repeatDaily: response[i]['events'][n]['event'].repeatDaily,
+                                            repeatMonthly: response[i]['events'][n]['event'].repeatMonthly,
+                                            repeatOccurrence: response[i]['events'][n]['event'].repeatOccurrence,
+                                            repeatInterval: response[i]['events'][n]['event'].repeatInterval,
+                                            repeatWeekdays:response[i]['events'][n]['event'].repeatWeekdays,
+                                            repeatWeekly: response[i]['events'][n]['event'].repeatWeekly,
+                                            repeatYearly: response[i]['events'][n]['event'].repeatYearly,
+                                            eventStartsOn: response[i]['events'][n]['eventStartsOn'],
                                             //frontend
-                                            rowspan: eventIntervalLength,
+                                            rowspan: rowspan,
                                             index: tds - m,
                                             top: 0,
                                             left:'0%',
                                             width:'100%',
                                             height:'100%',
-                                            first: false
+                                            first: false,
+                                            totalHeight: ((rowspan*30) - startMinutes - (endMinutes))
                                             };
                                             
                                         if(x == x2) //if it's the first one
                                         {
                                             event.first = true;
                                             event.top = startMinutes;
-                           
-                                           
                                         }
                                         
-                                        if(x == Math.round(j) && endMinutes !=0 && endMinutes <= 45) //if it's the last one
+                                        if((x == j-1) && (endMinutes != 0))
                                         {
-                                            if(endMinutes > 30)
-                                            {
-                                                endMinutes = endMinutes - 30; 
-                                            }
                                             event.height = endMinutes;
-                                         
                                         }
-                                        
-                                        if(x == Math.round(j -1) && endMinutes !=0 && endMinutes > 45) //if it's the last one
-                                        {
-                                            endMinutes = endMinutes - 30;
-                                            event.height = endMinutes;
-                                          
-                                        }
-
-                                       
 
                                         days[i].hours[x].events.push(event);
                                         
@@ -541,6 +544,98 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
 
                             }
 
+                        }else
+                        { 
+                            var topIndex;
+                            
+                            if(days[i].itsDate.format('YYYY-MM-DD') == response[i]['events'][n]['eventStartsOn'])
+                            {   var k =0;
+                                if(days[i].longEvents.length == 0)
+                                {
+                                    topIndex = 0;
+                                    indexes.push(topIndex);
+                                }else{
+                                    var check = 0;
+                                    var inside = false;
+                                    do{
+                                        inside = false;
+                                        for(k=0; k<indexes.length; k++){
+                                            if(indexes[k]==check){
+                                                inside = true;
+                                            }
+                                        }
+                                        if(inside == false){
+                                            topIndex = check;
+                                            indexes.push(topIndex);
+                                        }else{
+                                            check++;
+                                        }
+                                    }while(inside == true && check < indexes.length);
+                                    
+                                    if(inside == true)
+                                    {
+                                        topIndex = indexes[indexes.length - 1] + 1;//days[i].longEvents.length; 
+                                        indexes.push(topIndex);
+                                    }
+                                }
+                            }else{
+                                if(days[i].itsDate.day() != 0) //if it's not Sunday
+                                {
+                                    for(k=0; k<days[i-1].longEvents.length; k++)
+                                    {
+                                        if((days[i-1].longEvents[k].eventStartsOn == response[i]['events'][n]['eventStartsOn'])  && (days[i-1].longEvents[k].id == response[i]['events'][n]['event'].id))
+                                        {
+                                            topIndex = days[i-1].longEvents[k].topIndex;
+                                            indexes.push(topIndex);
+                                        }
+                                    }
+                                }else{
+                                    if(days[i].longEvents.length == 0)
+                                    {
+                                        topIndex = 0;
+                                        indexes.push(topIndex);
+                                    }else{
+                                        topIndex = days[i].longEvents.length;
+                                        indexes.push(topIndex);
+                                    }
+                                }
+                            }
+                            indexes.sort(function(a,b){return a-b});
+                            
+                            var event = {
+                                        //backend:
+                                        id: response[i]['events'][n]['event'].id,
+                                            calendar_id: response[i]['events'][n]['event'].calendar_id,
+                                            name: response[i]['events'][n]['event'].name,
+                                            startDate:response[i]['events'][n]['event'].startDate,
+                                            endDate:response[i]['events'][n]['event'].endDate ,
+                                            eventLength:response[i]['events'][n]['event'].eventLength,
+                                            startTime:response[i]['events'][n]['event'].startTime,
+                                            endTime:response[i]['events'][n]['event'].endTime ,
+                                            allDay:response[i]['events'][n]['event'].allDay ,
+                                            startTimeDisplay:response[i]['events'][n]['event'].startTimeDisplay,
+                                            endTimeDisplay: response[i]['events'][n]['event'].endTimeDisplay,
+                                            repeats:response[i]['events'][n]['event'].repeats,
+                                            repeatEndDate: response[i]['events'][n]['event'].repeatEndDate,
+                                            neverEnds: response[i]['events'][n]['event'].neverEnds,
+                                            repeatDaily: response[i]['events'][n]['event'].repeatDaily,
+                                            repeatMonthly: response[i]['events'][n]['event'].repeatMonthly,
+                                            repeatOccurrence: response[i]['events'][n]['event'].repeatOccurrence,
+                                            repeatInterval: response[i]['events'][n]['event'].repeatInterval,
+                                            repeatWeekdays:response[i]['events'][n]['event'].repeatWeekdays,
+                                            repeatWeekly: response[i]['events'][n]['event'].repeatWeekly,
+                                            repeatYearly: response[i]['events'][n]['event'].repeatYearly,
+                                            eventStartsOn: response[i]['events'][n]['eventStartsOn'],
+                                            //frontend
+                                        //frontend
+                                        topIndex: topIndex,
+                                        top: topIndex * 20,
+                                        left:0,
+                                        width:'100%',
+                                        height:'15px'
+                                        };
+                            days[i].longEvents.push(event);
+                            days[i].longEventsHeight = indexes[indexes.length - 1];
                         }
                     }
                 }
@@ -549,9 +644,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                 console.log('IT FAILED', reason);
             });
 
-
         return days;
-
     }
 
     function createHours() {
@@ -583,13 +676,13 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                 dateOfMonth: the_date.date(),
                 month: the_date.month(),
                 itsDate: the_date,
-                hours: createHours(),
-                max_td: 0
+                longEvents: [],
+                longEventsHeight:null,
+                events:[]
             };
             the_date = the_date.clone();
             the_date.add(1, "d");
-            days[i].events = null;
-        }
+           }
 
         //create an object with information to send to backend in order to get the events of this week.
         var request = {
@@ -601,21 +694,142 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
 
         Events.getEvents(request).success(function(response) {
 
-                for (i = 0; i < response.length; i++) {
-                    days[i].events = response[i]['events'];
+            for (i = 0; i < response.length; i++) {
+                
+                var indexes = [];//to order long events
+                
+                for (var n = 0; n < response[i]['events'].length; n++)
+                {
+                    if(response[i]['events'][n]['event'].eventLength == 1){
+                        var event = {
+                                        id: response[i]['events'][n]['event'].id,
+                                        calendar_id: response[i]['events'][n]['event'].calendar_id,
+                                        name: response[i]['events'][n]['event'].name,
+                                        startDate:response[i]['events'][n]['event'].startDate,
+                                        endDate:response[i]['events'][n]['event'].endDate ,
+                                        eventLength:response[i]['events'][n]['event'].eventLength,
+                                        startTime:response[i]['events'][n]['event'].startTime,
+                                        endTime:response[i]['events'][n]['event'].endTime ,
+                                        allDay:response[i]['events'][n]['event'].allDay ,
+                                        startTimeDisplay:response[i]['events'][n]['event'].startTimeDisplay,
+                                        endTimeDisplay: response[i]['events'][n]['event'].endTimeDisplay,
+                                        repeats:response[i]['events'][n]['event'].repeats,
+                                        repeatEndDate: response[i]['events'][n]['event'].repeatEndDate,
+                                        neverEnds: response[i]['events'][n]['event'].neverEnds,
+                                        repeatDaily: response[i]['events'][n]['event'].repeatDaily,
+                                        repeatMonthly: response[i]['events'][n]['event'].repeatMonthly,
+                                        repeatOccurrence: response[i]['events'][n]['event'].repeatOccurrence,
+                                        repeatInterval: response[i]['events'][n]['event'].repeatInterval,
+                                        repeatWeekdays:response[i]['events'][n]['event'].repeatWeekdays,
+                                        repeatWeekly: response[i]['events'][n]['event'].repeatWeekly,
+                                        repeatYearly: response[i]['events'][n]['event'].repeatYearly,
+                                        eventStartsOn: response[i]['events'][n]['eventStartsOn']
+                                    };
+                        days[i].events.push(event);
+                    }
+                    else{
+                        var topIndex;
+                            
+                            if(days[i].itsDate.format('YYYY-MM-DD') == response[i]['events'][n]['eventStartsOn'])
+                            {   var k =0;
+                                if(days[i].longEvents.length == 0)
+                                {
+                                    topIndex = 0;
+                                    indexes.push(topIndex);
+                                }else{
+                                    var check = 0;
+                                    var inside = false;
+                                    do{
+                                        inside = false;
+                                        for(k=0; k<indexes.length; k++){
+                                            if(indexes[k]==check){
+                                                inside = true;
+                                            }
+                                        }
+                                        if(inside == false){
+                                            topIndex = check;
+                                            indexes.push(topIndex);
+                                        }else{
+                                            check++;
+                                        }
+                                    }while(inside == true && check < indexes.length);
+                                    
+                                    if(inside == true)
+                                    {
+                                        topIndex = indexes[indexes.length - 1] + 1;//days[i].longEvents.length; 
+                                        indexes.push(topIndex);
+                                    }
+                                }
+                            }else{
+                                if(days[i].itsDate.day() != 0) //if it's not Sunday
+                                {
+                                    for(k=0; k<days[i-1].longEvents.length; k++)
+                                    {
+                                        if((days[i-1].longEvents[k].eventStartsOn == response[i]['events'][n]['eventStartsOn'])  && (days[i-1].longEvents[k].id == response[i]['events'][n]['event'].id))
+                                        {
+                                            topIndex = days[i-1].longEvents[k].topIndex;
+                                            indexes.push(topIndex);
+                                        }
+                                    }
+                                }else{
+                                    if(days[i].longEvents.length == 0)
+                                    {
+                                        topIndex = 0;
+                                        indexes.push(topIndex);
+                                    }else{
+                                        topIndex = days[i].longEvents.length;
+                                        indexes.push(topIndex);
+                                    }
+                                }
+                            }
+                            indexes.sort(function(a,b){return a-b});
+                            var event = {
+                                        //backend:
+                                        id: response[i]['events'][n]['event'].id,
+                                        calendar_id: response[i]['events'][n]['event'].calendar_id,
+                                        name: response[i]['events'][n]['event'].name,
+                                        startDate:response[i]['events'][n]['event'].startDate,
+                                        endDate:response[i]['events'][n]['event'].endDate ,
+                                        eventLength:response[i]['events'][n]['event'].eventLength,
+                                        startTime:response[i]['events'][n]['event'].startTime,
+                                        endTime:response[i]['events'][n]['event'].endTime ,
+                                        allDay:response[i]['events'][n]['event'].allDay ,
+                                        startTimeDisplay:response[i]['events'][n]['event'].startTimeDisplay,
+                                        endTimeDisplay: response[i]['events'][n]['event'].endTimeDisplay,
+                                        repeats:response[i]['events'][n]['event'].repeats,
+                                        repeatEndDate: response[i]['events'][n]['event'].repeatEndDate,
+                                        neverEnds: response[i]['events'][n]['event'].neverEnds,
+                                        repeatDaily: response[i]['events'][n]['event'].repeatDaily,
+                                        repeatMonthly: response[i]['events'][n]['event'].repeatMonthly,
+                                        repeatOccurrence: response[i]['events'][n]['event'].repeatOccurrence,
+                                        repeatInterval: response[i]['events'][n]['event'].repeatInterval,
+                                        repeatWeekdays:response[i]['events'][n]['event'].repeatWeekdays,
+                                        repeatWeekly: response[i]['events'][n]['event'].repeatWeekly,
+                                        repeatYearly: response[i]['events'][n]['event'].repeatYearly,
+                                        eventStartsOn: response[i]['events'][n]['eventStartsOn'],
+                                        
+                                        //frontend
+                                        topIndex: topIndex,
+                                        top: topIndex * 20,
+                                        left:0,
+                                        width:'100%',
+                                        height:'15px'
+                                        };
+                    
+                            days[i].longEvents.push(event);
+                            days[i].longEventsHeight = indexes[indexes.length - 1];
+                        }
                 }
-            })
-            .error(function(reason) {
-                console.log('IT FAILED', reason);
-            });
+                
+            }
+        })
+        .error(function(reason) {
+            console.log('IT FAILED', reason);
+        });
 
 
         return days;
     }
-
-
-
-
 
 
     function removeTime(date) {
@@ -623,7 +837,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
     }
 
 
-
-
     return EventsCalendar;
 });
+
+

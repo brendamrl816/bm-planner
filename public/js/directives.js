@@ -156,9 +156,6 @@ bmPlannerDirectives.directive('startdate', function() {
                     
                 return value.format('MM/DD/YYYY');
             });
-            
-            
-            
         }
     };
 });
@@ -209,31 +206,50 @@ bmPlannerDirectives.directive('enddate', function() {
                 return modelValue.format('MM/DD/YYYY');
             });
             
-            controllers[0].$validators.enddate = function(modelValue, viewValue) {
-                
-              var startDateValue = scope.$eval(angular.element($('#start')).attr('ng-model'));
-                //console.log(startDateValue);
-                //console.log(modelValue);
-                if (startDateValue.unix() > modelValue.unix()) {
-                    // it is invalid
-                   return false;
-                }
-                
-                else{
-                    return true;
-                }
-
-            };
             
-            
+            /************************ in case you wanted a validator on this element*******************************/
+            // controllers[0].$validators.enddate = function(modelValue, viewValue) {
+                
+            //   var startDateValue = scope.$eval(angular.element($('#' + attrs.name)).attr('ng-model'));
+            //     //console.log(startDateValue);
+            //     //console.log(modelValue);
+            //     if (startDateValue.unix() > modelValue.unix()) {
+            //         // it is invalid
+            //       return false;
+            //     }
+            //     else{
+            //         return true;
+            //     }
+            // };
         }
     };
 });
 
 
+bmPlannerDirectives.directive('endtimeval', function() {
+    return {
+        restrict: 'AE',
+        
+        require:'ngModel',
+        
+        link: function( scope, element, attrs, modelCtrl) {
+            
+            modelCtrl.$validators.endtimeval = function(modelValue, viewValue) {
+                
+                var startTime = scope.$eval(angular.element($('#' + attrs.name)).attr('ng-model'));
+                var endTime = modelValue;
 
+                if (startTime > endTime) {
+                    // it is invalid
+                   return false;
+                }else{
+                    return true;
+                }
 
-
+            };
+        }
+    };
+});
 
 
 bmPlannerDirectives.directive('colorpicker', function(){
@@ -245,20 +261,20 @@ bmPlannerDirectives.directive('colorpicker', function(){
             selected: '='
         },
         
-    
-        
         link: function(scope, element, attrs) {
             
             scope.selected = (scope.selected || '#000000');
             scope.rows=[];
             var colors=[];
             
-            colors[0]=[{hex:'#0000FF'}, {hex:'#0099CC'}, {hex:'#6600FF'}, {hex:'#FFFF66'}];
+            colors[0]=[{rgb:'0, 53, 102', color:'rgb(0, 53, 102)'}, {rgb:'51, 51, 255', color:'rgb(51, 51, 255)'}, {rgb:'0, 204, 255', color:'rgb(0, 204, 255)'}, {rgb:'0, 153, 153', color:'rgb(0, 153, 153)'}];
             scope.rows.push({colors: colors[0]});
-            colors[1]=[{hex:'#009933'}, {hex:'#99FF33'}, { hex:'#CCFFCC'}, {hex: '#FF66CC'}];
+            colors[1]=[{rgb:'153, 0, 255', color:'rgb(153, 0, 255)'}, {rgb:'255, 102, 204', color:'rgb(255, 102, 204)'}, { rgb:'204, 204, 255', color:'rgb(204, 204, 255)'}, {rgb: '204, 204, 0', color:'rgb(204, 204, 0)'}];
             scope.rows.push({colors: colors[1]});
-            colors[2]=[{hex:'#663300'}, {hex:'#FF0000'}, {hex: '#FF9966'}, {hex:'#000000'}];
+            colors[2]=[{rgb:'153, 255, 204', color:'rgb(153, 255, 204)'}, {rgb:'0, 204, 51', color:'rgb(0, 204, 51)'}, {rgb: '51, 153, 51', color:'rgb(51, 153, 51)'}, {rgb:'102, 51, 0', color:'rgb(102, 51, 0)'}];
             scope.rows.push({colors: colors[2]});
+            colors[3]=[{rgb:'255, 153, 102', color:'rgb(255, 153, 102)'}, {rgb:'255, 204, 153', color:'rgb(255, 204, 153)'}, {rgb:'230, 46, 0', color:'rgb(230, 46, 0)'}, {rgb:'153, 31, 0', color:'rgb(153, 31, 0)'}];
+            scope.rows.push({colors: colors[3]});
             
             scope.select = function(color)
             {
@@ -270,7 +286,7 @@ bmPlannerDirectives.directive('colorpicker', function(){
         template:   '<div>\
                         <table id="colorPickerTable">\
                             <tr ng-repeat="row in rows">\
-                                <td ng-repeat="color in row.colors" ng-style={"background-color":color.hex} ng-click="select(color.hex)"></td>\
+                                <td ng-repeat="color in row.colors" style="cursor:hand" ng-style={"background-color":color.color} ng-click="select(color.rgb)"></td>\
                             </tr>\
                         </table>\
                     </div>'
@@ -279,10 +295,9 @@ bmPlannerDirectives.directive('colorpicker', function(){
 });
 
 
-bmPlannerDirectives.directive('addeventmodal', function() {
+bmPlannerDirectives.directive('addeventmodal', function(Style) {
    
    return {
-       
        restrict: 'E',
        
        scope: {
@@ -295,39 +310,79 @@ bmPlannerDirectives.directive('addeventmodal', function() {
        
        link: function(scope, element, attrs){
            
-           //angular.element(document.body).append(element);
-
+           angular.element(document.body).append(element);
            
            scope.style={};
            
-           if(attrs.width){
+            scope.darkStyle = function(){
+                var D = document;
+                var height = Math.max(
+                    D.body.scrollHeight, D.documentElement.scrollHeight,
+                    D.body.offsetHeight, D.documentElement.offsetHeight,
+                    D.body.clientHeight, D.documentElement.clientHeight
+                );
+                
+                var width = Math.max(
+                    D.body.scrollWidth, D.documentElement.scrollWidth,
+                    D.body.offsetWidth, D.documentElement.offsetWidth,
+                    D.body.clientWidth, D.documentElement.clientWidth
+                );
+                
+                return {'height': height, 'width': width};
+            };
+            
+            scope.$watch('showmodal', function(){
+                if(scope.showmodal == true )
+                {
+                    var top =  event.pageY;
+                    var left = event.pageX;
+                    
+                    var windowHeight = window.innerHeight + window.scrollY;
+                    var height = windowHeight * .60;
+                     if(top + height > windowHeight)
+                     {
+                        top =  window.scrollY + (window.innerHeight * .20);
+                     }
+                     
+                     var windowWidth = window.innerWidth + window.scrollX;
+                     var width = windowWidth * .50;
+                     if(left + width > windowWidth)
+                     {
+                         left = window.scrollX + (window.innerWidth * .20);
+                     }
+                    scope.style.top = top;
+                    scope.style.left = left;
+                }
+            });
+            
+            if(attrs.width){
                scope.style.width = attrs.width;
-           }
-           if(attrs.height)
-           {
+            }
+            
+            if(attrs.height)
+            {
                scope.style.height = attrs.height;
-           }
+            }
            
-           
+            scope.style.background = Style.css.body_backgroundColor;
+            scope.style.color = Style.css.body_color;
+            scope.style.border ='3px solid' + Style.css.buttons_borderColor + '';
+            
            scope.hide_modal = function() {
                scope.showmodal = false;
            };
            
-           
        },
        
        template: '<div class="createEventModal" ng-show="showmodal">\
-                    <div class="createEventModal-dark" ng-click="hide_modal()"></div>\
+                    <div class="createEventModal-dark" ng-style=darkStyle() ng-click="hide_modal()"></div>\
                     <div class="createEventModal-style" ng-style="style">\
-                        <div class="createEventModal-close" ng-click="hide_modal()">X</div>\
-                        <div  class="createEventModal-style-content" ng-transclude></div>\
+                        <div class="createEventModal-style-content" ng-transclude></div>\
                     </div>\
                 </div>'
        
    }; 
 });
-
-
 
 
 bmPlannerDirectives.directive('questionmodal', function() {
@@ -346,8 +401,6 @@ bmPlannerDirectives.directive('questionmodal', function() {
        
        link: function(scope, element, attrs){
           
-            var parent = angular.element($('#td'+ attrs.id));
-            parent.append(element);
             scope.style={};
             
             if(attrs.width){
@@ -367,42 +420,39 @@ bmPlannerDirectives.directive('questionmodal', function() {
               scope.isClickable = !value;
                 if(value == false)
                 {
-                   window.removeEventListener('click', eventfunction); 
+                  window.removeEventListener('click', eventfunction); 
                 }
                 if(value == true)
                 {
-                    if(angular.element($('#fire' + attrs.name))){
-                        var xPosition = angular.element($('#fire' + attrs.name)).prop('offsetWidth')
-                        var offsetLeft = parent.prop('offsetLeft') + 350;
-                        if((offsetLeft - window.innerWidth) > 0)
-                        {
-                            xPosition = xPosition + (offsetLeft - window.innerWidth);
-                        }
-                        scope.style.left = - xPosition;
-                        
-                        var yPosition = angular.element($('#fire' + attrs.name)).parent().prop('offsetTop') + angular.element($('#fire' + attrs.name)).prop('offsetTop') + angular.element($('#fire' + attrs.name)).prop('offsetHeight');
-                        var windowHeight = window.innerHeight + window.scrollY;
-                       
-                        if(windowHeight - (angular.element($('#fire' + attrs.name)).parent().parent().prop('offsetTop') + yPosition) - 200 <= 0)
-                        {
-                            scope.style.bottom = yPosition;
-                        }
-                        else{
-                            scope.style.top = yPosition;
-                        }
-                    }
-                    
-                        
-
+                     angular.element(document.body).append(element);
+                     var top =  event.pageY;
+                     var left = event.pageX;
+                     
+                     var windowHeight = window.innerHeight + window.scrollY;
+                     if(top + 200 > windowHeight)
+                     {
+                         var diff = (top + 200) - windowHeight;
+                         top = top - diff;
+                     }
+                     
+                     var windowWidth = window.innerWidth + window.scrollX;
+                     if(left + 350 > windowWidth)
+                     {
+                         var diff = (left + 350) - windowWidth;
+                         left = left - diff;
+                     }
+                     
+                     scope.style.top = top;
+                     scope.style.left = left;
                 }
             });
             
             element.bind('mouseenter', function(){
-               scope.isActive = true;
-               });
+              scope.isActive = true;
+              });
             
              element.bind('mouseleave', function(){
-               scope.isActive = false;
+              scope.isActive = false;
             });
             
             element.bind('click', function(){
@@ -440,7 +490,7 @@ bmPlannerDirectives.directive('questionmodal', function() {
    }; 
 });
 
-bmPlannerDirectives.directive('weekquestionmodal', function() {
+bmPlannerDirectives.directive('continuemodal', function() {
    
    return {
        
@@ -456,101 +506,55 @@ bmPlannerDirectives.directive('weekquestionmodal', function() {
        
        link: function(scope, element, attrs){
           
-         
-        //angular.element(document.body).append(element);
-        
-          
-           scope.style={};
+            scope.style={};
             
-           if(attrs.width){
+            if(attrs.width){
                scope.style.width = attrs.width;
-           }
-           if(attrs.height)
-           {
+            }
+            if(attrs.height)
+            {
                scope.style.height = attrs.height;
-           }
-           
-           
+            }
            
            scope.hideQuestionModal = function() {
                scope.question = false;
            };
            
+           
             scope.$watch('question', function(value){
               scope.isClickable = !value;
                 if(value == false)
                 {
-                   window.removeEventListener('click', eventfunction); 
+                  window.removeEventListener('click', eventfunction); 
                 }
                 if(value == true)
                 {
-                    if(angular.element($('#weekfire' + attrs.name))){
-                        
-                        var yPosition = angular.element($('#weekfire' + attrs.name)).prop('offsetTop') + angular.element($('#weekfire' + attrs.name)).prop('offsetHeight');
-                        
-                        var doc = document;
-                        var docHeight = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight, 
-                                                doc.body.offsetHeight, doc.documentElement.offsetHeight, doc.body.clientHeight, doc.documentElement.clientHeight);
-                        
-                        var elementOffsetTop = angular.element($('#scrolldiv')).parent().prop('offsetTop') + angular.element($('#scrolldiv')).prop('offsetTop') ;
-                        var elementOffsetBottom = docHeight - (elementOffsetTop + angular.element($('#scrolldiv')).prop('offsetHeight'));
-                        var topNotSeen = elementOffsetTop - window.scrollY ;
-                        var bottomNotSeen = elementOffsetBottom - (docHeight - (window.scrollY + window.innerHeight));
-                        var firePosition = element.parent().parent().parent().prop('offsetTop') - yPosition;
-                        
-                        console.log('docHeight: ' + docHeight);
-                        console.log('innerWindowHeight: ' + window.innerHeight);
-                        console.log('window scroll: ' + window.scrollY);
-                        console.log('offsetBottom : ' + elementOffsetBottom);
-                        console.log('offsetTop : ' + elementOffsetTop);
-                        console.log('scrollDiv Height: ' + (angular.element($('#scrolldiv')).prop('offsetHeight')));
-                        console.log('topNotSeen ' + topNotSeen);
-                        console.log('bottomNotSeen: ' + bottomNotSeen);
-                        
-                        
-                        
-                        console.log('firePosition :' + (element.parent().parent().parent().prop('offsetTop') - yPosition));
-                        
-                        
-                        var littleTopNotSeen = ((element.parent().parent().parent().prop('offsetTop') + yPosition) - (angular.element($('#scrolldiv')).prop('scrollTop')));
-                        
-                        console.log('littleTop Not seen: ' +littleTopNotSeen);
-                        
-                        
-                        
-                        var c =  (docHeight - bottomNotSeen - elementOffsetBottom) - (window.scrollY + topNotSeen);
-                        console.log('c ' + c);
-                        var e = littleTopNotSeen;
-                        console.log('e' + e);
-                        var m = e + 200;
-                        var x = m - c;
-                        console.log('m ' + m);
-                        console.log('x ' + x);
-                       
-                    //   if(x < 0)
-                    //   {
-                    //         if( ((-x) + 200) > c)
-                    //         {
-                    //           yPosition = yPosition +  (((-x) + 200) - c);
-                    //         }
-                    //   }
-                       
-                    //   if( x > 0)
-                    //   {
-                          
-                    //           yPosition = yPosition - x;
-                         
-                    //   }
-            
-                         scope.style.top = yPosition;
-                       
-                    }
+                    angular.element(document.body).append(element);
+                     var top = event.pageY - event.target.offsetTop - event.offsetY;
+                     var left = event.pageX - event.target.offsetLeft - event.offsetX;
+                     
+                     var windowHeight = window.innerHeight + window.scrollY;
+                     if(top + 200 > windowHeight)
+                     {
+                         var diff = (top + 200) - windowHeight;
+                         top = top - diff;
+                     }
+                     
+                     var windowWidth = window.innerWidth + window.scrollX;
+                     if(left + 350 > windowWidth)
+                     {
+                         var diff = (left + 350) - windowWidth;
+                         left = left - diff;
+                     }
+                     
+                     scope.style.top = top;
+                     scope.style.left = left;
                 }
             });
             
             element.bind('mouseenter', function(){
               scope.isActive = true;
-            });
+              });
             
              element.bind('mouseleave', function(){
               scope.isActive = false;
@@ -560,7 +564,6 @@ bmPlannerDirectives.directive('weekquestionmodal', function() {
                 if(scope.isActive == true){
                     window.removeEventListener('click', eventfunction); 
                 }
-                
             });
             
             function eventfunction()
@@ -591,3 +594,223 @@ bmPlannerDirectives.directive('weekquestionmodal', function() {
                   </div>'
    }; 
 });
+
+
+bmPlannerDirectives.directive('menumodal', function() {
+   
+   return {
+       
+       restrict: 'E',
+       
+       scope: {
+           question: '='
+       },
+       
+       replace: true, //replace with the template below
+       
+       transclude: true, //to insert answer from user to directive
+       
+       link: function(scope, element, attrs){
+          
+           scope.style={};
+           
+           scope.hideQuestionModal = function() {
+               scope.question = false;
+           };
+           
+           
+            scope.$watch('question', function(value){
+              scope.isClickable = !value;
+                if(value == false)
+                {
+                  window.removeEventListener('click', eventfunction); 
+                }
+                if(value == true)
+                {
+                     angular.element(document.body).append(element);
+                     
+                     var top =  event.pageY;
+                     var left = event.pageX;
+                     
+                     var windowHeight = window.innerHeight + window.scrollY;
+                     if(top + 240 > windowHeight)
+                     {
+                         var diff = (top + 240) - windowHeight;
+                         top = top - diff;
+                     }
+                     
+                     if(left + 220 > window.innerWidth)
+                     {
+                         var diff = (left + 220) - window.innerWidth;
+                         left = left - diff;
+                     }
+                     
+                     scope.style.width = '220px';
+                     scope.style.height = '240px';
+                     scope.style.top = top;
+                     scope.style.left = left;
+                   
+                }
+            });
+            
+            element.bind('mouseenter', function(){
+              scope.isActive = true;
+              });
+            
+             element.bind('mouseleave', function(){
+              scope.isActive = false;
+            });
+            
+            element.bind('click', function(){
+                if(scope.isActive == true){
+                    window.removeEventListener('click', eventfunction); 
+                }
+            });
+            
+            function eventfunction()
+            {
+                if(scope.question == true)
+                {
+                    scope.question = false;
+                    scope.$apply();
+                }
+            }
+                
+                window.addEventListener('click', function(){
+                    if(scope.isClickable == false)
+                    {
+                        window.addEventListener('click', eventfunction);
+                    }
+                    
+                });
+                
+          
+       },
+       
+       template: '<div class="createQuestionModal" ng-show="question">\
+                    <div  class="createQuestionModal-style" ng-style="style">\
+                        <div class="createQuestionModal-style-content" ng-transclude></div>\
+                    </div>\
+                  </div>'
+   }; 
+});
+
+bmPlannerDirectives.directive('addtoolsmodal', function() {
+   
+   return {
+       
+       restrict: 'E',
+       
+       scope: {
+           question: '='
+       },
+       
+       replace: true, //replace with the template below
+       
+       transclude: true, //to insert answer from user to directive
+       
+       link: function(scope, element, attrs){
+          
+           scope.style={};
+           
+           
+           
+           scope.hideQuestionModal = function() {
+               scope.question = false;
+           };
+           
+           
+            scope.$watch('question', function(value){
+              scope.isClickable = !value;
+                if(value == false)
+                {
+                  window.removeEventListener('click', eventfunction); 
+                }
+                if(value == true)
+                {
+                     angular.element(document.body).append(element);
+                     
+                     scope.toolDarkStyle = function(){
+                        var D = document;
+                        var height = Math.max(
+                            D.body.scrollHeight, D.documentElement.scrollHeight,
+                            D.body.offsetHeight, D.documentElement.offsetHeight,
+                            D.body.clientHeight, D.documentElement.clientHeight
+                        );
+                        
+                        var width = Math.max(
+                            D.body.scrollWidth, D.documentElement.scrollWidth,
+                            D.body.offsetWidth, D.documentElement.offsetWidth,
+                            D.body.clientWidth, D.documentElement.clientWidth
+                        );
+                        
+                        return {'height': height, 'width': width};
+                    };
+                     
+                     var top =  event.pageY;
+                     var left = event.pageX;
+                     
+                     var windowHeight = window.innerHeight + window.scrollY;
+                     if(top + 250 > windowHeight)
+                     {
+                         var diff = (top + 250) - windowHeight;
+                         top = top - diff;
+                     }
+                     
+                     if(left + 350 > window.innerWidth)
+                     {
+                         var diff = (left + 350) - window.innerWidth;
+                         left = left - diff;
+                     }
+                     
+                     scope.style.width = '350px';
+                     scope.style.height = '250px';
+                     scope.style.top = top;
+                     scope.style.left = left;
+                   
+                }
+            });
+            
+            element.bind('mouseenter', function(){
+              scope.isActive = true;
+              });
+            
+             element.bind('mouseleave', function(){
+              scope.isActive = false;
+            });
+            
+            element.bind('click', function(){
+                if(scope.isActive == true){
+                    window.removeEventListener('click', eventfunction); 
+                }
+            });
+            
+            function eventfunction()
+            {
+                if(scope.question == true)
+                {
+                    scope.question = false;
+                    scope.$apply();
+                }
+            }
+                
+                window.addEventListener('click', function(){
+                    if(scope.isClickable == false)
+                    {
+                        window.addEventListener('click', eventfunction);
+                    }
+                    
+                });
+          
+       },
+       
+       template: '<div class="createQuestionModal" ng-show="question">\
+                    <div class="createQuestionModal-tooldark" ng-style=toolDarkStyle() ng-click="hideQuestionModal()"></div>\
+                    <div  class="createQuestionModal-style" ng-style="style">\
+                        <div class="createQuestionModal-style-content" ng-transclude></div>\
+                    </div>\
+                  </div>'
+   }; 
+});
+
+

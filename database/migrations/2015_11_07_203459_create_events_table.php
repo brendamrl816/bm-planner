@@ -13,9 +13,9 @@ class CreateEventsTable extends Migration
     public function up()
     {
         Schema::create('events', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('calendarId')->unsigned();
-            $table->foreign('calendarId')->references('id')->on('calendars');
+            $table->increments('id')->unsigned();
+            $table->integer('user_id')->unsigned();
+            $table->integer('calendar_id');
             $table->string('name');
             $table->date('startDate');
             $table->date('endDate');
@@ -27,6 +27,7 @@ class CreateEventsTable extends Migration
             $table->boolean('allDay');
             $table->boolean('repeats');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

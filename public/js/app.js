@@ -1,7 +1,7 @@
 'use strict'
 
 
-var bmPlanner = angular.module('bmPlannerApp', ['ui.router', 'bmPlannerControllers', 'bmPlannerServices', 'bmDirectives']);
+var bmPlanner = angular.module('bmPlannerApp', ['ui.router', 'bmPlannerAnimations', 'bmPlannerControllers', 'bmPlannerServices', 'bmDirectives']);
 
 bmPlanner.config(function($stateProvider, $urlRouterProvider) {
     
@@ -9,36 +9,20 @@ bmPlanner.config(function($stateProvider, $urlRouterProvider) {
     
     $stateProvider
     
-        .state('userHome', {
+        .state('home', {
             url: '/',
             
             views: {
-                '': {
+                'home': {
                    templateUrl: '/html/userHomePage.html'
                 },
-                'listsCalToolsView@userHome':{
+                'listsCalToolsView@home':{
                     templateUrl: '/html/listsCalToolsView.html'
                 },
                 
-                'calendarView@userHome':{
+                'calendarView@home':{
                     templateUrl: '/html/calendarView.html'
                 }
             }
-        })
-        
-        .state('editEvent', {
-            url:'/editEvent',
-            templateUrl:'/html/editEvent.html',
-            controller: 'editEventCtrl as edit'
-            
-        })
-        .state('logout', {
-            
-        })
-        
-        
-        .state('account', {
-            
         });
-        
 });

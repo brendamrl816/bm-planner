@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Calendar extends Model
 {
-    protected $fillable = ['name', 'color'];
+    protected $fillable = ['user_id', 'name', 'color'];
+    
+    public function users(){
+        return $this->belongsTo('App\User');
+    }
+    
 }

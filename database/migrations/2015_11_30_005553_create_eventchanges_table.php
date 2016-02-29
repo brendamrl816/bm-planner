@@ -13,19 +13,14 @@ class CreateEventchangesTable extends Migration
     public function up()
     {
         Schema::create('eventchanges', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('id')->unsigned();
             $table->integer('event_id')->unsigned();
-            $table->foreign('event_id')->references('id')->on('events');
             $table->date('dateOfChange');
             $table->timestamps();
+            $table->foreign('event_id')->references('id')->on('events')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::drop('eventchanges');

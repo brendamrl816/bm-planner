@@ -23,7 +23,7 @@ class EventchangesController extends Controller
    
     public function store(Request $request)
     {
-       $event_id = Input::get('event_id');
+        $event_id = Input::get('event_id');
         $dateOfChange = Input::get('dateOfChange');
         
         Eventchange::create(array(
@@ -33,14 +33,12 @@ class EventchangesController extends Controller
         
         return Response::json(array('success'=>true));
     }
-
     
-    
-   
     public function destroy($id)
     {
-         DB::table('eventchanges')->where('event_id', '=', $id)->delete();
-                
+        DB::table('eventchanges')->where('event_id', '=', $id)->delete();        
+        
         return Response::json(array('success'=>true));
     }
+
 }

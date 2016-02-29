@@ -1,0 +1,314 @@
+
+<form name="editForm" novalidate>
+        <div>
+        Event: <input ng-style="style.modalbuttonStyle()" type="text" name="name" ng-model="edit.name" required>
+        <div style="float:left; color:red; font-weight:bold" ng-show="editForm.name.$invalid">*</div>
+        <br><br>
+        Calendar: 
+        <select ng-style="style.modalbuttonStyle()" name="calendar" ng-model="edit.calendar_id" ng-options="calendar as calendar.name for calendar in edit.calendars track by calendar.id"></select>
+        <br>
+        <br>
+        All Day:<input type="checkbox" ng-checked="edit.allDay" ng-click="edit.toggleAllDay()"><br>
+        
+        <div style="position:relative; font-size:90%">
+            <minicalendars style="width:170px; position:absolute; left:0px" selected="edit.startDate">
+                START: <input startdate type="text" ng-style="style.modalbuttonStyle()" style="position:absolute; right:20px; top:0px"  size="8" ng-model="edit.startDate" ng-model-options="{ updateOn: 'blur'}">
+            </minicalendars>
+            
+            <div style="position:absolute; left:172px;  width:137px">
+               <table style="width: 137px; table-layout:fixed; border-collapse:collapse" ng-show="!edit.allDay">
+                   <tr style="width:137px; border:none; height:20px">
+                       <td style="width:42px; border:none; padding:0px">
+                            <select ng-style="style.modalbuttonStyle()" style="position:absolute; z-index:2; top:0" onfocus='this.size=10;' onblur='this.size=1;' onchange='this.size=1; this.blur();'  ng-model="edit.startHour">
+                                    <option value="12">12</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                            </select> 
+                       </td>
+                       <td style="width:5px; border:none; padding:0px">
+                           <div style="position:absolute; top:0">:</div>
+                       </td>
+                       <td style="width:45px; border:none; padding:0px">
+                           <select ng-style="style.modalbuttonStyle()" style="position:absolute; z-index:2; top:0" onfocus='this.size=10;' onblur='this.size=1;' onchange='this.size=1; this.blur();' ng-model="edit.startMinutes">
+                                        <option value="00">00</option>
+                                        <option value="01">01</option>
+                                        <option value="02">02</option>
+                                        <option value="03">03</option>
+                                        <option value="04">04</option>
+                                        <option value="05">05</option>
+                                        <option value="06">06</option>
+                                        <option value="07">07</option>
+                                        <option value="08">08</option>
+                                        <option value="09">09</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                        <option value="13">13</option>
+                                        <option value="14">14</option>
+                                        <option value="15">15</option>
+                                        <option value="16">16</option>
+                                        <option value="17">17</option>
+                                        <option value="18">18</option>
+                                        <option value="19">19</option>
+                                        <option value="20">20</option>
+                                        <option value="21">21</option>
+                                        <option value="22">22</option>
+                                        <option value="23">23</option>
+                                        <option value="24">24</option>
+                                        <option value="25">25</option>
+                                        <option value="26">26</option>
+                                        <option value="27">27</option>
+                                        <option value="28">28</option>
+                                        <option value="29">29</option>
+                                        <option value="30">30</option>
+                                        <option value="31">31</option>
+                                        <option value="32">32</option>
+                                        <option value="33">33</option>
+                                        <option value="34">34</option>
+                                        <option value="35">35</option>
+                                        <option value="36">36</option>
+                                        <option value="37">37</option>
+                                        <option value="38">38</option>
+                                        <option value="39">39</option>
+                                        <option value="40">40</option>
+                                        <option value="41">41</option>
+                                        <option value="42">42</option>
+                                        <option value="43">43</option>
+                                        <option value="44">44</option>
+                                        <option value="45">45</option>
+                                        <option value="46">46</option>
+                                        <option value="47">47</option>
+                                        <option value="48">48</option>
+                                        <option value="49">49</option>
+                                        <option value="50">50</option>
+                                        <option value="51">51</option>
+                                        <option value="52">52</option>
+                                        <option value="53">53</option>
+                                        <option value="54">54</option>
+                                        <option value="55">55</option>
+                                        <option value="56">56</option>
+                                        <option value="57">57</option>
+                                        <option value="58">58</option>
+                                        <option value="59">59</option>
+                            </select>
+                           
+                       </td>
+                       <td style="width:45px; border:none; padding:0px">
+                                <select ng-style="style.modalbuttonStyle()" style="position:absolute; z-index:2; top:0" ng-model="edit.startMeridiem">
+                                    <option value="am">AM</option>
+                                    <option value="pm">PM</option>
+                                </select>
+                       </td>
+                   </tr>
+               </table>
+           </div>
+ 
+        </div>
+        
+        <br>
+        <br>
+                
+        <div style="position:relative; font-size:90%; margin-bottom:8px">
+            <minicalendars style="width:170px; position:absolute; left:0px" selected="edit.endDate">
+                END: <input ng-style="style.modalbuttonStyle()" style="position:absolute; right:20px; top:0px" enddate type="text"  size="8" ng-model="edit.endDate" ng-model-options="{ updateOn: 'blur', allowInvalid:true}">
+            </minicalendars>
+            
+            <div style="position:absolute; left:172px;  width:137px">
+               <table style="width: 137px; table-layout:fixed; border-collapse:collapse" ng-show="!edit.allDay">
+                   <tr style="width:137px; border:none; height:20px">
+                       <td style="width:42px; border:none; padding:0px">
+                            <select ng-style="style.modalbuttonStyle()" style="position:absolute; top:0; z-index:1" onfocus='this.size=10;' onblur='this.size=1;' onchange='this.size=1; this.blur();'  ng-model="edit.endHour">
+                                    <option value="12">12</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                            </select> 
+                       </td>
+                       <td style="width:5px; border:none; padding:0px">
+                           <div style="position:absolute; top:0">:</div>
+                       </td>
+                       <td style="width:45px; border:none; padding:0px">
+                           <select ng-style="style.modalbuttonStyle()" style="position:absolute; top:0; z-index:1" onfocus='this.size=10;' onblur='this.size=1;' onchange='this.size=1; this.blur();' ng-model="edit.endMinutes">
+                                        <option value="00">00</option>
+                                        <option value="01">01</option>
+                                        <option value="02">02</option>
+                                        <option value="03">03</option>
+                                        <option value="04">04</option>
+                                        <option value="05">05</option>
+                                        <option value="06">06</option>
+                                        <option value="07">07</option>
+                                        <option value="08">08</option>
+                                        <option value="09">09</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                        <option value="13">13</option>
+                                        <option value="14">14</option>
+                                        <option value="15">15</option>
+                                        <option value="16">16</option>
+                                        <option value="17">17</option>
+                                        <option value="18">18</option>
+                                        <option value="19">19</option>
+                                        <option value="20">20</option>
+                                        <option value="21">21</option>
+                                        <option value="22">22</option>
+                                        <option value="23">23</option>
+                                        <option value="24">24</option>
+                                        <option value="25">25</option>
+                                        <option value="26">26</option>
+                                        <option value="27">27</option>
+                                        <option value="28">28</option>
+                                        <option value="29">29</option>
+                                        <option value="30">30</option>
+                                        <option value="31">31</option>
+                                        <option value="32">32</option>
+                                        <option value="33">33</option>
+                                        <option value="34">34</option>
+                                        <option value="35">35</option>
+                                        <option value="36">36</option>
+                                        <option value="37">37</option>
+                                        <option value="38">38</option>
+                                        <option value="39">39</option>
+                                        <option value="40">40</option>
+                                        <option value="41">41</option>
+                                        <option value="42">42</option>
+                                        <option value="43">43</option>
+                                        <option value="44">44</option>
+                                        <option value="45">45</option>
+                                        <option value="46">46</option>
+                                        <option value="47">47</option>
+                                        <option value="48">48</option>
+                                        <option value="49">49</option>
+                                        <option value="50">50</option>
+                                        <option value="51">51</option>
+                                        <option value="52">52</option>
+                                        <option value="53">53</option>
+                                        <option value="54">54</option>
+                                        <option value="55">55</option>
+                                        <option value="56">56</option>
+                                        <option value="57">57</option>
+                                        <option value="58">58</option>
+                                        <option value="59">59</option>
+                            </select>
+                           
+                       </td>
+                       <td style="width:45px; border:none; padding:0px">
+                                <select ng-style="style.modalbuttonStyle()" style="position:absolute; top:0; z-index:1" ng-model="edit.endMeridiem">
+                                    <option value="am">AM</option>
+                                    <option value="pm">PM</option>
+                                </select>
+                       </td>
+                   </tr>
+               </table>
+           </div>
+        </div>
+        <br>
+        
+        <div starttimeval id="editendtimeval" ng-show=false name="editstarttimeval" ng-model="edit.validateStartTime">{{edit.validateStartTime}}</div>
+        <div endtimeval id="editstarttimeval"  ng-show=false name="editendtimeval" ng-model="edit.validateEndTime">{{edit.validateEndTime}}</div>
+        <div starttimeval id="editrepeatval" ng-show=false name="editstarttimeval" ng-model="edit.validateStartTime">{{edit.validateStartTime}}</div>
+        <div endtimeval id="editstarttimeval"  ng-show=false name="editrepeatval" ng-model="edit.validateRepeatDate">{{edit.validateRepeatDate}}</div>
+        
+        <span style="color:red" ng-show="editForm.editendtimeval.$error.endtimeval">*Event ends before it starts!</span>
+        
+        <br>
+       
+        <div style="margin-top:10px; position:relative; font-size:90%">
+            REPEAT: <input type="checkbox" ng-checked="edit.repeats" ng-click="edit.toggleRepeats()"><br>
+            <div  ng-show="edit.repeats">
+                <div style="float:left; color:red; font-weight:bold" ng-show="editForm.selectRepeatOcurrence.$invalid">*</div>
+                <select ng-style="style.modalbuttonStyle()" ng-required="edit.repeats" ng-model="edit.repeatOccurrence" ng-change="edit.changeRepeatOptions(edit.repeatOccurrence)" name="selectRepeatOcurrence">
+                <option value="">Please Select</option>
+                <option value="daily">Daily</option>
+                <option value="weekday">Every weekday(Mon-Fri)</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="yearly">Yearly</option>
+                </select>
+                <br>
+                <div style="display:inline-block" ng-show="edit.repeatsWeeklyMenu" ng-repeat="option in edit.repeatWeeklyOptions">
+                    <input ng-checked="option.selected" ng-click="edit.toggleRepeatWeeklyOption(option.id)" type="checkbox">{{option.name}}
+                </div>
+                <div style="position:absolute; top:20px; left:200px" ng-show="edit.intervalSelection">
+                    <span style="positon:absolute; left:0px; top:0px">Every: </span>
+                    <select ng-style="style.modalbuttonStyle()" style="position:absolute; left:45px; top:0; z-index:1" onfocus='this.size=10;' onblur='this.size=1;' onchange='this.size=1; this.blur();' ng-model="edit.repeatInterval">
+                        <option value="1">01</option>
+                        <option value="2">02</option>
+                        <option value="3">03</option>
+                        <option value="4">04</option>
+                        <option value="5">05</option>
+                        <option value="6">06</option>
+                        <option value="7">07</option>
+                        <option value="8">08</option>
+                        <option value="9">09</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option>
+                        <option value="24">24</option>
+                        <option value="25">25</option>
+                        <option value="26">26</option>
+                        <option value="27">27</option>
+                        <option value="28">28</option>
+                        <option value="29">29</option>
+                        <option value="30">30</option>
+                    </select>
+                    <span style="position:absolute; top:0px; left:90px">{{edit.intervalWord}}</span>
+                </div>
+                <br> 
+                <br>
+                <div style="position:absolute">
+                    <div style="positon:absolute; left:0px; top:0px">Ends on: </div>
+                    <minicalendars style="width:170px; position:absolute; left:50px; top:0px" selected="edit.repeatEndDate">
+                        <input type="radio"  style="position:absolute; top:0px; left:5px" ng-model="edit.repeatEndValue" value="date"> 
+                        <div style="position:absolute; top:0px; left:25px">date</div> 
+                        <input enddate type="text"  ng-style="style.modalbuttonStyle()" style="position:absolute; right:20px; top:0px" size="8" name="repeatend" ng-model="edit.repeatEndDate" ng-model-options="{ updateOn: 'blur', allowInvalid:true}">
+                    </minicalendars>
+                    
+                    <span style="color:red" ng-show="editForm.editrepeatval.$error.endtimeval">* Repetition cannot end before event starts!</span>
+                    <div style="position:absolute; left:225px; top:0px">
+                            <input type="radio"  style="position:absolute; left:0px; top:0px" ng-model="edit.repeatEndValue" value="never">
+                            <div style="position:absolute; top:0px; left:20px">never</div> 
+                    </div>
+                    
+                </div>
+                <br>
+            </div>
+        </div>            
+       
+        <br>
+            <div style=" margin-top:5px; position:relative">
+               <button ng-style="style.modalbuttonStyle()" ng-disabled="editForm.$invalid" ng-click="edit.submitEdition()">Save Changes</button>
+               <button ng-style="style.modalbuttonStyle()" ng-click="edit.cancelEdition()">Cancel</button>
+            </div>
+</div>       
+</form>
+
+

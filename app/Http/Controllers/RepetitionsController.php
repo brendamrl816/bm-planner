@@ -32,9 +32,10 @@ class RepetitionsController extends Controller
    
     public function store(Request $request)
     {
-        $eventId = Input::get('eventId');
+        $event_id = Input::get('event_id');
         $repeatOccurrence = Input::get('repeatOccurrence');
-        $endRepetitionDate = Input::get('endRepetitionDate');
+        $repeatInterval = Input::get('repeatInterval');
+        $repeatEndDate = Input::get('repeatEndDate');
         $repeatDaily= Input::get('repeatDaily');
         $repeatWeekdays= Input::get('repeatWeekdays');
         $repeatWeekly= Input::get('repeatWeekly');
@@ -43,9 +44,10 @@ class RepetitionsController extends Controller
         $neverEnds= Input::get('neverEnds');
         
         Repetition::create(array(
-            'eventId'=>$eventId,
+            'event_id'=>$event_id,
             'repeatOccurrence' =>$repeatOccurrence,
-            'endRepetitionDate'=>$endRepetitionDate,
+            'repeatInterval' =>$repeatInterval,
+            'repeatEndDate'=>$repeatEndDate,
             'repeatDaily'=>$repeatDaily,
             'repeatWeekdays'=>$repeatWeekdays,
             'repeatWeekly'=>$repeatWeekly,
@@ -62,7 +64,8 @@ class RepetitionsController extends Controller
     public function update($id)
     {
         $repeatOccurrence = Input::get('repeatOccurrence');
-        $endRepetitionDate = Input::get('endRepetitionDate');
+        $repeatInterval = Input::get('repeatInterval');
+        $repeatEndDate = Input::get('repeatEndDate');
         $repeatDaily= Input::get('repeatDaily');
         $repeatWeekdays= Input::get('repeatWeekdays');
         $repeatWeekly= Input::get('repeatWeekly');
@@ -71,8 +74,9 @@ class RepetitionsController extends Controller
         $neverEnds= Input::get('neverEnds');
         
         
-        DB::table('repetitions')->where('eventId', '=', $id)->update(['repeatOccurrence' =>$repeatOccurrence,
-            'endRepetitionDate'=>$endRepetitionDate,
+        DB::table('repetitions')->where('event_id', '=', $id)->update(['repeatOccurrence' =>$repeatOccurrence,
+            'repeatInterval' =>$repeatInterval,
+            'repeatEndDate'=>$repeatEndDate,
             'repeatDaily'=>$repeatDaily,
             'repeatWeekdays'=>$repeatWeekdays,
             'repeatWeekly'=>$repeatWeekly,
@@ -83,19 +87,21 @@ class RepetitionsController extends Controller
         return Response::json(array('success'=>true));
     }
     
-     public function changeEnd()
-    {   $id = Input::get('eventId');
-        $newEndRepetitionDate = Input::get('newEndDate');
+    public function changeEnd()
+    {   
+        $id = Input::get('event_id');
+        $newRepeatEndDate = Input::get('newRepeatEndDate');
         
-        DB::table('repetitions')->where('eventId', '=', $id)->update([ 'endRepetitionDate'=>$newEndRepetitionDate]);
+        DB::table('repetitions')->where('event_id', '=', $id)->update([ 'repeatEndDate'=>$newRepeatEndDate]);
         
         return Response::json(array('success'=>true));
     }
-  
+    
     public function destroy($id)
     {
-        DB::table('repetitions')->where('eventId', '=', $id)->delete();
+        DB::table('repetitions')->where('event_id', '=', $id)->delete();
                 
         return Response::json(array('success'=>true));
     }
+  
 }

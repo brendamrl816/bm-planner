@@ -1,36 +1,44 @@
 
-<div style="float:left" ng-transclude>
-</div>
-
-<button ng-click="toggleShowMiniCalendar($event)">O</button>
-
-<div ng-click="$event.stopPropagation()"  class="miniCalDisplay" ng-show="showMiniCalendar">
-    <div style="margin:10px">
-       <div>
-            <button style="float:left" ng-click="previous()"><=</button>
-            <div style="float:left; font-size:14px; margin-left:5px; margin-right:5px">{{selected.format('MMMM, YYYY')}}</div>
-            <button style="float:left" ng-click="next()">=></button>
+   <table style="width: 170px; table-layout:fixed; border-collapse:collapse">
+       <tr style="width:170px; border:none; height:20px">
+           <td style="width:150px; border:none; padding:0px">
+             <div ng-transclude></div>  
+           </td>
+           
+           <td style="width:20px; border:none; padding:0px">
+               <div style="width:100%">
+                   <div style="width:100%" ng-click="toggleShowMiniCalendar($event)"><i class="fa fa-calendar"></i></div>
+               </div>
+               
+           </td>
+       </tr>
+   </table>
+   
+ 
+    <div class="miniCalDisplay" ng-click="$event.stopPropagation()"   ng-show="showMiniCalendar" >
+        <div style="margin:5px; font-size:120%">
+            <div style="position:absolute; left:15px" ng-click="previous()"><i class="fa fa-chevron-circle-left"></i></div>
+            <div style="position:absolute; left:50px; font-size:75%; font-weight:bold">{{selected.format('MMMM, YYYY')}}</div>
+            <div style="position:absolute; right:15px" ng-click="next()"><i class="fa fa-chevron-circle-right"></i></div>
         </div>
         <br>
-        
-        <table class="miniCalPar">
+        <table class="miniCalTable">
             <tr>
-                <td><span class="miniDaysL">Sun</span></td>
-                <td><span class="miniDaysL">Mon</span></td>
-                <td><span class="miniDaysL">Tue</span></td>
-                <td><span class="miniDaysL">Wed</span></td>
-                <td><span class="miniDaysL">Thu</span></td>
-                <td><span class="miniDaysL">Fri</span></td>
-                <td><span class="miniDaysL">Sat</span></td>
+                <td style="border:none"><span class="miniDays">Sun</span></td>
+                <td style="border:none"><span class="miniDays">Mon</span></td>
+                <td style="border:none"><span class="miniDays">Tue</span></td>
+                <td style="border:none"><span class="miniDays">Wed</span></td>
+                <td style="border:none"><span class="miniDays">Thu</span></td>
+                <td style="border:none"><span class="miniDays">Fri</span></td>
+                <td style="border:none"><span class="miniDays">Sat</span></td>
             </tr>
         </table> 
         
-        <table class="miniCalPar">
+        <table class="miniCalTable">
             <tr ng-repeat="week in weeks">
-                <td ng-repeat="day in week.days"><span class="miniDays" ng-click="miniCalCtrl.select(day)">{{day.dateOfMonth}}</span></td>
+                <td style="border:none" ng-repeat="day in week.days"><span style="margin:5px" ng-click="miniCalCtrl.select(day)">{{day.dateOfMonth}}</span></td>
             </tr>
         </table>    
     </div>
     
-</div>
         

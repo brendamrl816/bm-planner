@@ -1,7 +1,7 @@
-@extends('master')
+@extends('shared.master')
 @section('title', 'All users')
 @section('content')
-
+    @include('shared.navbar')
     <h2>All Users</h2>
     
     @if (session('status'))
@@ -28,7 +28,7 @@
                         <tr>
                             <td>{!! $user->id !!}</td>
                             <td>
-                                <a href="#">{!! $user->name !!} </a>
+                                <a href="{!!action('Admin\UsersController@edit', $user->id) !!}">{!! $user->name !!} </a>
                             </td>
                             <td>{!! $user->email !!}</td>
                             <td>{!! $user->created_at !!}</td>

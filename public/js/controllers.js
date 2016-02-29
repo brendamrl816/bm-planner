@@ -3,103 +3,219 @@
 var bmPlannerControllers = angular.module('bmPlannerControllers', []);
 
 
-bmPlannerControllers.controller('listsCtrl', function(Lists, $scope){
-    $scope.lists = Lists.lists;
-    
-    $scope.addListMenu = false;
-    $scope.listName="";
-    
-    $scope.color="#000000";
+bmPlannerControllers.controller('styleCtrl', function(Style, $scope){
+    var self = this;
+    self.theStyle = Style;
 
-    $scope.toggleAddList = function(event){
-      $scope.addListMenu = !$scope.addListMenu;
-      event.stopPropagation();
+    self.bodyStyle = function(){
+        return {'height':'85%', 'background-color':self.theStyle.css.body_backgroundColor, 'color':self.theStyle.css.body_color,
+            'font-family':self.theStyle.css.body_fontFamily};
     };
-
     
-    window.addEventListener('click', function() {
-        if ($scope.addListMenu == true) {
-            $scope.addListMenu = false;
-            $scope.listName="";
-            $scope.color="#000000";
-        // You should let angular know about the update
-        //so that it can refresh the UI
-            $scope.$apply();
-        }
-      
+    self.buttonStyle = function(){
+        return {'background-color':self.theStyle.css.buttons_backgroundColor, 'color':self.theStyle.css.buttons_color,
+                'font-family':self.theStyle.css.buttons_fontFamily, 'font-weight':'bold', 'border':'2px solid', 'border-color':self.theStyle.css.buttons_borderColor};
+    };
+    
+    self.modalbuttonStyle = function(){
+        return {'background-color':self.theStyle.css.buttons_backgroundColor, 'color':self.theStyle.css.buttons_color,
+                'font-family':self.theStyle.css.buttons_fontFamily, 'border':'1px solid', 'border-color':self.theStyle.css.buttons_borderColor};
+    };
+    
+    self.menuModalStyle = function(){
+        return {'background-color':self.theStyle.css.body_backgroundColor, 'color':self.theStyle.css.body_color, 'border':'2px solid', 'border-color':self.theStyle.css.buttons_borderColor};  
+    };
+    self.addModalStyle = function(){
+        return {'background-color':self.theStyle.css.body_backgroundColor, 'color':self.theStyle.css.body_color, 'border':'4px solid', 'border-color':self.theStyle.css.buttons_borderColor};  
+    };
+    
+    self.statusStyle = function(){
+        return {'background-color':self.theStyle.css.buttons_backgroundColor, 'color':self.theStyle.css.body_color, 'border':'1px solid', 'border-color':self.theStyle.css.buttons_borderColor,
+            'font-weight':'bold', 'font-style':'italic'};
+    };
+    
+    self.errorStyle = function(){
+        return {'color':self.theStyle.css.buttons_borderColor, 
+            'font-weight':'bold', 'font-style':'oblique'};
+    };
+    
+    self.navbarStyle = function(){
+        return {'text-decoration':'none', 'color':self.theStyle.css.navBar_color, 'background-color':self.theStyle.css.navBar_backgroundColor, 'border':'2px solid', 'border-color':self.theStyle.css.navBar_borderColor, 'font-weight':'bold'};  
+    };
+});
+
+bmPlannerControllers.controller('editStyleCtrl', function(Style, $window, $scope, $http){
+    var self = this;
+    self.chosenTheme;
+    
+    $http.get('/styles').success(function(response){
+        self.chosenTheme = response.theme_name;
+        self.id = response.id;
     });
     
+    self.saveChanges = function(){
+        var data = {};
+        
+        switch(self.chosenTheme){
+            case 'default':
+                data.theme_name = "default";
+                data.body_backgroundColor = '#ffffff';
+                data.body_color = '#000000';
+                data.body_fontFamily = 'Arial, Helvetica, sans-serif';
+                data.buttons_backgroundColor = '#f2f2f2';
+                data.buttons_color = '#000000';
+                data.buttons_fontFamily = 'Arial, Helvetica, sans-serif';
+                data.buttons_borderColor = '#992700';
+                data.navBar_backgroundColor = '#000000';
+                data.navBar_color = '#ffffff';
+                data.navBar_borderColor = '#992700';
+                data.menuModal_backgroundColor = '#d9d9d9';
+                data.addModal_backgroundColor = '#ffffe5';
+                break;
+            case 'theme1':
+                data.theme_name = "theme1";
+                data.body_backgroundColor = '#f2ffe5';
+                data.body_color = '#996633';
+                data.body_fontFamily = '';
+                data.buttons_backgroundColor = '';
+                data.buttons_color = '';
+                data.buttons_fontFamily = '';
+                data.buttons_borderColor = '';
+                data.navBar_backgroundColor = '';
+                data.navBar_color = '';
+                data.navBar_borderColor = '';
+                data.menuModal_backgroundColor = '';
+                data.addModal_backgroundColor = '';
+                break;
+            case 'theme2':
+                data.theme_name = "";
+                data.body_backgroundColor = '';
+                data.body_color = '';
+                data.body_fontFamily = '';
+                data.buttons_backgroundColor = '';
+                data.buttons_color = '';
+                data.buttons_fontFamily = '';
+                data.buttons_borderColor = '';
+                data.navBar_backgroundColor = '';
+                data.navBar_color = '';
+                data.navBar_borderColor = '';
+                data.menuModal_backgroundColor = '';
+                data.addModal_backgroundColor = '';
+                break;
+            case 'theme3':
+                data.theme_name = "";
+                data.body_backgroundColor = '';
+                data.body_color = '';
+                data.body_fontFamily = '';
+                data.buttons_backgroundColor = '';
+                data.buttons_color = '';
+                data.buttons_fontFamily = '';
+                data.buttons_borderColor = '';
+                data.navBar_backgroundColor = '';
+                data.navBar_color = '';
+                data.navBar_borderColor = '';
+                data.menuModal_backgroundColor = '';
+                data.addModal_backgroundColor = '';
+                break;
+            case 'theme4':
+                data.theme_name = "";
+                data.body_backgroundColor = '';
+                data.body_color = '';
+                data.body_fontFamily = '';
+                data.buttons_backgroundColor = '';
+                data.buttons_color = '';
+                data.buttons_fontFamily = '';
+                data.buttons_borderColor = '';
+                data.navBar_backgroundColor = '';
+                data.navBar_color = '';
+                data.navBar_borderColor = '';
+                data.menuModal_backgroundColor = '';
+                data.addModal_backgroundColor = '';
+                break;
+        }
+        
+        Style.update(data, self.id);
+        $window.location.reload();
+    };
+   
+});
+
+
+bmPlannerControllers.controller('listsCtrl', function(Lists, $scope){
+    $scope.lists = Lists.lists;
+    var self = this;
+    $scope.addListMenu = false;
+    
+    self.listName="";
+    self.color="";
+
+    $scope.toggleAddList = function(){
+      $scope.addListMenu = !$scope.addListMenu;
+    };
+
 
     $scope.cancelAdd = function(){
         $scope.addListMenu = false;
-        $scope.listName="";
-        $scope.color="#000000";    
+        self.listName="";
+        self.color="0, 0, 102";    
         
     };
         
     $scope.add_list= function(){
         var data={};
-        data.name=$scope.listName;
-        data.color=$scope.color;
+        if(self.listName == "")
+        {
+            self.listName ="No Name";
+        }
+        data.name=self.listName;
+        data.color= self.color;
         Lists.addList(data);
-        $scope.listName="";
-        $scope.color="#000000";
+  
         $scope.addListMenu = false;
+        self.listName="";
+        self.color="0, 0, 102";
     };
-    
-    
-    
 });
 
+
 bmPlannerControllers.controller('listMenuCtrl', function(Lists, $scope){
-    var self= this;
     
-    self.showMenu = false;
+    $scope.showMenu = false;
+    var self = this;
     
     self.name = $scope.list.name;
     self.color = $scope.list.color;
-    
-    self.toggleMenu = function(event){
-      self.showMenu = !self.showMenu;
-      event.stopPropagation();
+    self.currentName;
+    self.currentColor;
+   
+    $scope.toggleMenu = function(){
+      $scope.showMenu = !$scope.showMenu;
     };
     
-    self.delete_list= function(listIndex){
+    $scope.delete_list= function(listIndex){
         //delete the list
+        $scope.showMenu = false;
         Lists.deleteList(listIndex);
     };
     
-     self.update = function(listIndex){
+     $scope.update = function(listIndex, name, color){
         var data={};
-        data.name =self.name;
+        data.name = self.name;
         data.color = self.color;
         
         Lists.updateList(data, listIndex);
-        
-        self.showMenu = false;
-        self.name = $scope.list.name;
-        self.color = $scope.list.color;
+        $scope.showMenu = false;
+        self.currentName = name;
+        self.currentColor = color;
+        self.name = self.currentName;
+        self.color = self.currentColor;
     };
     
-    self.cancel = function(){
-        self.showMenu = false;
-        self.name = $scope.list.name;
-        self.color = $scope.list.color;
+    $scope.cancel = function(){
+        $scope.showMenu = false;
+        self.name = self.currentName;
+        self.color = self.currentColor;
     };
-    
-    window.addEventListener('click', function() {
-        if (self.showMenu == true) {
-            self.showMenu = false;
-            self.name = $scope.list.name;
-            self.color = $scope.list.color;
-        // You should let angular know about the update
-        //so that it can refresh the UI
-            $scope.$apply();
-        }
-      
-    });
-    
-    
 });
 
 
@@ -111,6 +227,10 @@ bmPlannerControllers.controller('tasksCtrl', function(Lists, $scope){
     $scope.add_tasks= function(listIndex, taskName){
         
         var task={};
+        if(taskName == "")
+        {
+            taskName = "no name";
+        }
         task.name=taskName;
         task.completed=$scope.completed;
         
@@ -143,134 +263,121 @@ bmPlannerControllers.controller('tasksCtrl', function(Lists, $scope){
         else
             return "";
     };
-      
-      
 });
+
 
 
 bmPlannerControllers.controller('calendarsCtrl', function(Calendars, $scope){
         $scope.theCalendars=Calendars;
         
+        var self= this;
+        
         $scope.addCalMenu = false;
-        $scope.name="";
-        $scope.color="#000000";
+        self.name="";
+        self.color="0, 0, 102";
 
-        $scope.toggleAddCalendar = function(event){
+        $scope.toggleAddCalendar = function(){
           $scope.addCalMenu = !$scope.addCalMenu;
-          event.stopPropagation();
         };
-   
-        
-        window.addEventListener('click', function() {
-            if ($scope.addCalMenu == true) {
-                $scope.addCalMenu = false;
-                $scope.name="";
-                $scope.color="#000000";
-            // You should let angular know about the update
-            //so that it can refresh the UI
-                $scope.$apply();
-            }
-          
-        });
-        
         
         
         $scope.add = function(){
             var data = {};
-            data.name= $scope.name;
-            data.color=$scope.color;
-            
+            if(self.name == "")
+            {
+                self.name = "No Name";
+            }
+            data.name= self.name;
+            data.color= self.color;
             Calendars.addCalendar(data);
-            $scope.name="";
-            $scope.color="#000000";
+            
+            self.name="";
+            self.color="0, 0, 102";
             $scope.addCalMenu = false;
         };
         
         $scope.cancelAdd = function(){
             $scope.addCalMenu = false;
-            $scope.name="";
-            $scope.color="#000000";    
+            self.name="";
+            self.color="0, 0, 102";    
             
         };
-        
-      
 });
-
 
 
 bmPlannerControllers.controller("calendarMenuCtrl", function(Calendars, EventsCalendar, Events, $scope){
     
-    $scope.showVerifyDeletion = false;
-    $scope.showCalendarMenu = false;
-
-    
-    $scope.ToggleshowCalendarMenu = function(event){
-        $scope.nameToUpdate = $scope.calendar.name;
-        $scope.colorToUpdate = $scope.calendar.color;
-        $scope.showCalendarMenu = !$scope.showCalendarMenu;
-        event.stopPropagation();
+    var self=this;
+    self.showVerifyDeletion = false;
+    self.showCalendarMenu = false;
+  
+    self.ToggleshowCalendarMenu = function(){
+        self.nameToUpdate = $scope.calendar.name;
+        self.colorToUpdate = $scope.calendar.color;
+        self.showCalendarMenu = !self.showCalendarMenu;
     };
-       
     
-    window.addEventListener('click', function() {
-        if($scope.showCalendarMenu==true)
-        {
-            $scope.showCalendarMenu = false;
-            $scope.nameToUpdate = $scope.calendar.name;
-            $scope.colorToUpdate = $scope.calendar.color;
-            $scope.$apply();
-        }
-    });
-    
-    
-    $scope.update = function(id, name, color, index) {
+    self.update = function(id, name, color, index) {
         var data={};
         data.name= name;
         data.color=color;
         Calendars.updateCalendar(data, id, index);
-        $scope.nameToUpdate = $scope.calendar.name;
-        $scope.colorToUpdate = $scope.calendar.color;
-        $scope.showCalendarMenu = false;
+        self.nameToUpdate = $scope.calendar.name;
+        self.colorToUpdate = $scope.calendar.color;
+        self.showCalendarMenu = false;
 
     };
     
-    $scope.cancelUpdate = function() {
-        $scope.showCalendarMenu = false;
-        $scope.nameToUpdate = $scope.calendar.name;
-        $scope.colorToUpdate = $scope.calendar.color;
+    
+    self.cancelUpdate = function() {
+        self.showCalendarMenu = false;
+        self.nameToUpdate = $scope.calendar.name;
+        self.colorToUpdate = $scope.calendar.color;
     };   
         
-    $scope.delete = function(){
-            $scope.showCalendarMenu= false;
-            $scope.verifyDeletion = true;
+    self.delete = function(){
+            self.showCalendarMenu= false;
+            self.verifyDeletion = true;
     };
         
-    $scope.yesDelete = function(id, index){
-        
-        Events.deleteCalendarEvents(id).success(function(response){
-            Calendars.deleteCalendar(id, index);
+    self.yesDelete = function(id, index){
+        self.verifyDeletion = false;
+        Calendars.deleteCalendar(id, index).success(function(response){
             EventsCalendar.refreshCalendar();
         });
     };
     
-    $scope.noDelete = function(){
-        $scope.verifyDeletion= false;
-        $scope.showCalendarMenu = true;
+    self.noDelete = function(){
+        self.verifyDeletion= false;
     };
    
 });
   
-
-bmPlannerControllers.controller('addEventCtrl', function($scope, EventsCalendar, Calendars, Events, Repeats){
+/**************************************************************************EVENTS********************************************************/
+bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCalendar, Calendars, Events, Repeats){
 
     var self = this;
-    self.templateurl = '/html/addEventTemplate.html';
     self.createEvent = false;
+    self.calendars = [];
+    self.mainCalendar; 
     
+     $http.get('/calendars').success(function(response) {
+        for(var i=0; i < response.length; i++)
+        {
+            self.calendars.push({name:response[i].name, id: response[i].id});
+            if(self.calendars[i].id == Calendars.mainCalendar.id)
+            {
+                self.calendar_id = self.calendars[i];
+                self.mainCalendar = self.calendars[i];
+            }
+        }
+    });
+        
+
     self.name = "";
     self.startDate = moment();
-    self.endDate = moment();
-    self.repeatEndDate = moment();
+    self.endDate = moment().add(1, 'h');
+    self.repeatEndDate = moment().add(1, 'h');
     
     self.startHour = moment().format('hh');
     self.endHour = moment().add(1, 'h').format('hh');
@@ -282,30 +389,39 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, EventsCalendar,
     self.allDay=false;
     self.repeats=false;
     self.repeatOccurrence="";
-    self.repeatEndValue="";
+    self.repeatEndValue ="never";
     self.repeatsWeeklyMenu=false;
     
     
     self.repeatWeeklyOptions=[];
-    self.repeatWeeklyOptions[0]= {id:11, name: 'Sun', selected: false};
-    self.repeatWeeklyOptions[1]= {id:12, name: 'Mon', selected: false};
-    self.repeatWeeklyOptions[2]= {id:13, name: 'Tue', selected: false};
-    self.repeatWeeklyOptions[3]= {id:14, name: 'Wed', selected: false};
-    self.repeatWeeklyOptions[4]= {id:15, name: 'Thu', selected: false};
-    self.repeatWeeklyOptions[5]= {id:16, name: 'Fri', selected: false};
-    self.repeatWeeklyOptions[6]= {id:17, name: 'Sat', selected: false};
-
+    self.repeatWeeklyOptions[0]= {id:'0', value:0, name: 'Sun', selected: false};
+    self.repeatWeeklyOptions[1]= {id:'1', value:1, name: 'Mon', selected: false};
+    self.repeatWeeklyOptions[2]= {id:'2', value:2, name: 'Tue', selected: false};
+    self.repeatWeeklyOptions[3]= {id:'3', value:3, name: 'Wed', selected: false};
+    self.repeatWeeklyOptions[4]= {id:'4', value:4, name: 'Thu', selected: false};
+    self.repeatWeeklyOptions[5]= {id:'5', value:5, name: 'Fri', selected: false};
+    self.repeatWeeklyOptions[6]= {id:'6', value:6, name: 'Sat', selected: false};
+    
+    self.toggleRepeatWeeklyOption = function(optionId){
+        for(var i = 0; i<self.repeatWeeklyOptions.length; i++)
+        {
+            if(self.repeatWeeklyOptions[i].id == optionId)
+            {
+                self.repeatWeeklyOptions[i].selected = !self.repeatWeeklyOptions[i].selected;
+            }
+        }
+    };
+    
     
     self.toggleCreateEvent = function(){
        self.createEvent = !self.createEvent;
-       if(self.createEvent== true){
-           self.theCalendars = Calendars;
-            
+       if(self.createEvent == true){
+           
             self.name = "";
-            self.calendarId ="1"; //fix it to have the value of the main calendar. 
+            self.calendar_id = self.mainCalendar;
             self.startDate=moment();
-            self.endDate=moment();
-            self.repeatEndDate=moment();
+            self.endDate=moment().add(1, 'h');
+            self.repeatEndDate=moment().add(1, 'h');
             self.startHour = moment().format('hh');
             self.endHour = moment().add(1, 'h').format('hh');
             self.startMinutes ='00';
@@ -315,8 +431,9 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, EventsCalendar,
             self.allDay=false;
             self.repeats=false;
             self.repeatOccurrence="";
-            self.repeatEndValue="";
-            self.repeatsWeeklyMenu=false;
+            self.repeatEndValue="never";
+            self.repeatsWeeklyMenu = false;
+            self.intervalSelection = false;
             
             self.repeatWeeklyOptions[0].selected= false;
             self.repeatWeeklyOptions[1].selected= false;
@@ -336,7 +453,38 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, EventsCalendar,
       $scope.add.repeatEndDate = newValue.clone();
     });
     
-
+    self.validateStartTime = getValidateTime(self.startDate, self.startHour, self.startMinutes, self.startMeridiem);
+    $scope.$watchGroup(['add.startDate', 'add.startHour', 'add.startMinutes', 'add.startMeridiem'], function(newValues, oldValues, scope) {
+        self.validateStartTime = getValidateTime(newValues[0], newValues[1], newValues[2], newValues[3]);
+        self.validateEndTime = getValidateTime(self.endDate, self.endHour, self.endMinutes, self.endMeridiem);
+        self.validateRepeatDate = getValidateTime(self.repeatEndDate, self.startHour, self.startMinutes, self.startMeridiem);
+    });
+    
+    self.validateEndTime = getValidateTime(self.endDate, self.endHour, self.endMinutes, self.endMeridiem);
+    $scope.$watchGroup(['add.endDate', 'add.endHour', 'add.endMinutes', 'add.endMeridiem'], function(newValues, oldValues, scope) {
+        self.validateStartTime = getValidateTime(self.startDate, self.startHour, self.startMinutes, self.startMeridiem);
+        self.validateEndTime = getValidateTime(newValues[0], newValues[1], newValues[2], newValues[3]);
+    });
+    
+    self.validateRepeatDate = getValidateTime(self.repeatEndDate, self.startHour, self.startMinutes, self.startMeridiem);
+    $scope.$watchGroup(['add.repeatEndDate', 'add.startHour', 'add.startMinutes', 'add.startMeridiem'], function(newValues, oldValues, scope) {
+        self.validateRepeatDate = getValidateTime(newValues[0], newValues[1], newValues[2], newValues[3]);
+        self.validateStartTime = getValidateTime(self.startDate, self.startHour, self.startMinutes, self.startMeridiem);
+    });
+    
+    function getValidateTime(date, hour, minutes, meridiem){
+        
+        if((hour != '12') && meridiem == "pm")
+        {
+            hour = parseInt(hour, 10) + 12;
+        }
+        if(hour == '12' && meridiem == "am")
+        {
+            hour == '00';
+        }
+        var time = hour + ':' + minutes + ':' + '00';
+        return moment(date.format('YYYY-MM-DD') + " " + time);
+    }
     
     self.toggleAllDay=function(){
         self.allDay=!self.allDay;
@@ -344,28 +492,70 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, EventsCalendar,
     
     self.toggleRepeats=function(){
         self.repeats=!self.repeats;
-    };
-    
-    self.changeRepeatOptions=function(repeatOccurrence){
-        if(repeatOccurrence=="weekly"){
-            self.repeatsWeeklyMenu=true;
-        }else{
-            self.repeatsWeeklyMenu=false;
+        if(self.repeats == true)
+        {
+            self.repeatInterval = '1';
+            
+            var weekday = self.startDate.day();
+            for(var i = 0; i<self.repeatWeeklyOptions.length; i++)
+            {
+                if(self.repeatWeeklyOptions[i].id == weekday)
+                {
+                    self.repeatWeeklyOptions[i].selected = true;
+                }
+            }
         }
     };
     
-    self.addEvent=function(){
+   
     
+    self.changeRepeatOptions=function(repeatOccurrence){
+        switch(self.repeatOccurrence){
+            case "daily":
+                self.intervalSelection = false;
+                self.repeatsWeeklyMenu = false;
+                break;
+            case "weekday":
+                self.intervalSelection = false;
+                self.repeatsWeeklyMenu = false;
+                break;
+            case "weekly":
+                self.intervalSelection = true;
+                self.repeatsWeeklyMenu = true;
+                self.intervalWord = "weeks";
+                break;
+                
+            case "monthly":
+                self.intervalSelection = true;
+                self.intervalWord = "months";
+                self.repeatsWeeklyMenu = false;
+                break;
+                
+            case "yearly":
+                self.intervalSelection = true;
+                self.intervalWord = "years";
+                self.repeatsWeeklyMenu = false;
+                break;
+            default:
+                self.intervalSelection = false;
+                self.repeatsWeeklyMenu = false;
+                break;
+        }
+    };
+    
+    
+    self.addEvent=function(){
+        self.createEvent = false;
     //*******************************SET INFO TO BE SENT TO BACKEND*******************************************************
         var eventToSend={};
         eventToSend.name = self.name;
         
-        eventToSend.calendarId = self.calendarId;
+        eventToSend.calendar_id = self.calendar_id.id;
         
         eventToSend.startDate = self.startDate.format('YYYY-MM-DD');
         eventToSend.endDate= self.endDate.format('YYYY-MM-DD');
         
-        eventToSend.eventLength= self.endDate.diff(self.startDate, 'days') + 1;
+        eventToSend.eventLength = self.endDate.diff(self.startDate, 'days') + 1;
         
     
         eventToSend.startTimeDisplay = self.startHour +':'+self.startMinutes+ self.startMeridiem;
@@ -378,20 +568,19 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, EventsCalendar,
         eventToSend.repeats=self.repeats;
         eventToSend.allDay = self.allDay;
         
-    
         //***************************************send info to backend*****************************************
         Events.addEvent(eventToSend).success(function(response){
             
             if(response.repeats==true){
                 var repeatData={};
-                repeatData.eventId=response.eventId;
+                repeatData.event_id = response.id;
             
                 if(self.repeatEndValue=="never")
                 {
                     repeatData.neverEnds=true;
-                    repeatData.endRepetitionDate=null;
+                    repeatData.repeatEndDate=null;
                 }else{
-                    repeatData.endRepetitionDate = self.repeatEndDate.format('YYYY-MM-DD');
+                    repeatData.repeatEndDate = self.repeatEndDate.format('YYYY-MM-DD');
                     repeatData.neverEnds=false;
                 }
             
@@ -399,33 +588,42 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, EventsCalendar,
                     switch(self.repeatOccurrence){
                         case "daily": 
                             repeatData.repeatDaily="*";
-                            repeatData.repeatOccurrence="daily";
+                            repeatData.repeatOccurrence = "daily";
+                            repeatData.repeatInterval = null;
                            
                             break;
                         case "weekday":
                             repeatData.repeatWeekdays="*";
                             repeatData.repeatOccurrence="weekday";
+                            repeatData.repeatInterval = null;
                             break;
                             
                     case "weekly":
-                        repeatData.repeatWeekly= 1;
+                        repeatData.repeatWeekly = "";
                         repeatData.repeatOccurrence="weekly";
                         for(var i=0; i<self.repeatWeeklyOptions.length; i++){
                             if(self.repeatWeeklyOptions[i].selected == true){
-                                
-                               repeatData.repeatWeekly= (repeatData.repeatWeekly) * (self.repeatWeeklyOptions[i].id);
+                              repeatData.repeatWeekly = repeatData.repeatWeekly.concat(self.repeatWeeklyOptions[i].id);
                             }
+                        }
+                        //604800 is 7 days in seconds
+                        repeatData.repeatInterval = parseInt(self.repeatInterval, 10) * 604800;
+                        if(repeatData.repeatWeekly == "")
+                        {
+                            repeatData.repeatWeekly = self.startDate.day();
                         }
                         break;
                         
                     case "monthly":
                         repeatData.repeatOccurrence="monthly";
                         repeatData.repeatMonthly=self.startDate.date();
+                        repeatData.repeatInterval = parseInt(self.repeatInterval, 10);
                         break;
                         
                     case "yearly":
                         repeatData.repeatOccurrence="yearly";
                         repeatData.repeatYearly=(self.startDate.month() + 1) +"-"+ self.startDate.date();
+                        repeatData.repeatInterval = parseInt(self.repeatInterval, 10);
                         break;
                 
                 }
@@ -437,7 +635,6 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, EventsCalendar,
             }
             
             EventsCalendar.refreshCalendar();
-            self.createEvent = false;
                 
         });
         
@@ -445,16 +642,16 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, EventsCalendar,
     
     function getTimeToSend(hour, minute, meridiem)
     {
-        if(self.allDay ==true){
+        if(self.allDay == true){
             hour = '00';
             minute= '00';
         }
         else{
-            if(hour==12 && meridiem =='am')
+            if(hour == 12 && meridiem == 'am')
             {
                 hour='00';
             }
-            if(meridiem =='pm' && hour!=12)
+            if(meridiem =='pm' && hour != '12')
             {
                 hour = parseInt(hour, 10) + 12;
             }
@@ -467,336 +664,226 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, EventsCalendar,
 
 
 
-bmPlannerControllers.controller('eventCtrl', function($scope, $location, EventsCalendar, Repeats, Events, RepetitionUpdates){
+bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Calendars, Events, Repeats,  RepetitionUpdates){
+
+    $scope.todaysDate = $scope.day.itsDate;
+    //***************************************** EVENT STYLE**********************************************************************
     
-    $scope.showTime = true;
-    var day;
-     $scope.eventStyle=function(event, d){
-         
-         day = d.format('YYYY-MM-DD');
-        
-        if(event.eventLength >1  && event.startDay == day && event.allDay == false){
-            $scope.showTime= true;
-            return "allDayStyle";
-        }
-        if(event.eventLength > 1  && event.startDay != day){
-            $scope.showTime = false;
-            return "allDayStyle";
-        }
-        if(event.allDay == true)
+    $scope.getColor = function()
+    {
+        var color;
+        for(var i=0; i<Calendars.calendars.length; i++)
         {
-            $scope.showTime = false;
-            return "allDayStyle";
+            if($scope.event.calendar_id == Calendars.calendars[i].id)
+            {
+                color = Calendars.calendars[i].color;
+            }
         }
-        if(event.allDay == false){
-            return "notAllDayStyle";
+        return color;
+    };
+    
+    $scope.getBorderRad = function()
+    {
+        if($scope.event.eventLength == 1)
+        {
+            return '20px';
+        }else{
+            return '0px';
         }
     };
     
+    $scope.getLongWidth = function(){
+        if($scope.event.eventLength > (7-$scope.day.itsDate.day()))
+        {
+            return ((100 * (7 - $scope.day.itsDate.day()))- 1) + '%';
+        }
+        else{
+            return ((100 * $scope.event.eventLength) - 1) + '%';
+        }
+    };
     
-    
+    $scope.startDateDisplay = moment($scope.event.eventStartsOn).format('MMM DD, YYYY');
+    $scope.endDateDisplay = moment($scope.event.eventStartsOn).add($scope.event.eventLength - 1, 'd').format('MMM DD, YYYY');
+    //****************************************** MODAL VARIABLES ***************************************************************
     $scope.eventMenu = false; //Ask user if it wants to edit or delete
-    $scope.verifyDeletion = false; //Ask user if user is really sure to delete event
-    $scope.eventsRepQuestion = false; //If event repeats, ask user if it wants to delete only this ocurrence or all repetitions
-    $scope.kindOfEdition = false;
-    
+    $scope.verifyDeletion = false; //Ask user if they really want to delete event
+    $scope.verificationQuestion;
+    $scope.verificationAnswer;
+    $scope.eventsRepQuestion = false; //If event repeats, ask user if they want to delete only this ocurrence or all repetitions
+    $scope.kindOfEdition = false;//If event repeats, ask user if they want to edit all event occurrances or just this one
+   
     $scope.toggleEventMenu = function(){
-         $scope.eventMenu = !$scope.eventMenu;
+        $scope.eventMenu = !$scope.eventMenu;
+        $scope.startDateDisplay = moment($scope.event.eventStartsOn).format('MMM DD, YYYY');
+        $scope.endDateDisplay = moment($scope.event.eventStartsOn).add($scope.event.eventLength - 1, 'd').format('MMM DD, YYYY');
     };
-    
-    $scope.toggleVerifyDelition = function(){
-        $scope.verifyDeletion = !$scope.verifyDeletion;
+    $scope.toggleVerifyDeletion = function(){
+        $scope.verifyDeletion = !$scope.Deletion;
     };
-    
     $scope.toggleEventsRepQuestion = function(){
         $scope.eventsRepQuestion = !$scope.eventsRepQuestion;
         
     };
-    
     $scope.toggleKindOfEdition = function(){
         $scope.kindOfEdition = !$scope.kindOfEdition;
         
     };
+   
     
-    
-    $scope.deleteEvent = function(eventRepeats){
-        $scope.eventMenu = false; //Ask user if it wants to edit or delete
-        $scope.verifyDeletion = false; //Ask user if user is really sure to delete event
-        $scope.eventsRepQuestion = false; //If event repeats, ask user if it wants to delete only this ocurrence or all repetitions
-        $scope.kindOfEdition = false;
-        
-        if(eventRepeats == true)
+    //************************************************* DELETE EVENT*******************************************************************
+    $scope.deleteEvent = function(){
+        $scope.eventMenu = false;
+        if($scope.event.repeats == true)
         {
             $scope.eventsRepQuestion = true;
         }else{
+            $scope.verificationQuestion = "Are you sure you would like to delete this event";
             $scope.verifyDeletion = true;
+            $scope.verificationAnswer = "only";
         }
 
     };
     
     $scope.noDeleteEvent = function(){
-        $scope.eventMenu = true; //Ask user if it wants to edit or delete
-        $scope.verifyDeletion = false; //Ask user if user is really sure to delete event
-        $scope.eventsRepQuestion = false; //If event repeats, ask user if it wants to delete only this ocurrence or all repetitions
-        $scope.kindOfEdition = false;
+        $scope.verifyDeletion = false;
     };
     
-    $scope.yesDeleteEvent = function(eventId){
-        Events.deleteEvent(eventId).success(function(response){
-            EventsCalendar.refreshCalendar();
-            $scope.eventMenu = false; //Ask user if it wants to edit or delete
-            $scope.verifyDeletion = false; //Ask user if user is really sure to delete event
-            $scope.eventsRepQuestion = false; //If event repeats, ask user if it wants to delete only this ocurrence or all repetitions
-            $scope.kindOfEdition = false;
-        });
-    };
-    
-    $scope.deleteAllOcurrences = function(eventId){
+    $scope.yesDeleteEvent = function(){
+        $scope.verifyDeletion = false;
         
-        RepetitionUpdates.deleteUpdatedEvent(eventId).success(function(response){
-           Repeats.deleteRepeat(eventId).success(function(response){
-                 Events.deleteEvent(eventId).success(function(response){
-                    EventsCalendar.refreshCalendar();
-                    $scope.eventMenu = false; //Ask user if it wants to edit or delete
-                    $scope.verifyDeletion = false; //Ask user if user is really sure to delete event
-                    $scope.eventsRepQuestion = false; //If event repeats, ask user if it wants to delete only this ocurrence or all repetitions
-                    $scope.kindOfEdition = false;
-                });
-            });
-        });
+        switch($scope.verificationAnswer){
+            case 'only':
+                        Events.deleteEvent($scope.event.id).success(function(response){
+                            EventsCalendar.refreshCalendar();
+                            
+                        });
+                        break;
+                
+            case 'this':
+                        var data={};
+                        data.event_id = $scope.event.id;
+                        var day = $scope.todaysDate.clone();
+                
+                        if($scope.event.eventLength > 1)
+                        {
+                            var month = day.month();
+                            var eventStartsOn = moment($scope.event.eventStartsOn);
+                            var dateUpdate = eventStartsOn.month(month);
+                            data.dateOfChange = dateUpdate.format('YYYY-MM-DD');
+                            
+                        }else{
+                            data.dateOfChange = day.format('YYYY-MM-DD');
+                        }
         
-    };
-    
-    $scope.deleteOnlyThisOcurrance = function(eventId, eventLength, dateOfEvent, day){
-        
-        var data={};
-        data.event_id = eventId;
-        
-        if(eventLength>1)
-        {
-            var month = day.month();
-            var eventDate= moment(dateOfEvent);
-   
-            var dateUpdate = eventDate.month(month);
-            
-            data.dateOfChange = dateUpdate.format('YYYY-MM-DD');
-            
-        }else{
-            data.dateOfChange = day.format('YYYY-MM-DD');
+                        RepetitionUpdates.saveEventToChange(data).success(function(response){
+                            
+                            EventsCalendar.refreshCalendar();
+                        });
+                        break;
+                
+            case 'all':
+                        Events.deleteEvent($scope.event.id).success(function(response){
+                            EventsCalendar.refreshCalendar();
+                            
+                        });
+                break;
         }
-
         
-        RepetitionUpdates.saveEventToChange(data).success(function(response){
-            EventsCalendar.refreshCalendar();
-            $scope.eventMenu = false; //Ask user if it wants to edit or delete
-            $scope.verifyDeletion = false; //Ask user if user is really sure to delete event
-            $scope.eventsRepQuestion = false; //If event repeats, ask user if it wants to delete only this ocurrence or all repetitions
-            $scope.kindOfEdition = false; 
-        });
-
     };
     
-    $scope.editEvent = function(event, day){
-        if(event.repeats == true)
+    $scope.deleteAllOcurrences = function(){
+        $scope.eventsRepQuestion = false;
+        $scope.verificationQuestion = "Are you sure you would like to delete all events in this series?";
+        $scope.startDateDisplay = moment($scope.event.startDate).format('MMM DD, YYYY');
+        $scope.endDateDisplay = moment($scope.event.endDate).format('MMM DD, YYYY');
+        if($scope.event.neverEnds == false)
         {
-            $scope.eventMenu = false; //Ask user if it wants to edit or delete
-            $scope.verifyDeletion = false; //Ask user if user is really sure to delete event
-            $scope.eventsRepQuestion = false; //If event repeats, ask user if it wants to delete only this ocurrence or all repetitions
+            $scope.repeatEndDateDisplay =  moment($scope.event.repeatEndDate).format('MMM DD, YYYY');
+        }
+        else{
+            $scope.repeatEndDateDisplay = "never";
+        }
+       
+        $scope.verifyDeletion = true;
+        $scope.verificationAnswer = "all";
+    };
+    
+    $scope.deleteOnlyThisOcurrance = function(){
+        $scope.eventsRepQuestion = false;
+        $scope.verificationQuestion = "Are you sure you would like to delete this event in the series?";
+        $scope.verifyDeletion = true;
+        $scope.verificationAnswer = 'this';
+        $scope.startDateDisplay = moment($scope.event.eventStartsOn).format('MMM DD, YYYY');
+        $scope.endDateDisplay = moment($scope.event.eventStartsOn).add($scope.event.eventLength - 1, 'd').format('MMM DD, YYYY');
+    };
+    
+    
+    
+//*****************************************************EDIT EVENT****************************************************************
+
+    $scope.editEvent = function(event){
+        $scope.eventMenu = false;
+        if($scope.event.repeats == true)
+        {
             $scope.kindOfEdition = true;
         }
         else{
-            var editionType = null;
-            EventsCalendar.editEventInfo(event, day, editionType);
-            $location.path('editEvent');
+            $scope.editionType = 'one';
+            $scope.toggleEditModal(event, $scope.todaysDate, $scope.editionType);
         }
-        
     };
     
-    $scope.editThisEvent = function(event, day){
-        var editionType = "onlyThisEvent";
-        EventsCalendar.editEventInfo(event, day, editionType);
-        $scope.eventMenu = false; //Ask user if it wants to edit or delete
-            $scope.verifyDeletion = false; //Ask user if user is really sure to delete event
-            $scope.eventsRepQuestion = false; //If event repeats, ask user if it wants to delete only this ocurrence or all repetitions
-            $scope.kindOfEdition = true;
-        $location.path('editEvent');
+    $scope.editThisEvent = function(event){
+        $scope.kindOfEdition = false;
+        $scope.editionType = 'only_this';
+        $scope.toggleEditModal(event, $scope.todaysDate, $scope.editionType);
+    };
+    $scope.editAllEvents = function(event){
+        $scope.kindOfEdition = false;
+        $scope.editionType = 'all';
+        $scope.toggleEditModal(event, $scope.todaysDate, $scope.editionType);
     };
     
-     $scope.editAllEvents = function(event, day){
-        var editionType = 'allEvents';
-        EventsCalendar.editEventInfo(event, day, editionType);
-        $scope.eventMenu = false; //Ask user if it wants to edit or delete
-            $scope.verifyDeletion = false; //Ask user if user is really sure to delete event
-            $scope.eventsRepQuestion = false; //If event repeats, ask user if it wants to delete only this ocurrence or all repetitions
-            $scope.kindOfEdition = true;
-        $location.path('editEvent');
+    $scope.editFutureEvents = function(event){
+        $scope.kindOfEdition = false;
+        $scope.editionType = 'all_future';
+        $scope.toggleEditModal(event, $scope.todaysDate, $scope.editionType);
     };
-    
-     $scope.editFutureEvents = function(event, day){
-        var editionType = 'futureEvents';
-        EventsCalendar.editEventInfo(event, day, editionType);
-        $scope.eventMenu = false; //Ask user if it wants to edit or delete
-            $scope.verifyDeletion = false; //Ask user if user is really sure to delete event
-            $scope.eventsRepQuestion = false; //If event repeats, ask user if it wants to delete only this ocurrence or all repetitions
-            $scope.kindOfEdition = true;
-        $location.path('editEvent');
-    };
-    
     
 });
 
 
 
-bmPlannerControllers.controller('editEventCtrl', function($scope, $location, EventsCalendar, Repeats, Events, RepetitionUpdates, Calendars){
+bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar, Calendars, Events, Repeats,  RepetitionUpdates){
+    var self = this;
     
-    var self= this;
-    var event= EventsCalendar.event2update;
-    var day = EventsCalendar.dayOfUpdate;
+    $scope.urlTemplate ="/html/editEventTemplate.html";
+    self.editModal = false;
     
-    self.name = event.name;
-    self.theCalendars = [];
-    
-    console.log(event);
-    
-    for(var x=0; x<Calendars.calendars.length; x++)
-    {
-        
-      self.theCalendars.push({name:Calendars.calendars[x].name, id: Calendars.calendars[x].id});
-      
-      if(Calendars.calendars[x].id == event.calendarId)
-        {
-            self.calendarId = self.theCalendars[x];
-        }
-    }
-    
-    
-    self.repeats=event.repeats;
-    
+    self.name = "";
+    self.startDate = moment();
+    self.endDate = moment();
+    self.repeatEndDate = moment();
+    self.startHour = moment().format('hh');
+    self.endHour = moment().add(1, 'h').format('hh');
+    self.startMinutes ='00';
+    self.endMinutes ='00';
+    self.startMeridiem = moment().format('a');
+    self.endMeridiem = moment().add(1, 'h').format('a');
+    self.allDay=false;
+    self.repeats=false;
+    self.repeatOccurrence="";
+    self.repeatEndValue="never";
     self.repeatsWeeklyMenu=false;
     self.repeatWeeklyOptions=[];
-    self.repeatWeeklyOptions[0]= {id:11, name: 'Sun', selected: false};
-    self.repeatWeeklyOptions[1]= {id:12, name: 'Mon', selected: false};
-    self.repeatWeeklyOptions[2]= {id:13, name: 'Tue', selected: false};
-    self.repeatWeeklyOptions[3]= {id:14, name: 'Wed', selected: false};
-    self.repeatWeeklyOptions[4]= {id:15, name: 'Thu', selected: false};
-    self.repeatWeeklyOptions[5]= {id:16, name: 'Fri', selected: false};
-    self.repeatWeeklyOptions[6]= {id:17, name: 'Sat', selected: false};
-
-
-    switch(event.repeatOccurrence){
-        case "daily": 
-                self.repeatOccurrence = "daily";
-                break;
-                
-        case "weekday":
-                self.repeatOccurrence = "weekday";
-                break;
-                
-        case "weekly":
-           self.repeatOccurrence = "weekly";
-           self.repeatsWeekly=true;
-           for(var i=0; i<self.repeatWeeklyOptions.length; i++){
-                if(event.repeatWeekly % self.repeatWeeklyOptions[i].id == 0){
-                    self.repeatWeeklyOptions[i].selected = true;
-                }
-            }
-            break;
-            
-        case "monthly":
-            self.repeatOccurrence = "monthly";
-            break;
-            
-        case "yearly":
-            self.repeatOccurrence = "yearly";
-            break;
-            
-    }
+    self.repeatWeeklyOptions[0]= {id:'0', name: 'Sun', selected: false};
+    self.repeatWeeklyOptions[1]= {id:'1', name: 'Mon', selected: false};
+    self.repeatWeeklyOptions[2]= {id:'2', name: 'Tue', selected: false};
+    self.repeatWeeklyOptions[3]= {id:'3', name: 'Wed', selected: false};
+    self.repeatWeeklyOptions[4]= {id:'4', name: 'Thu', selected: false};
+    self.repeatWeeklyOptions[5]= {id:'5', name: 'Fri', selected: false};
+    self.repeatWeeklyOptions[6]= {id:'6', name: 'Sat', selected: false};
     
-    if(event.repeats == 0)
-    {
-        self.startDate = day;
-        self.endDate = self.startDate.clone();
-        self.repeatEndDate = self.startDate.clone();
-        
-        self.repeatOccurrence = "";
-        self.repeatEndValue = "never";
-    }else{
-        
-        switch(event.editionType){
-            case "onlyThisEvent":
-                if(event.eventLength == 1)
-                {
-                    self.startDate= day;
-                }
-                else{
-                    self.startDate= moment(event.startDay);
-                }
-                
-                self.endDate=self.startDate.clone().add(event.eventLength -1, 'd');
-                self.repeatEndDate = self.endDate.clone();
-                
-                self.repeats = false;
-                self.repeatOccurrence = "";
-                self.repeatEndValue = "never";
-                
-                break;
-                
-            case "allEvents":
-                self.startDate= moment(event.startDate);
-                self.endDate = moment(event.endDate);
-                self.repeatEndDate = moment(event.endRepetitionDate);
-                
-                if(event.neverEnds==false)
-                {
-                    self.repeatEndValue=self.repeatEndDate;
-                }else
-                {
-                     self.repeatEndValue="never";
-                }
-                break;
-            
-            case  "futureEvents":
-                
-                if(event.eventLength == 1)
-                {
-                    self.startDate= day;
-                }
-                else{
-                    self.startDate= moment(event.startDay);
-                }
-                
-                self.endDate=self.startDate.clone().add(event.eventLength -1, 'd');
-                self.repeatEndDate = moment(event.endRepetitionDate);
-                
-                if(event.neverEnds==false)
-                {
-                    self.repeatEndValue=self.repeatEndDate;
-                }else
-                {
-                     self.repeatEndValue="never";
-                }
-                
-                break;
-                
-        }
-       
-    }
-    
-   
-    var startTime = moment(self.startDate.format('YYYY-MM-DD') + " " + event.startTime);
-    var endTime = moment(self.endDate.format('YYYY-MM-DD') + " " + event.endTime);
-    self.allDay= event.allDay;
-
-    self.startHour = startTime.format('hh');
-    self.endHour = endTime.format('hh');
-    self.startMinutes = startTime.format('mm');
-    self.endMinutes = endTime.format('mm');
-    self.startMeridiem = startTime.format('a');
-    self.endMeridiem = endTime.format('a');
-    
-    
-    
-            
     
     self.toggleAllDay=function(){
         self.allDay=!self.allDay;
@@ -806,48 +893,250 @@ bmPlannerControllers.controller('editEventCtrl', function($scope, $location, Eve
         self.repeats=!self.repeats;
     };
     
+    self.intervalSelection = false;
+    self.repeatInterval = "1";
+    
     self.changeRepeatOptions=function(repeatOccurrence){
-        if(repeatOccurrence=="weekly"){
-            self.repeatsWeeklyMenu=true;
-        }else{
-            self.repeatsWeeklyMenu=false;
+        switch(self.repeatOccurrence){
+            case "daily":
+                self.intervalSelection = false;
+                self.repeatsWeeklyMenu=false;
+                break;
+            case "weekday":
+                self.intervalSelection = false;
+                self.repeatsWeeklyMenu=false;
+                break;
+            case "weekly":
+                self.intervalSelection = true;
+                self.repeatsWeeklyMenu = true;
+                self.intervalWord = "weeks";
+                break;
+                
+            case "monthly":
+                self.intervalSelection = true;
+                self.intervalWord = "months";
+                self.repeatsWeeklyMenu=false;
+                break;
+                
+            case "yearly":
+                self.intervalSelection = true;
+                self.intervalWord = "years";
+                self.repeatsWeeklyMenu=false;
+                break;
+            default:
+                self.intervalSelection = false;
+                self.repeatsWeeklyMenu=false;
+                break;
+        }
+    };
+    
+    self.toggleRepeatWeeklyOption = function(optionId){
+        for(var i = 0; i<self.repeatWeeklyOptions.length; i++)
+        {
+            if(self.repeatWeeklyOptions[i].id == optionId)
+            {
+                self.repeatWeeklyOptions[i].selected = !self.repeatWeeklyOptions[i].selected;
+            }
         }
     };
     
     
-    self.updateEvent = function(){
-        
-        if(event.repeats == false)
+    self.validateStartTime = getValidateTime(self.startDate, self.startHour, self.startMinutes, self.startMeridiem);
+    
+    $scope.$watchGroup(['edit.startDate', 'edit.startHour', 'edit.startMinutes', 'edit.startMeridiem'], function(newValues, oldValues, scope) {
+        self.validateStartTime = getValidateTime(newValues[0], newValues[1], newValues[2], newValues[3]);
+        self.validateEndTime = getValidateTime(self.endDate, self.endHour, self.endMinutes, self.endMeridiem);
+        self.validateRepeatDate = getValidateTime(self.repeatEndDate, self.startHour, self.startMinutes, self.startMeridiem);
+    
+        if(self.validateStartTime > self.validateRepeatDate)
         {
-            var eventToSend={};
-                eventToSend.name= self.name;
-                eventToSend.calendarId = self.calendarId.id;
-                eventToSend.startDate=self.startDate.format('YYYY-MM-DD');
-                eventToSend.endDate= self.endDate.format('YYYY-MM-DD');
-                eventToSend.eventLength= self.endDate.diff(self.startDate, 'days')+1;
-                
-                eventToSend.startTimeDisplay = self.startHour +':'+self.startMinutes+ self.startMeridiem;
-                eventToSend.endTimeDisplay = self.endHour +':' + self.endMinutes+ self.endMeridiem;
-                
-                eventToSend.startTime = getTimeToSend(self.startHour, self.startMinutes, self.startMeridiem);
-                eventToSend.endTime = getTimeToSend(self.endHour, self.endMinutes, self.endMeridiem);
-                
+            self.repeatEndDate = self.startDate.clone();
+        }
+    });
+    
+    self.validateEndTime = getValidateTime(self.endDate, self.endHour, self.endMinutes, self.endMeridiem);
+    $scope.$watchGroup(['edit.endDate', 'edit.endHour', 'edit.endMinutes', 'edit.endMeridiem'], function(newValues, oldValues, scope) {
+        self.validateStartTime = getValidateTime(self.startDate, self.startHour, self.startMinutes, self.startMeridiem);
+        self.validateEndTime = getValidateTime(newValues[0], newValues[1], newValues[2], newValues[3]);
+    });
+    
+    self.validateRepeatDate = getValidateTime(self.repeatEndDate, self.startHour, self.startMinutes, self.startMeridiem);
+    $scope.$watchGroup(['edit.repeatEndDate', 'edit.startHour', 'edit.startMinutes', 'edit.startMeridiem'], function(newValues, oldValues, scope) {
+        self.validateRepeatDate = getValidateTime(newValues[0], newValues[1], newValues[2], newValues[3]);
+        self.validateStartTime = getValidateTime(self.startDate, self.startHour, self.startMinutes, self.startMeridiem);
+    });
+    
+    function getValidateTime(date, hour, minutes, meridiem){
+        if((hour != '12') && meridiem == "pm")
+        {
+            hour = parseInt(hour, 10) + 12;
+        }
+        if(hour == '12' && meridiem == "am")
+        {
+            hour == '00';
+        }
+        var time = hour + ':' + minutes + ':' + '00';
+        return moment(date.format('YYYY-MM-DD') + " " + time);
+    }
+    
+    $scope.toggleEditModal = function(event, todaysDate, editionType){
+        self.editModal = !self.editModal;
+        self.todaysDate = todaysDate;
+        self.editionType = editionType;
+        self.event = event;
+        self.event_id = event.id;
         
-                eventToSend.repeats=self.repeats;
-                eventToSend.allDay = self.allDay;
+        if(self.editModal == true)
+        {
+            self.name = event.name;
+            self.calendars = [];
+            for(var i=0; i<Calendars.calendars.length; i++)
+            {
+                self.calendars.push({name:Calendars.calendars[i].name, id: Calendars.calendars[i].id});
+                if(Calendars.calendars[i].id == event.calendar_id)
+                {
+                    self.calendar_id = self.calendars[i];
+                }
+            }
+            
+            self.startDate = moment(event.startDate);
+            self.endDate = moment(event.endDate);
+            self.repeatEndDate = moment(event.startDate);
+            self.allDay = event.allDay;
+            var startTime = moment(self.startDate.format('YYYY-MM-DD') + " " + event.startTime);
+            var endTime = moment(self.endDate.format('YYYY-MM-DD') + " " + event.endTime);
+            self.startHour = startTime.format('hh');
+            self.endHour = endTime.format('hh');
+            self.startMinutes = startTime.format('mm');
+            self.endMinutes = endTime.format('mm');
+            self.startMeridiem = startTime.format('a');
+            self.endMeridiem = endTime.format('a');
+            self.repeats = event.repeats;
+            self.repeatInterval ="1";
+            self.repeatOccurrence = "";
+            self.repeatsWeeklyMenu = false;
+            for( i=0; i<self.repeatWeeklyOptions.length; i++){
+                self.repeatWeeklyOptions[i].selected = false;
+            }
+            
+            if(event.repeats == true)
+            {
+                if(event.neverEnds == false)
+                {
+                    self.repeatEndDate = moment(event.repeatEndDate);
+                    self.repeatEndValue = "date";
+                }else
+                {
+                    self.repeatEndValue = "never";
+                    self.repeatEndDate = self.startDate.clone();
+                }
                 
-                Events.updateEvent(eventToSend, event.id).success(function(response){
-                   if(response.repeats==true){
-                        var repeatData={};
-                        repeatData.eventId=response.id;
+                
+                
+                switch(event.repeatOccurrence){
+                    case "daily": 
+                            self.repeatOccurrence = "daily";
+                            break;
+                            
+                    case "weekday":
+                            self.repeatOccurrence = "weekday";
+                            break;
+                            
+                    case "weekly":
+                      self.repeatOccurrence = "weekly";
+                      self.repeatsWeeklyMenu=true;
+                      self.intervalSelection = true;
+                      self.intervalWord ="weeks";
+                      self.repeatInterval = (event.repeatInterval / 604800).toString();
+                       for( i=0; i<self.repeatWeeklyOptions.length; i++){
+                            if(self.event.repeatWeekly.indexOf(self.repeatWeeklyOptions[i].id) !== -1){
+                                self.repeatWeeklyOptions[i].selected = true;
+                            }
+                        }
+                        break;
+                        
+                    case "monthly":
+                        self.repeatOccurrence = "monthly";
+                        self.intervalSelection = true;
+                        self.repeatInterval = event.repeatInterval.toString();
+                        self.intervalWord ="months";
+                        break;
+                        
+                    case "yearly":
+                        self.repeatOccurrence = "yearly";
+                        self.intervalSelection = true;
+                        self.repeatInterval = event.repeatInterval.toString();
+                        self.intervalWord ="years";
+                        break;
+                }
+                
+            }
+            
+            switch (self.editionType) {
+                case 'only_this':
+                        self.startDate = self.todaysDate.clone();
+                        self.endDate = self.startDate.clone().add(event.eventLength -1, 'd');
+                        self.repeats = false;
+                        self.repeatEndDate = self.todaysDate.clone();
+                        self.repeatOccurrence = "";
+                        self.repeatInterval ="1";
+                        self.repeatEndValue = "never";
+                    break;
                     
+                
+                case 'all_future':
+                        self.startDate = self.todaysDate.clone();
+                        self.endDate = self.startDate.clone().add(event.eventLength -1, 'd');
                         if(self.repeatEndValue=="never")
                         {
-                            repeatData.neverEnds=true;
-                            repeatData.endRepetitionDate="";
+                            self.repeatEndDate = self.startDate.clone();
+                        }
+                    break;
+                    
+                default:
+                    break;
+            }
+            
+            
+        }
+
+    };
+
+    self.cancelEdition = function(){
+        self.editModal = false;
+    };
+    
+    self.submitEdition = function(){
+        var editData = {};
+        editData.name = self.name;
+        editData.calendar_id = self.calendar_id.id;
+        editData.startDate=self.startDate.format('YYYY-MM-DD');
+        editData.endDate= self.endDate.format('YYYY-MM-DD');
+        editData.eventLength= self.endDate.diff(self.startDate, 'days')+1;
+        editData.startTimeDisplay = self.startHour +':'+self.startMinutes+ self.startMeridiem;
+        editData.endTimeDisplay = self.endHour +':' + self.endMinutes+ self.endMeridiem;
+        editData.startTime = getTimeToSend(self.startHour, self.startMinutes, self.startMeridiem);
+        editData.endTime = getTimeToSend(self.endHour, self.endMinutes, self.endMeridiem);
+        editData.repeats = self.repeats;
+        editData.allDay = self.allDay;
+       
+        
+        switch(self.editionType)
+        {
+            case 'one':
+                
+                Events.updateEvent(editData, self.event_id).success(function(response){
+                    if(response.repeats == true){
+                        var repeatData = {};
+                        repeatData.event_id = response.id;
+                    
+                        if(self.repeatEndValue == "never")
+                        {
+                            repeatData.neverEnds = true;
+                            repeatData.repeatEndDate = "";
                         }else{
-                            repeatData.endRepetitionDate = self.repeatEndDate.format('YYYY-MM-DD');
-                            repeatData.neverEnds=false;
+                            repeatData.repeatEndDate = self.repeatEndDate.format('YYYY-MM-DD');
+                            repeatData.neverEnds = false;
                         }
                     
                             
@@ -855,174 +1144,84 @@ bmPlannerControllers.controller('editEventCtrl', function($scope, $location, Eve
                                 case "daily": 
                                     repeatData.repeatDaily="*";
                                     repeatData.repeatOccurrence="daily";
+                                    repeatData.repeatInterval = null;
                                    
                                     break;
                                 case "weekday":
                                     repeatData.repeatWeekdays="*";
                                     repeatData.repeatOccurrence="weekday";
+                                    repeatData.repeatInterval = null;
                                     break;
                                     
                             case "weekly":
-                                repeatData.repeatWeekly= 1;
+                                repeatData.repeatWeekly = "";
                                 repeatData.repeatOccurrence="weekly";
                                 for(var i=0; i<self.repeatWeeklyOptions.length; i++){
                                     if(self.repeatWeeklyOptions[i].selected == true){
                                         
-                                       repeatData.repeatWeekly= (repeatData.repeatWeekly) * (self.repeatWeeklyOptions[i].id);
+                                      repeatData.repeatWeekly = repeatData.repeatWeekly.concat(self.repeatWeeklyOptions[i].id);
                                     }
                                 }
+                                if(repeatData.repeatWeekly == "")
+                                {
+                                    repeatData.repeatWeekly = self.startDate.day();
+                                }
+                                repeatData.repeatInterval = parseInt(self.repeatInterval, 10) * 604800;
                                 break;
                                 
                             case "monthly":
                                 repeatData.repeatOccurrence="monthly";
                                 repeatData.repeatMonthly=self.startDate.date();
+                                repeatData.repeatInterval = parseInt(self.repeatInterval, 10);
                                 break;
                                 
                             case "yearly":
                                 repeatData.repeatOccurrence="yearly";
                                 repeatData.repeatYearly=(self.startDate.month() + 1) +"-"+ self.startDate.date();
+                                repeatData.repeatInterval = parseInt(self.repeatInterval, 10);
                                 break;
                         
                         }
+                        
                         Repeats.addRepeat(repeatData).success(function(response){
+                            EventsCalendar.refreshCalendar();
+                            
                         });
-                    }
-                    
-                      $location.path('/');
-                      EventsCalendar.refreshCalendar();
-                });
-            
- 
-        }else{
-            
-            switch(event.editionType){
-                case 'onlyThisEvent':
-                    
-                    var data={};
-                    data.event_id = event.id;
-                    
-                    if(event.eventLength>1)
-                    {
-                        var month = day.month();
-                        var eventDate= moment(self.startDate);
-               
-                        var dateUpdate = eventDate.month(month);
-                        
-                        data.dateOfChange = dateUpdate.format('YYYY-MM-DD');
-                        
                     }else{
-                        data.dateOfChange = day.format('YYYY-MM-DD');
-                    }
-            
-                    
-                    RepetitionUpdates.saveEventToChange(data).success(function(response){
-                        var eventToSend={};
-                        eventToSend.name= self.name;
-                        eventToSend.calendarId = self.calendarId.id;
-                        eventToSend.startDate=self.startDate.format('YYYY-MM-DD');
-                        eventToSend.endDate= self.endDate.format('YYYY-MM-DD');
-                        eventToSend.eventLength= self.endDate.diff(self.startDate, 'days')+1;
-                        
-                        eventToSend.startTimeDisplay = self.startHour +':'+self.startMinutes+ self.startMeridiem;
-                        eventToSend.endTimeDisplay = self.endHour +':' + self.endMinutes+ self.endMeridiem;
-                        
-                        eventToSend.startTime = getTimeToSend(self.startHour, self.startMinutes, self.startMeridiem);
-                        eventToSend.endTime = getTimeToSend(self.endHour, self.endMinutes, self.endMeridiem);
-                        
-                        
-                        eventToSend.repeats=false;
-                        eventToSend.allDay = self.allDay;
-                        
-                        Events.addEvent(eventToSend).success(function(response){
-                            if(response.repeats==true){
-                                var repeatData={};
-                                repeatData.eventId=response.eventId;
-                            
-                                if(self.repeatEndValue=="never")
-                                {
-                                    repeatData.neverEnds=true;
-                                    repeatData.endRepetitionDate="";
-                                }else{
-                                    repeatData.endRepetitionDate = self.repeatEndDate.format('YYYY-MM-DD');
-                                    repeatData.neverEnds=false;
-                                }
-                            
-                                    
-                                switch(self.repeatOccurrence){
-                                        case "daily": 
-                                            repeatData.repeatDaily="*";
-                                            repeatData.repeatOccurrence="daily";
-                                           
-                                            break;
-                                        case "weekday":
-                                            repeatData.repeatWeekdays="*";
-                                            repeatData.repeatOccurrence="weekday";
-                                            break;
-                                            
-                                    case "weekly":
-                                        repeatData.repeatWeekly= 1;
-                                        repeatData.repeatOccurrence="weekly";
-                                        for(var i=0; i<self.repeatWeeklyOptions.length; i++){
-                                            if(self.repeatWeeklyOptions[i].selected == true){
-                                                
-                                               repeatData.repeatWeekly= (repeatData.repeatWeekly) * (self.repeatWeeklyOptions[i].id);
-                                            }
-                                        }
-                                        break;
-                                        
-                                    case "monthly":
-                                        repeatData.repeatOccurrence="monthly";
-                                        repeatData.repeatMonthly=self.startDate.date();
-                                        break;
-                                        
-                                    case "yearly":
-                                        repeatData.repeatOccurrence="yearly";
-                                        repeatData.repeatYearly=(self.startDate.month() + 1) +"-"+ self.startDate.date();
-                                        break;
-                                
-                                }
-                            
-                            }
-                        });
-                        
-                        $location.path('/');
                         EventsCalendar.refreshCalendar();
-                    });
-
-                    break;
+                    }
+                });
+                   
+                break;
+            
+            case 'only_this':
+                var data={};
+                data.event_id = self.event_id;
+                
+                var day = self.todaysDate.clone();  
+                if(self.event.eventLength > 1)
+                {
+                    var month = day.month();
+                    var eventDate = moment(self.startDate);
+                    var dateUpdate = eventDate.month(month);
+                    data.dateOfChange = dateUpdate.format('YYYY-MM-DD');
                     
-                case 'allEvents':
-                    
-                    var eventToSend={};
-                    eventToSend.name= self.name;
-                    eventToSend.calendarId = self.calendarId.id;
-                    eventToSend.startDate=event.startDate;
-                    eventToSend.endDate= event.endDate;
-                    eventToSend.eventLength= self.endDate.diff(self.startDate, 'days')+1;
-                    
-                    eventToSend.startTimeDisplay = self.startHour +':'+self.startMinutes+ self.startMeridiem;
-                    eventToSend.endTimeDisplay = self.endHour +':' + self.endMinutes+ self.endMeridiem;
-                    
-                    eventToSend.startTime = getTimeToSend(self.startHour, self.startMinutes, self.startMeridiem);
-                    eventToSend.endTime = getTimeToSend(self.endHour, self.endMinutes, self.endMeridiem);
-                    
-                    
-                    eventToSend.repeats=self.repeats;
-                    eventToSend.allDay = self.allDay;
-                        
-                    Events.updateEvent(eventToSend, event.id).success(function(response){
-                       
-                        if(response.repeats==true){
-                            var repeatData={};
-                            repeatData.eventId=response.eventId;
-                        
-                            if(self.repeatEndValue=="never")
+                }else{
+                    data.dateOfChange = day.format('YYYY-MM-DD');
+                }
+                
+                RepetitionUpdates.saveEventToChange(data).success(function(response){
+                    Events.addEvent(editData).success(function(response){
+                        if(response.repeats == true){
+                            var repeatData = {};
+                            repeatData.event_id = response.id;
+                            if(self.repeatEndValue == "never")
                             {
-                                repeatData.neverEnds=true;
-                                repeatData.endRepetitionDate="";
+                                repeatData.neverEnds = true;
+                                repeatData.repeatEndDate = "";
                             }else{
-                                repeatData.endRepetitionDate = self.repeatEndDate.format('YYYY-MM-DD');
-                                repeatData.neverEnds=false;
+                                repeatData.repeatEndDate = self.repeatEndDate.format('YYYY-MM-DD');
+                                repeatData.neverEnds = false;
                             }
                         
                                 
@@ -1030,157 +1229,221 @@ bmPlannerControllers.controller('editEventCtrl', function($scope, $location, Eve
                                     case "daily": 
                                         repeatData.repeatDaily="*";
                                         repeatData.repeatOccurrence="daily";
+                                        repeatData.repeatInterval = null;
                                        
                                         break;
                                     case "weekday":
                                         repeatData.repeatWeekdays="*";
                                         repeatData.repeatOccurrence="weekday";
+                                        repeatData.repeatInterval = null;
                                         break;
                                         
                                 case "weekly":
-                                    repeatData.repeatWeekly= 1;
+                                    repeatData.repeatWeekly = "";
                                     repeatData.repeatOccurrence="weekly";
+                                    repeatData.repeatInterval = parseInt(self.repeatInterval, 10) * 604800;
                                     for(var i=0; i<self.repeatWeeklyOptions.length; i++){
                                         if(self.repeatWeeklyOptions[i].selected == true){
                                             
-                                           repeatData.repeatWeekly= (repeatData.repeatWeekly) * (self.repeatWeeklyOptions[i].id);
+                                          repeatData.repeatWeekly = repeatData.repeatWeekly.concat(self.repeatWeeklyOptions[i].id);
                                         }
+                                    }
+                                    if(repeatData.repeatWeekly == "")
+                                    {
+                                        repeatData.repeatWeekly = self.startDate.day();
                                     }
                                     break;
                                     
                                 case "monthly":
                                     repeatData.repeatOccurrence="monthly";
                                     repeatData.repeatMonthly=self.startDate.date();
+                                    repeatData.repeatInterval = parseInt(self.repeatInterval, 10);
                                     break;
                                     
                                 case "yearly":
                                     repeatData.repeatOccurrence="yearly";
                                     repeatData.repeatYearly=(self.startDate.month() + 1) +"-"+ self.startDate.date();
+                                    repeatData.repeatInterval = parseInt(self.repeatInterval, 10);
                                     break;
                             
                             }
                             
-                            Repeats.updateRepeat(repeatData, event.id).success(function(response){
+                            Repeats.addRepeat(repeatData).success(function(response){
+                                EventsCalendar.refreshCalendar();
+                                
                             });
-                            
                         }else{
-                            RepetitionUpdates.deleteUpdatedEvent(event.id).success(function(response){
-                                Repeats.deleteRepeat(event.id).success(function(response){
-                                
-                                });
-                            });
-                        }
-                            $location.path('/');
                             EventsCalendar.refreshCalendar();
+                        }
                     });
-                    break;
+                });
                 
-                case  'futureEvents':
-                    
-                    var data={};
-                    data.eventId= event.id;
-                    if(event.eventLength>1)
-                    {
-                        var month = day.month();
-                        var eventDate= moment(self.startDate);
-               
-                        var newEndDate = eventDate.month(month);
-                        newEndDate = newEndDate.subtract(1, 'd');
-                        
-                        data.newEndDate = newEndDate.format('YYYY-MM-DD');
-                        
-                    }else{
-                        data.newEndDate = day.clone().subtract(1, 'd').format('YYYY-MM-DD');
-                    }
-                    
-                    Repeats.changeEndDate(data, event.id).success(function(response){
-                        var eventToSend={};
-                        eventToSend.name= self.name;
-                        eventToSend.calendarId = self.calendarId.id;
-                        eventToSend.startDate=self.startDate.format('YYYY-MM-DD');
-                        eventToSend.endDate= self.endDate.format('YYYY-MM-DD');
-                        eventToSend.eventLength= self.endDate.diff(self.startDate, 'days')+1;
-                        
-                        eventToSend.startTimeDisplay = self.startHour +':'+self.startMinutes+ self.startMeridiem;
-                        eventToSend.endTimeDisplay = self.endHour +':' + self.endMinutes+ self.endMeridiem;
-                        
-                        eventToSend.startTime = getTimeToSend(self.startHour, self.startMinutes, self.startMeridiem);
-                        eventToSend.endTime = getTimeToSend(self.endHour, self.endMinutes, self.endMeridiem);
-                        
-                        
-                        eventToSend.repeats=self.repeats;
-                        eventToSend.allDay = self.allDay;
-                        
-                        Events.addEvent(eventToSend).success(function(response){
-                            if(response.repeats==true){
-                                var repeatData={};
-                                repeatData.eventId=response.eventId;
+                break;
                             
-                                if(self.repeatEndValue=="never")
-                                {
-                                    repeatData.neverEnds=true;
-                                    repeatData.endRepetitionDate="";
-                                }else{
-                                    repeatData.endRepetitionDate = self.repeatEndDate.format('YYYY-MM-DD');
-                                    repeatData.neverEnds=false;
-                                }
+            case 'all':
+                Events.updateEvent(editData, self.event_id).success(function(response){
+                    if(response.repeats == true){
+                        var repeatData = {};
+                        
+                        console.log(self.repeatEndValue);
+                        if(self.repeatEndValue == "never")
+                        {
+                            repeatData.neverEnds = true;
+                            repeatData.repeatEndDate = "";
+                        }else{
+                            repeatData.repeatEndDate = self.repeatEndDate.format('YYYY-MM-DD');
+                            repeatData.neverEnds = false;
+                        }
+                    
                             
+                        switch(self.repeatOccurrence){
+                                case "daily": 
+                                    repeatData.repeatDaily="*";
+                                    repeatData.repeatOccurrence="daily";
+                                    repeatData.repeatInterval = null;
+                                   
+                                    break;
+                                case "weekday":
+                                    repeatData.repeatWeekdays="*";
+                                    repeatData.repeatOccurrence="weekday";
+                                    repeatData.repeatInterval = null;
+                                    break;
                                     
-                                switch(self.repeatOccurrence){
-                                        case "daily": 
-                                            repeatData.repeatDaily="*";
-                                            repeatData.repeatOccurrence="daily";
-                                           
-                                            break;
-                                        case "weekday":
-                                            repeatData.repeatWeekdays="*";
-                                            repeatData.repeatOccurrence="weekday";
-                                            break;
-                                            
-                                    case "weekly":
-                                        repeatData.repeatWeekly= 1;
-                                        repeatData.repeatOccurrence="weekly";
-                                        for(var i=0; i<self.repeatWeeklyOptions.length; i++){
-                                            if(self.repeatWeeklyOptions[i].selected == true){
-                                                
-                                               repeatData.repeatWeekly= (repeatData.repeatWeekly) * (self.repeatWeeklyOptions[i].id);
-                                            }
-                                        }
-                                        break;
+                            case "weekly":
+                                repeatData.repeatWeekly = "";
+                                repeatData.repeatOccurrence="weekly";
+                                repeatData.repeatInterval = parseInt(self.repeatInterval, 10) * 604800;
+                                for(var i=0; i<self.repeatWeeklyOptions.length; i++){
+                                    if(self.repeatWeeklyOptions[i].selected == true){
                                         
-                                    case "monthly":
-                                        repeatData.repeatOccurrence="monthly";
-                                        repeatData.repeatMonthly=self.startDate.date();
-                                        break;
-                                        
-                                    case "yearly":
-                                        repeatData.repeatOccurrence="yearly";
-                                        repeatData.repeatYearly=(self.startDate.month() + 1) +"-"+ self.startDate.date();
-                                        break;
-                                
+                                      repeatData.repeatWeekly = repeatData.repeatWeekly.concat(self.repeatWeeklyOptions[i].id);
+                                    }
                                 }
-                            
-                                Repeats.addRepeat(repeatData).success(function(response){
-                                });
-                            }
-                            
-                            $location.path('/');
+                                if(repeatData.repeatWeekly == "")
+                                {
+                                    repeatData.repeatWeekly = self.startDate.day();
+                                }
+                                break;
+                                
+                            case "monthly":
+                                repeatData.repeatOccurrence="monthly";
+                                repeatData.repeatMonthly=self.startDate.date();
+                                repeatData.repeatInterval = parseInt(self.repeatInterval, 10);
+                                break;
+                                
+                            case "yearly":
+                                repeatData.repeatOccurrence="yearly";
+                                repeatData.repeatYearly=(self.startDate.month() + 1) +"-"+ self.startDate.date();
+                                repeatData.repeatInterval = parseInt(self.repeatInterval, 10);
+                                break;
+                        
+                        }
+                        
+                        Repeats.updateRepeat(repeatData, self.event_id).success(function(response){
                             EventsCalendar.refreshCalendar();
                             
                         });
-                        
-                        
-                    });
+                    }else{
+                        RepetitionUpdates.deleteExclusions(self.event_id).success(function(response){
+                            Repeats.deleteRepeat(self.event_id).success(function(response){
+                                EventsCalendar.refreshCalendar();
+                            });
+                        });
+                    }
+                });
+                
+                break;
+                            
+            case 'all_future':
+                
+                var data={};
+                data.event_id= self.event_id;
+                var day = self.todaysDate.clone();
+                if(self.event.eventLength > 1)
+                {
+                    var month = day.month();
+                    var eventDate= self.startDate.clone();
+                    var newEndDate = eventDate.month(month);
+                    newEndDate = newEndDate.subtract(1, 'd');
+                    data.newRepeatEndDate = newEndDate.format('YYYY-MM-DD');
                     
-                    break;
+                }else{
+                    data.newRepeatEndDate = day.clone().subtract(1, 'd').format('YYYY-MM-DD');
+                }
+                
+                Repeats.changeEndDate(data).success(function(response){
                     
-            }
-           
+                    Events.addEvent(editData, self.event_id).success(function(response){
+                        if(response.repeats == true){
+                            var repeatData = {};
+                            repeatData.event_id = response.id;
+                        
+                            if(self.repeatEndValue == "never")
+                            {
+                                repeatData.neverEnds = true;
+                                repeatData.repeatEndDate = "";
+                            }else{
+                                repeatData.repeatEndDate = self.repeatEndDate.format('YYYY-MM-DD');
+                                repeatData.neverEnds = false;
+                            }
+                        
+                                
+                            switch(self.repeatOccurrence){
+                                    case "daily": 
+                                        repeatData.repeatDaily="*";
+                                        repeatData.repeatOccurrence="daily";
+                                        repeatData.repeatInterval = null;
+                                       
+                                        break;
+                                    case "weekday":
+                                        repeatData.repeatWeekdays="*";
+                                        repeatData.repeatOccurrence="weekday";
+                                        repeatData.repeatInterval = null;
+                                        break;
+                                        
+                                case "weekly":
+                                    repeatData.repeatWeekly = "";
+                                    repeatData.repeatOccurrence="weekly";
+                                    repeatData.repeatInterval = parseInt(self.repeatInterval, 10) * 604800;
+                                    for(var i=0; i<self.repeatWeeklyOptions.length; i++){
+                                        if(self.repeatWeeklyOptions[i].selected == true){
+                                            
+                                          repeatData.repeatWeekly = repeatData.repeatWeekly.concat(self.repeatWeeklyOptions[i].id);
+                                        }
+                                    }
+                                    if(repeatData.repeatWeekly == "")
+                                    {
+                                        repeatData.repeatWeekly = self.startDate.day();
+                                    }
+                                    break;
+                                    
+                                case "monthly":
+                                    repeatData.repeatOccurrence="monthly";
+                                    repeatData.repeatMonthly=self.startDate.date();
+                                    repeatData.repeatInterval = parseInt(self.repeatInterval, 10);
+                                    break;
+                                    
+                                case "yearly":
+                                    repeatData.repeatOccurrence="yearly";
+                                    repeatData.repeatYearly=(self.startDate.month() + 1) +"-"+ self.startDate.date();
+                                    repeatData.repeatInterval = parseInt(self.repeatInterval, 10);
+                                    break;
+                            
+                            }
+                            
+                            Repeats.addRepeat(repeatData).success(function(response){
+                                EventsCalendar.refreshCalendar();
+                            });
+                        }else{
+                            EventsCalendar.refreshCalendar();
+                        }
+                    });   
+                });
+                break;
         }
-        
+        self.editModal = false;
         
     };
-    
     
     function getTimeToSend(hour, minute, meridiem)
     {
@@ -1202,9 +1465,9 @@ bmPlannerControllers.controller('editEventCtrl', function($scope, $location, Eve
         return hour + ':' + minute + ':' + '00';
     }
     
-
-    
 });
+
+
 
 
 
@@ -1233,10 +1496,9 @@ bmPlannerControllers.controller('mainCalViewCtrl', function($scope, EventsCalend
 });
 
 
-bmPlannerControllers.controller("monthlyViewCtrl", function($scope, EventsCalendar, Calendars){
+bmPlannerControllers.controller("monthlyViewCtrl", function($scope, EventsCalendar){
     var self= this;
     self.calendar = EventsCalendar;
-    self.allCalendars = Calendars;
     
     self.previous = function(){
         EventsCalendar.previous();
@@ -1245,21 +1507,7 @@ bmPlannerControllers.controller("monthlyViewCtrl", function($scope, EventsCalend
    self.next = function(){
         EventsCalendar.next();
     };
-    
-    self.getColor = function(event)
-    { 
-        var color;
-        for(var i=0; i<self.allCalendars.calendars.length; i++)
-        {
-            if(event.calendarId == self.allCalendars.calendars[i].id)
-            {
-                color = self.allCalendars.calendars[i].color;
-            }
-        }
-        return color;
-    };
-    
-    
+
 });
 
 
@@ -1275,17 +1523,11 @@ bmPlannerControllers.controller("weekViewCtrl", function($scope, EventsCalendar,
 
     $scope.next = function(){
         EventsCalendar.nextWeek();
-        
-        $scope.goToAnchor($scope.x);
     };
     
     $scope.previous = function(){
         EventsCalendar.previousWeek();
-        
-        $scope.goToAnchor($scope.x);
     };
-    
-    
     
     $scope.hours=[];
     $scope.hours.push({name:"12am", time_minutes: time_minutes, id:id});
@@ -1350,8 +1592,6 @@ bmPlannerControllers.controller("weekEventsCtrl", function($scope,  EventsCalend
     self.getColor = function(calendarId)
     {
         var color;
-        
-      
             for(var i=0; i<self.theCalendars.calendars.length; i++)
             {
                 if(calendarId == self.theCalendars.calendars[i].id)
@@ -1360,7 +1600,6 @@ bmPlannerControllers.controller("weekEventsCtrl", function($scope,  EventsCalend
                 }
             }
             return color;
-       
     };
     
     self.getWidth = function( hourindex, event)
@@ -1398,14 +1637,11 @@ bmPlannerControllers.controller("weekEventsCtrl", function($scope,  EventsCalend
                 }
          
             }
-          
-            return  (width + 5) +'%';
+            return  (width -1) +'%';
         }
-        
         else{
-             return  (event.width + 5) + '%';
+             return  (event.width -1) + '%';
         }
-       
     };
     
     
@@ -1416,13 +1652,9 @@ bmPlannerControllers.controller("weekEventsCtrl", function($scope,  EventsCalend
             return 0;
         }
         else{
-            return ( (event.width * eventindex) - 5 ) + '%';
+            return ( (event.width * eventindex)) + '%';
         }
     };
-    
-    
-    
-
 });
 
 

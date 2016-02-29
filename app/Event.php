@@ -7,5 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
 
-    protected $fillable=[ 'calendarId', 'name', 'startDate', 'endDate', 'eventLength', 'startTime', 'endTime', 'startTimeDisplay', 'endTimeDisplay', 'allDay', 'repeats'];
+    protected $fillable=['user_id', 'calendar_id', 'name', 'startDate', 'endDate', 'eventLength', 'startTime', 'endTime', 'startTimeDisplay', 'endTimeDisplay', 'allDay', 'repeats'];
+    
+    
+    public function users(){
+        return $this->belongsTo('App\User');
+    }
+    
+    
+    
+    public function repetitions(){
+        return $this->hasOne('App\Repetition', 'event_id');
+    }
 }
