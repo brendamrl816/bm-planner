@@ -20,14 +20,11 @@ class CreateStylesTable extends Migration
             $table->string('body_color');
             $table->string('body_fontFamily');
             $table->string('buttons_backgroundColor');
-            $table->string('buttons_color');
-            $table->string('buttons_fontFamily');
             $table->string('buttons_borderColor');
             $table->string('navBar_backgroundColor');
             $table->string('navBar_color');
             $table->string('navBar_borderColor');
             $table->string('menuModal_backgroundColor');
-            $table->string('addModal_backgroundColor');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });

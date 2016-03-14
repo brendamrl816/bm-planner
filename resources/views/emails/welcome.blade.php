@@ -7,12 +7,14 @@
 <h2>Welcome {!! $name !!}</h2>
 
 <div>
-   Thank you for registering with us.  
-   Get organized right away by creating todo lists and events coming up.
-   If you have any questions or concerns please email us from the contact Us section.
+   <p>Thank you for registering with us.</p>
+   <p>
+      Get organized right away by creating lists and events.
+   If you have any questions or concerns do not hesitate to contact us.
+   </p>
    
-   Sincerely yours,
-   CompactDue.
+   <div> Sincerely yours,</div>
+   <div>gmPlanner.</div>
 </div>
 
 </body>

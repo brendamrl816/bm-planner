@@ -7,11 +7,13 @@
 <h2>Temporary Password</h2>
 
 <div>
-   Your temporary password is {!! $new_password!!}
-   Please reset your password under Settings as soon as possible!
+   <p>Your temporary password is {!! $new_password!!}</p>
+   <p>To reset your password click on the Settings tab, which will redirect you to the  Settings page.
+   It is recommended you change your password right away for security purposes.</p>
    
-   greetings,
-   CompactDue.
+   <div> Sincerely yours,</div>
+    <div>gmPlanner.</div>
+   
 </div>
 
 </body>

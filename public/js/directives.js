@@ -3,7 +3,7 @@
 var bmPlannerDirectives = angular.module('bmDirectives', []);
 
 
-bmPlannerDirectives.directive('minicalendars', function(){
+bmPlannerDirectives.directive('minicalendars', function(Style){
     return {
         
         restrict: 'E',
@@ -105,6 +105,10 @@ bmPlannerDirectives.directive('minicalendars', function(){
             {
                 return date.hour(0).minute(0).second(0).millisecond(0);
             }
+            
+            $scope.miniStyle = function(){
+                return {'font-size':'12px', 'font-weight':'bold', 'width':'22px', 'color':Style.css.navBar_borderColor};
+            };
         },
         
     };
@@ -341,14 +345,20 @@ bmPlannerDirectives.directive('addeventmodal', function(Style) {
                     var height = windowHeight * .60;
                      if(top + height > windowHeight)
                      {
-                        top =  window.scrollY + (window.innerHeight * .20);
+                        top =  window.scrollY + (window.innerHeight * .15);
+                     }
+                     else{
+                         top = attrs.top;
                      }
                      
                      var windowWidth = window.innerWidth + window.scrollX;
-                     var width = windowWidth * .50;
-                     if(left + width > windowWidth)
+                     var width = windowWidth * .30;
+                     if(window.scrollX == 0){
+                         left = attrs.left;
+                     }
+                     else if(left + width > windowWidth)
                      {
-                         left = window.scrollX + (window.innerWidth * .20);
+                         left = window.scrollX + (window.innerWidth * .10);
                      }
                     scope.style.top = top;
                     scope.style.left = left;
@@ -364,9 +374,7 @@ bmPlannerDirectives.directive('addeventmodal', function(Style) {
                scope.style.height = attrs.height;
             }
            
-            scope.style.background = Style.css.body_backgroundColor;
             scope.style.color = Style.css.body_color;
-            scope.style.border ='3px solid' + Style.css.buttons_borderColor + '';
             
            scope.hide_modal = function() {
                scope.showmodal = false;
@@ -633,137 +641,19 @@ bmPlannerDirectives.directive('menumodal', function() {
                      var left = event.pageX;
                      
                      var windowHeight = window.innerHeight + window.scrollY;
-                     if(top + 240 > windowHeight)
-                     {
-                         var diff = (top + 240) - windowHeight;
-                         top = top - diff;
-                     }
-                     
-                     if(left + 220 > window.innerWidth)
-                     {
-                         var diff = (left + 220) - window.innerWidth;
-                         left = left - diff;
-                     }
-                     
-                     scope.style.width = '220px';
-                     scope.style.height = '240px';
-                     scope.style.top = top;
-                     scope.style.left = left;
-                   
-                }
-            });
-            
-            element.bind('mouseenter', function(){
-              scope.isActive = true;
-              });
-            
-             element.bind('mouseleave', function(){
-              scope.isActive = false;
-            });
-            
-            element.bind('click', function(){
-                if(scope.isActive == true){
-                    window.removeEventListener('click', eventfunction); 
-                }
-            });
-            
-            function eventfunction()
-            {
-                if(scope.question == true)
-                {
-                    scope.question = false;
-                    scope.$apply();
-                }
-            }
-                
-                window.addEventListener('click', function(){
-                    if(scope.isClickable == false)
-                    {
-                        window.addEventListener('click', eventfunction);
-                    }
-                    
-                });
-                
-          
-       },
-       
-       template: '<div class="createQuestionModal" ng-show="question">\
-                    <div  class="createQuestionModal-style" ng-style="style">\
-                        <div class="createQuestionModal-style-content" ng-transclude></div>\
-                    </div>\
-                  </div>'
-   }; 
-});
-
-bmPlannerDirectives.directive('addtoolsmodal', function() {
-   
-   return {
-       
-       restrict: 'E',
-       
-       scope: {
-           question: '='
-       },
-       
-       replace: true, //replace with the template below
-       
-       transclude: true, //to insert answer from user to directive
-       
-       link: function(scope, element, attrs){
-          
-           scope.style={};
-           
-           
-           
-           scope.hideQuestionModal = function() {
-               scope.question = false;
-           };
-           
-           
-            scope.$watch('question', function(value){
-              scope.isClickable = !value;
-                if(value == false)
-                {
-                  window.removeEventListener('click', eventfunction); 
-                }
-                if(value == true)
-                {
-                     angular.element(document.body).append(element);
-                     
-                     scope.toolDarkStyle = function(){
-                        var D = document;
-                        var height = Math.max(
-                            D.body.scrollHeight, D.documentElement.scrollHeight,
-                            D.body.offsetHeight, D.documentElement.offsetHeight,
-                            D.body.clientHeight, D.documentElement.clientHeight
-                        );
-                        
-                        var width = Math.max(
-                            D.body.scrollWidth, D.documentElement.scrollWidth,
-                            D.body.offsetWidth, D.documentElement.offsetWidth,
-                            D.body.clientWidth, D.documentElement.clientWidth
-                        );
-                        
-                        return {'height': height, 'width': width};
-                    };
-                     
-                     var top =  event.pageY;
-                     var left = event.pageX;
-                     
-                     var windowHeight = window.innerHeight + window.scrollY;
                      if(top + 250 > windowHeight)
                      {
                          var diff = (top + 250) - windowHeight;
                          top = top - diff;
                      }
                      
-                     if(left + 350 > window.innerWidth)
+                     if(left + 220 > window.innerWidth)
                      {
-                         var diff = (left + 350) - window.innerWidth;
+                         var diff = (left + 200) - window.innerWidth;
                          left = left - diff;
                      }
                      
-                     scope.style.width = '350px';
+                     scope.style.width = '200px';
                      scope.style.height = '250px';
                      scope.style.top = top;
                      scope.style.left = left;
@@ -801,11 +691,11 @@ bmPlannerDirectives.directive('addtoolsmodal', function() {
                     }
                     
                 });
+                
           
        },
        
        template: '<div class="createQuestionModal" ng-show="question">\
-                    <div class="createQuestionModal-tooldark" ng-style=toolDarkStyle() ng-click="hideQuestionModal()"></div>\
                     <div  class="createQuestionModal-style" ng-style="style">\
                         <div class="createQuestionModal-style-content" ng-transclude></div>\
                     </div>\
@@ -813,4 +703,26 @@ bmPlannerDirectives.directive('addtoolsmodal', function() {
    }; 
 });
 
+
+bmPlannerDirectives.directive('navlink',  function($http) {
+   
+   return {
+       
+       link: function(scope, element, attrs){
+            var path = attrs.href;
+        
+            scope.location = window.location;
+            scope.$watch('window.location', function() {
+                if (path === window.location.pathname) {
+                    $http.get('/styles').success(function(response){
+                        element.css({backgroundColor: response.navBar_borderColor, height:'60px', top:'-15px', 'box-shadow': '0px -1px 10px -2px rgba(0,0,0,0.4)', 'z-index':2});
+                    });
+                }else {
+                    element.css({backgroundColor: '', 'z-index':'none'});
+                }
+            });
+            
+       }
+   }; 
+});
 

@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UserEditRequest;
 use App\Style;
 use App\User;
+use App\Calendar;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -32,10 +34,8 @@ class SettingsController extends Controller
        $user_id = Auth::id();
        $styles = Style::where('user_id', '=', $user_id)->first();
         
-        return $styles;
+        return Response::json($styles);
     }
-    
-   
     
 
     /**
@@ -49,7 +49,7 @@ class SettingsController extends Controller
         $id = Auth::id();
         $user = User::whereId($id)->firstOrFail();
         
-        return view('userSettings', compact('user'));
+        return view('settings.userSettings', compact('user'));
     }
     
     public function update_user(UserEditRequest $request){
@@ -58,6 +58,10 @@ class SettingsController extends Controller
         
         if (Auth::attempt(array('id' => $id, 'password' => $password)))
         {
+            $name = DB::table('users')->where('id', '=', $id)->value('first_name');
+            
+            $newName = $request->get('first_name');
+            
             $user = User::whereId($id)->firstOrFail();
             $user->first_name = $request->get('first_name');
             $user->last_name = $request->get('last_name');
@@ -68,7 +72,12 @@ class SettingsController extends Controller
                     $user->password = Hash::make($new_password);
                 }
             $user->save();
-           
+                                      
+            $calendar = Calendar::where('user_id', '=', $id)->firstOrFail();
+            $calendar->name = $request->get('first_name');
+            $calendar->save();
+            
+            
             return redirect(action('SettingsController@edit'))->with('status', 'Your account settings have been updated!');  
         }
         else{
@@ -92,15 +101,11 @@ class SettingsController extends Controller
         $body_color = Input::get('body_color');
         $body_fontFamily = Input::get('body_fontFamily');
         $buttons_backgroundColor=Input::get('buttons_backgroundColor');
-        $buttons_color=Input::get('buttons_color');
-        $buttons_fontFamily=Input::get('buttons_fontFamily');
         $buttons_borderColor=Input::get('buttons_borderColor');
         $navBar_backgroundColor=Input::get('navBar_backgroundColor');
         $navBar_color=Input::get('navBar_color');
         $navBar_borderColor=Input::get('navBar_borderColor');
         $menuModal_backgroundColor=Input::get('menuModal_backgroundColor');
-        $addModal_backgroundColor=Input::get('addModal_backgroundColor');
-        
         
         DB::table('styles')->where('id', '=', $id)->update([
             'theme_name'=> $theme_name,
@@ -108,18 +113,23 @@ class SettingsController extends Controller
             'body_color'=>  $body_color,
             'body_fontFamily'=> $body_fontFamily,
             'buttons_backgroundColor'=>$buttons_backgroundColor,
-            'buttons_color'=> $buttons_color,
-            'buttons_fontFamily'=>  $buttons_fontFamily,
             'buttons_borderColor'=> $buttons_borderColor,
             'navBar_backgroundColor'=> $navBar_backgroundColor,
             'navBar_color'=> $navBar_color,
             'navBar_borderColor'=> $navBar_borderColor,
-            'menuModal_backgroundColor'=> $menuModal_backgroundColor,
-            'addModal_backgroundColor'=> $addModal_backgroundColor
+            'menuModal_backgroundColor'=> $menuModal_backgroundColor
         ]);
         
         
         return Response::json(array('success'=>true));
+    }
+    
+    
+    
+    public function deleteAccount(){
+        $id = Auth::id();
+        $user = User::whereId($id)->firstOrFail();
+        return view('settings.deleteAccount', compact('user'));
     }
 
     /**
@@ -128,8 +138,38 @@ class SettingsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroyAccount(Request $request)
+    {   $id = Auth::id();
+        $password = $request->get('password');
+        
+        if (Auth::attempt(array('id' => $id, 'password' => $password)))
+        {
+            $email = DB::table('users')->where('id', '=', $id)->value('email');
+            $name = DB::table('users')->where('id', '=', $id)->value('first_name');
+            $event_id = DB::table('events')->where('user_id', '=', $id)->value('id');
+            $list_id = DB::table('todolists')->where('user_id', '=', $id)->value('id');
+            
+            DB::table('repetitions')->where('event_id', '=', $event_id)->delete();
+            DB::table('eventchanges')->where('event_id', '=', $event_id)->delete();        
+            DB::table('events')->where('user_id', '=', $id)->delete();
+            DB::table('tasks')->where('todolist_id', '=', $list_id)->delete();
+            DB::table('todolists')->where('user_id', '=', $id)->delete();
+            DB::table('role_user')->where('user_id', '=', $id)->delete();
+            
+            DB::table('users')->where('id', '=', $id)->delete();
+            $emaildata = array(
+                    'name'=>$name);
+            
+            Mail::send('emails.deleteAccount', $emaildata, function($message) use($email){
+            $message->from('gmplanner.team@gmail.com', 'gmPlanner');
+            $message->to($email)->subject('Account');
+            });
+           
+            return redirect(action('PagesController@home'));  
+        }
+        else{
+            return redirect(action('SettingsController@deleteAccount'))->with('status', 'your password is invalid!');
+        }
+        
     }
 }

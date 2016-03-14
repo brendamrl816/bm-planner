@@ -6,13 +6,14 @@ use App\User;
 use App\Calendar;
 use App\Style;
 use Validator;
+use App\Todolist;
 
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Support\Facades\Mail;
-
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -88,20 +89,23 @@ class AuthController extends Controller
             'user_id'=>$user_id
         ));
         
+        Todolist::create(array(
+            'name'=> 'To Do',
+            'color'=>'0, 0, 102',
+            'user_id'=>$user_id
+        ));
+        
         Style::create(array(
             'theme_name'=>'default',
-            'body_backgroundColor'=> '#f8f3f3',
-            'body_color'=> '#4a2d10',
+            'body_backgroundColor'=> '#ffffff',
+            'body_color'=> '#000000',
             'body_fontFamily'=> 'Arial, Helvetica, sans-serif',
-            'buttons_backgroundColor'=>'#82adbb',
-            'buttons_color'=> '#7b7474',
-            'buttons_fontFamily'=> 'Arial, Helvetica, sans-serif',
-            'buttons_borderColor'=> '#7b7474',
-            'navBar_backgroundColor'=> '#7b7b4e',
+            'buttons_backgroundColor'=>'#04D9A4',
+            'buttons_borderColor'=> '#bcfec5',
+            'navBar_backgroundColor'=> '#4dffa6',
             'navBar_color'=> '#ffffff',
-            'navBar_borderColor'=> '#c3c3a2',
-            'menuModal_backgroundColor'=> '#fff9e5',
-            'addModal_backgroundColor'=> '#e8dee0',
+            'navBar_borderColor'=> '#1f9378',
+            'menuModal_backgroundColor'=> '#E1F5E6',
             'user_id'=> $user_id,
         ));
             
@@ -109,10 +113,11 @@ class AuthController extends Controller
                     'name'=>$name);
        
         Mail::send('emails.welcome', $emaildata, function($message) use($email){
-        $message->from('compactdue@gmail.com', 'CompactDue');
-        $message->to($email)->subject('Welcome to CompactDue');
+        $message->from('gmplanner.team@gmail.com', 'gmPlanner');
+        $message->to($email)->subject('Welcome to gmPlanner');
         });
         
         return $user;
     }
+    
 }

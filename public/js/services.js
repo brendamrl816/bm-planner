@@ -430,6 +430,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                     
                     var indexes = [];//to order long events
                     
+                    
                     for (var n = 0; n < response[i]['events'].length; n++) {
                         
                         if (response[i]['events'][n]['event'].eventLength == 1 && response[i]['events'][n]['event'].allDay == false) {
@@ -447,22 +448,29 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                             }
                             if(endMinutes !== 0)
                             {
-                                rowspan = rowspan + 1;
                                 if (endMinutes >= 30) {
                                     endMinutes = endMinutes - 30;
                                 }
                             }
-    
                             var x2;
                             
+                            
                             for (var x = 0; x < days[i].hours.length; x++) {
+                                
+                                var the_indexes=[];
+                                
+                                for(var z=0; z<days[i].hours[x].events.length; z++)
+                                {
+                                    the_indexes.push(days[i].hours[x].events[z].index);
+                                }
+                                the_indexes.sort(function(a,b){return a-b});
                                 
                                 if((days[i].hours[x].time_minutes <= start) && (days[i].hours[x].time_minutes + 30 > start))
                                 {
                                     
                                     x2 = x;
                                     var tds = days[i].hours[x].tds;
-                                    var j = x + rowspan; 
+                                    var j = x + rowspan - 1; 
                                    
                                    while(x <= j)
                                     {
@@ -472,16 +480,41 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                         {
                                             tds = days[i].hours[x].tds;
                                         }
-                                        
                                        x++;
                                     }
                                     x = x2;
-                                    var m = 1;
+                                    var m;
                                     
-                                   while(days[i].hours[x].events[days[i].hours[x].events.length - m] != undefined && days[i].hours[x].events[days[i].hours[x].events.length - m].index == tds - m)
-                                   {
-                                        m++;
-                                   }
+                                    var check = 0;
+                                    var inside = false;
+                                    do{
+                                        inside = false;
+                                        for(k=0; k<the_indexes.length; k++){
+                                            if(the_indexes[k]==check){
+                                                inside = true;
+                                            }
+                                        }
+                                        if(inside == false){
+                                            m = check;
+                                            the_indexes.push(m);
+                                        }else{
+                                            check++;
+                                        }
+                                    }while(inside == true && check < the_indexes.length);
+                                    
+                                    if(inside == true)
+                                    {
+                                        m = the_indexes[the_indexes.length - 1] + 1;
+                                        the_indexes.push(m);
+                                    }
+                                    
+                                    the_indexes.sort(function(a,b){return a-b});
+                                 
+                                //   while(days[i].hours[x].events[days[i].hours[x].events.length - m] != undefined && days[i].hours[x].events[days[i].hours[x].events.length - m].index == tds - m)
+                                //   {
+                                //         m++;
+                                //   }
+                                   
                                    
                                     while(x <= j)
                                     {
@@ -512,7 +545,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                             eventStartsOn: response[i]['events'][n]['eventStartsOn'],
                                             //frontend
                                             rowspan: rowspan,
-                                            index: tds - m,
+                                            index: m,
                                             top: 0,
                                             left:'0%',
                                             width:'100%',

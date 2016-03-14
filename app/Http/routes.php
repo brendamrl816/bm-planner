@@ -17,14 +17,14 @@ Route::get('denied', 'PagesController@deny');
 
 Route::get('settings', 'SettingsController@edit');
 Route::post('settings','SettingsController@update_user');
+Route::get('deleteAccount', 'SettingsController@deleteAccount');
+Route::post('delete', 'SettingsController@destroyAccount');
 
 
 Route::get('contactUs', 'EmailsController@contact_us');
 Route::get('forgotPassword', 'EmailsController@forgot_pass');
 Route::post('send', 'EmailsController@send');
 Route::post('sendTemp', 'EmailsController@tempPass');
-
-
 
 //register routes
 Route::get('users/register', 'Auth\AuthController@getRegister'); //displays the registration form

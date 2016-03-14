@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 </head>
 <body>
-<h2>Email from {!! $user !!}</h2>
+<h2>Email from {!! $user !!}. User id: {!!$user_id!!}</h2>
 <h3>Subject: {!! $subject !!}</h3>
 
 <div>

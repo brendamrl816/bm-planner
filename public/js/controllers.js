@@ -6,29 +6,48 @@ var bmPlannerControllers = angular.module('bmPlannerControllers', []);
 bmPlannerControllers.controller('styleCtrl', function(Style, $scope){
     var self = this;
     self.theStyle = Style;
-
+    
+    
+    
     self.bodyStyle = function(){
-        return {'height':'85%', 'background-color':self.theStyle.css.body_backgroundColor, 'color':self.theStyle.css.body_color,
+        return {'background-color':self.theStyle.css.body_backgroundColor, 'color':'black',
             'font-family':self.theStyle.css.body_fontFamily};
     };
     
+    self.modernBackground = function(){
+        return {'width':'98.4%', 'color':'white', 'background-color':self.theStyle.css.buttons_backgroundColor, 'border-radius':'4px', 'text-shadow':' 1px 1px 1px #000000', 'padding':'3px'};
+    };
+    
     self.buttonStyle = function(){
-        return {'background-color':self.theStyle.css.buttons_backgroundColor, 'color':self.theStyle.css.buttons_color,
-                'font-family':self.theStyle.css.buttons_fontFamily, 'font-weight':'bold', 'border':'2px solid', 'border-color':self.theStyle.css.buttons_borderColor};
+        return {'background-color':self.theStyle.css.buttons_backgroundColor, 'color':self.theStyle.css.body_color,
+                'font-family':self.theStyle.css.body_fontFamily, 'border-radius':'10px', 'box-shadow':'1px 1px 1px' + self.theStyle.css.navBar_borderColor, 'padding-left':'5px', 'padding-top':'2px', 'min-height':'20px'};
     };
     
     self.modalbuttonStyle = function(){
-        return {'background-color':self.theStyle.css.buttons_backgroundColor, 'color':self.theStyle.css.buttons_color,
-                'font-family':self.theStyle.css.buttons_fontFamily, 'border':'1px solid', 'border-color':self.theStyle.css.buttons_borderColor};
+        return {'text-decoration':'none', 'color':'black', 'background-color': 'white', 'border-radius':'4px', 'border':'none', 'box-shadow':'1px 1px 1px 1px' + self.theStyle.css.buttons_borderColor, 
+        'min-height':'20px', 'padding':'4px', 'cursor':'hand'};  
+    };
+    
+    
+    self.inputStyle = function(){
+        return {'background-color':self.theStyle.css.body_backgroundColor, 'color':'gray', 'min-height':'35px',
+                'border-radius':'4px', 'border':'0px solid',  'font-family':self.theStyle.css.body_fontFamily, 'padding':'5px'};
+    };
+    
+    self.textInputStyle = function(){
+        return {'background-color':self.theStyle.css.body_backgroundColor, 'color':'gray',
+                'border-radius':'4px', 'min-height':'25px', 'border':'1px solid' + self.theStyle.css.buttons_borderColor,  'font-family':self.theStyle.css.body_fontFamily, 'padding':'5px'};
     };
     
     self.menuModalStyle = function(){
-        return {'background-color':self.theStyle.css.body_backgroundColor, 'color':self.theStyle.css.body_color, 'border':'2px solid', 'border-color':self.theStyle.css.buttons_borderColor};  
-    };
-    self.addModalStyle = function(){
-        return {'background-color':self.theStyle.css.body_backgroundColor, 'color':self.theStyle.css.body_color, 'border':'4px solid', 'border-color':self.theStyle.css.buttons_borderColor};  
+        return {'background-color':self.theStyle.css.menuModal_backgroundColor};  
     };
     
+    self.addModalStyle = function(){
+        return {'background-color':self.theStyle.css.menuModal_backgroundColor, 'color':'black'};  
+    };
+    
+  
     self.statusStyle = function(){
         return {'background-color':self.theStyle.css.buttons_backgroundColor, 'color':self.theStyle.css.body_color, 'border':'1px solid', 'border-color':self.theStyle.css.buttons_borderColor,
             'font-weight':'bold', 'font-style':'italic'};
@@ -40,14 +59,20 @@ bmPlannerControllers.controller('styleCtrl', function(Style, $scope){
     };
     
     self.navbarStyle = function(){
-        return {'text-decoration':'none', 'color':self.theStyle.css.navBar_color, 'background-color':self.theStyle.css.navBar_backgroundColor, 'border':'2px solid', 'border-color':self.theStyle.css.navBar_borderColor, 'font-weight':'bold'};  
+        return {'color':self.theStyle.css.body_backgroundColor, 'background-color': self.theStyle.css.navBar_backgroundColor,
+        'text-shadow':' 1px 1px 1px #000000', 'font-size':'90%', 'font-weight':'bold', 'padding':'5px'};  
+    };
+    
+    self.navBar = function(){
+        return {'color':self.theStyle.css.navBar_color, 'background-color': self.theStyle.css.buttons_backgroundColor, 'text-shadow':' 1px 1px 1px #000000', 'font-weight':'bold'};  
     };
 });
 
 bmPlannerControllers.controller('editStyleCtrl', function(Style, $window, $scope, $http){
     var self = this;
-    self.chosenTheme;
     
+    self.chosenTheme;
+
     $http.get('/styles').success(function(response){
         self.chosenTheme = response.theme_name;
         self.id = response.id;
@@ -62,75 +87,60 @@ bmPlannerControllers.controller('editStyleCtrl', function(Style, $window, $scope
                 data.body_backgroundColor = '#ffffff';
                 data.body_color = '#000000';
                 data.body_fontFamily = 'Arial, Helvetica, sans-serif';
-                data.buttons_backgroundColor = '#f2f2f2';
-                data.buttons_color = '#000000';
-                data.buttons_fontFamily = 'Arial, Helvetica, sans-serif';
-                data.buttons_borderColor = '#992700';
-                data.navBar_backgroundColor = '#000000';
+                data.buttons_backgroundColor = '#04D9A4';
+                data.buttons_borderColor = '#bcfec5';
+                data.navBar_backgroundColor = '#4dffa6';
                 data.navBar_color = '#ffffff';
-                data.navBar_borderColor = '#992700';
-                data.menuModal_backgroundColor = '#d9d9d9';
-                data.addModal_backgroundColor = '#ffffe5';
+                data.navBar_borderColor = '#1f9378';
+                data.menuModal_backgroundColor = '#E1F5E6';
                 break;
             case 'theme1':
                 data.theme_name = "theme1";
-                data.body_backgroundColor = '#f2ffe5';
-                data.body_color = '#996633';
-                data.body_fontFamily = '';
-                data.buttons_backgroundColor = '';
-                data.buttons_color = '';
-                data.buttons_fontFamily = '';
-                data.buttons_borderColor = '';
-                data.navBar_backgroundColor = '';
-                data.navBar_color = '';
-                data.navBar_borderColor = '';
-                data.menuModal_backgroundColor = '';
-                data.addModal_backgroundColor = '';
+                data.body_backgroundColor = '#ffffff';
+                data.body_color = '#663300';
+                data.body_fontFamily = 'Arial, Helvetica, sans-serif';
+                data.buttons_backgroundColor = '#ffe4db';
+                data.buttons_borderColor = '#ffcccc';
+                data.navBar_backgroundColor = '#feada5';
+                data.navBar_color = '#ffffff';
+                data.navBar_borderColor = '#ff9f80';
+                data.menuModal_backgroundColor = '#fff5f0';
                 break;
             case 'theme2':
-                data.theme_name = "";
-                data.body_backgroundColor = '';
-                data.body_color = '';
-                data.body_fontFamily = '';
-                data.buttons_backgroundColor = '';
-                data.buttons_color = '';
-                data.buttons_fontFamily = '';
-                data.buttons_borderColor = '';
-                data.navBar_backgroundColor = '';
-                data.navBar_color = '';
-                data.navBar_borderColor = '';
-                data.menuModal_backgroundColor = '';
-                data.addModal_backgroundColor = '';
+                data.theme_name = "theme2";
+                data.body_backgroundColor = '#ffffff';
+                data.body_color = '#000000';
+                data.body_fontFamily = 'Arial, Helvetica, sans-serif';
+                data.buttons_backgroundColor = '#00ace6';
+                data.buttons_borderColor = '#007399';
+                data.navBar_backgroundColor = '#004d99';
+                data.navBar_color = '#ffffff';
+                data.navBar_borderColor = '#003366';
+                data.menuModal_backgroundColor = '#e6f3ff';
                 break;
             case 'theme3':
-                data.theme_name = "";
-                data.body_backgroundColor = '';
-                data.body_color = '';
-                data.body_fontFamily = '';
-                data.buttons_backgroundColor = '';
-                data.buttons_color = '';
-                data.buttons_fontFamily = '';
-                data.buttons_borderColor = '';
-                data.navBar_backgroundColor = '';
-                data.navBar_color = '';
-                data.navBar_borderColor = '';
-                data.menuModal_backgroundColor = '';
-                data.addModal_backgroundColor = '';
+                data.theme_name = "theme3";
+                data.body_backgroundColor = '#ffffff';
+                data.body_color = '#000000';
+                data.body_fontFamily = 'Arial, Helvetica, sans-serif';
+                data.buttons_backgroundColor = '#a880ff';
+                data.buttons_borderColor = '#884dff';
+                data.navBar_backgroundColor = '#854dff';
+                data.navBar_color = '#ffffff';
+                data.navBar_borderColor = '#56016b';
+                data.menuModal_backgroundColor = '#eee6ff';
                 break;
             case 'theme4':
-                data.theme_name = "";
-                data.body_backgroundColor = '';
-                data.body_color = '';
-                data.body_fontFamily = '';
-                data.buttons_backgroundColor = '';
-                data.buttons_color = '';
-                data.buttons_fontFamily = '';
-                data.buttons_borderColor = '';
-                data.navBar_backgroundColor = '';
-                data.navBar_color = '';
-                data.navBar_borderColor = '';
-                data.menuModal_backgroundColor = '';
-                data.addModal_backgroundColor = '';
+                data.theme_name = "theme4";
+                data.body_backgroundColor = '#ffffff';
+                data.body_color = '#ffffff';
+                data.body_fontFamily = 'Arial, Helvetica, sans-serif';
+                data.buttons_backgroundColor = '#333333';
+                data.buttons_borderColor = '#262626';
+                data.navBar_backgroundColor = '#404040';
+                data.navBar_color = '#ffffff';
+                data.navBar_borderColor = '#737373';
+                data.menuModal_backgroundColor = '#e6e6e6';
                 break;
         }
         
@@ -141,13 +151,14 @@ bmPlannerControllers.controller('editStyleCtrl', function(Style, $window, $scope
 });
 
 
+
 bmPlannerControllers.controller('listsCtrl', function(Lists, $scope){
     $scope.lists = Lists.lists;
     var self = this;
     $scope.addListMenu = false;
     
     self.listName="";
-    self.color="";
+    self.color="0, 0, 102";
 
     $scope.toggleAddList = function(){
       $scope.addListMenu = !$scope.addListMenu;
@@ -160,6 +171,14 @@ bmPlannerControllers.controller('listsCtrl', function(Lists, $scope){
         self.color="0, 0, 102";    
         
     };
+    
+    window.addEventListener('click', function(){
+        if($scope.addListMenu == true)
+        {
+            $scope.addListMenu = false;
+        }
+        $scope.$apply();
+    });
         
     $scope.add_list= function(){
         var data={};
@@ -232,12 +251,11 @@ bmPlannerControllers.controller('tasksCtrl', function(Lists, $scope){
             taskName = "no name";
         }
         task.name=taskName;
-        task.completed=$scope.completed;
+        task.completed = false;
         
         Lists.addTask(listIndex, task);
         
         $scope.taskName="";
-        $scope.completed= false;
     };
         
         
@@ -279,6 +297,14 @@ bmPlannerControllers.controller('calendarsCtrl', function(Calendars, $scope){
         $scope.toggleAddCalendar = function(){
           $scope.addCalMenu = !$scope.addCalMenu;
         };
+        
+        window.addEventListener('click', function(){
+            if($scope.addCalMenu == true)
+            {
+                $scope.addCalMenu = false;
+            }
+            $scope.$apply();
+        });
         
         
         $scope.add = function(){
@@ -372,12 +398,13 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
             }
         }
     });
-        
+    
+       
 
     self.name = "";
     self.startDate = moment();
-    self.endDate = moment().add(1, 'h');
-    self.repeatEndDate = moment().add(1, 'h');
+    self.endDate = self.startDate.clone().add(1, 'h');
+    self.repeatEndDate = moment();
     
     self.startHour = moment().format('hh');
     self.endHour = moment().add(1, 'h').format('hh');
@@ -416,18 +443,19 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
     self.toggleCreateEvent = function(){
        self.createEvent = !self.createEvent;
        if(self.createEvent == true){
-           
+            
+            self.calendars = Calendars.calendars;
             self.name = "";
             self.calendar_id = self.mainCalendar;
             self.startDate=moment();
-            self.endDate=moment().add(1, 'h');
-            self.repeatEndDate=moment().add(1, 'h');
+            self.endDate = self.startDate.clone().add(1, 'h');
+            self.repeatEndDate=self.startDate.clone();
             self.startHour = moment().format('hh');
             self.endHour = moment().add(1, 'h').format('hh');
             self.startMinutes ='00';
             self.endMinutes ='00';
-            self.startMeridiem = moment().format('a');
-            self.endMeridiem = moment().add(1, 'h').format('a');
+            self.startMeridiem = self.startDate.clone().format('a');
+            self.endMeridiem = self.startDate.clone().add(1, 'h').format('a');
             self.allDay=false;
             self.repeats=false;
             self.repeatOccurrence="";
@@ -474,13 +502,13 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
     
     function getValidateTime(date, hour, minutes, meridiem){
         
-        if((hour != '12') && meridiem == "pm")
+        if((hour !== '12') && meridiem === "pm")
         {
             hour = parseInt(hour, 10) + 12;
         }
-        if(hour == '12' && meridiem == "am")
+        if((hour === '12') && meridiem === "am")
         {
-            hour == '00';
+            hour = '00';
         }
         var time = hour + ':' + minutes + ':' + '00';
         return moment(date.format('YYYY-MM-DD') + " " + time);
@@ -1602,15 +1630,16 @@ bmPlannerControllers.controller("weekEventsCtrl", function($scope,  EventsCalend
             return color;
     };
     
-    self.getWidth = function( hourindex, event)
+    self.getWidth = function( hourindex, index, event)
     {
+        
        
         if(event.first == true)
         {
             var width;
             var tds = $scope.day.hours[hourindex].tds;
           
-            for(var i=0; i<event.rowspan; i++)
+            for(var i=0; i < event.rowspan; i++)
             {
                 if($scope.day.hours[hourindex + i].tds > tds)
                 {
@@ -1624,7 +1653,6 @@ bmPlannerControllers.controller("weekEventsCtrl", function($scope,  EventsCalend
             {
                 width = width - 5;
             }
-   
             for(i=0; i<event.rowspan; i++)
             {
                 for( var j =0; j< $scope.day.hours[hourindex + i].events.length; j++)
@@ -1637,33 +1665,27 @@ bmPlannerControllers.controller("weekEventsCtrl", function($scope,  EventsCalend
                 }
          
             }
-            return  (width -1) +'%';
+            return  (width - 1) +'%';
         }
         else{
-             return  (event.width -1) + '%';
+             return  (event.width - 1) + '%';
         }
     };
     
     
-    self.getLeft = function(eventindex, event)
+    self.getLeft = function(hourindex, index, eventindex, event)
     {
         if(eventindex == 0)
         {
             return 0;
         }
         else{
-            return ( (event.width * eventindex)) + '%';
+            return (eventindex * event.width) + '%';
         }
+            
+    
     };
 });
-
-
-
-
-
-
-
-
 
 
 

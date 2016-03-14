@@ -41,11 +41,10 @@ class TodolistsController extends Controller
         $todolist = new Todolist(array(
             'user_id'=>$user_id,
             'name'=> $name,
-            'color'=>$color
-            ));
+            'color'=>$color));
         
         $todolist->save();
-            
+        
         $addedListId= DB::table('todolists')->where('name', '=', $name)->value('id');
         return Response::json(['name'=>$name, 'color'=>$color, 'id'=>$addedListId]);
     }
