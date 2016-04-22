@@ -1,0 +1,476 @@
+
+
+@media screen and (min-width: 300px) {
+    .createEventModal-style{
+      width:90%;
+    }
+    
+    .createEventModal-style-content{
+      font-size:78%;
+    }
+    
+    .tableDiv{
+        width:280px;
+    }
+    
+}
+
+@media screen and (min-width: 400px) {
+    .createEventModal-style{
+      width:85%;
+      left:2%;
+    }
+    
+    .createEventModal-style-content{
+      font-size:80%;
+    }
+    
+    
+    #smallScreenCalendar{
+        width:80%;
+    }
+    
+    .themeHolder{
+        width:90%;
+    }
+    
+    .secondBody{
+        font-size:90%;
+    }
+    
+    .barDiv-logo{
+        margin-right:50px;
+    }
+    
+    .tableDiv{
+        width:380px;
+    }
+   
+}
+
+@media screen and (min-width: 450px) {
+    
+    .addForm{
+        width:200px; 
+        margin:auto;
+    }
+    
+    .tableDiv{
+        width:430px;
+    }
+    
+
+}
+
+@media screen and (min-width: 500px) {
+    .createEventModal-style{
+      width:75%;
+      left:5%;
+    }
+    
+    .createEventModal-style-content{
+      font-size:80%;
+    }
+    
+    .navBarDiv{
+        font-size:85%;
+    }
+    
+    
+    #smallScreenCalendar{
+        width:70%;
+    }
+    
+    .themeHolder{
+        width:70%;
+    }
+    
+    .barDiv-logo{
+        margin-right:50px;
+    }
+    
+    .tableDiv{
+        width:480px;
+    }
+    
+}
+
+@media screen and (min-width: 600px) {
+    .createEventModal-style{
+      width:70%;
+      left:10%;
+    }
+    
+    .createEventModal-style-content{
+      font-size:85%;
+    }
+    
+    
+    #smallScreenCalendar{
+        width:60%;
+    }
+    
+    .mainInput{
+        width:300px;
+    }
+    
+    .barDiv-logo{
+        margin-right:100px;
+    }
+    
+    .tableDiv{
+        width:580px;
+    }
+    
+    
+}
+
+@media screen and (min-width: 700px) {
+    .createEventModal-style{
+      width:65%;
+      left:12%;
+    }
+    
+    .createEventModal-style-content{
+      font-size:90%;
+    }
+    
+    .mainInput{
+        width:350px;
+    }
+    
+    .barDiv-logo{
+        margin-right:150px;
+    }
+    
+    .tableDiv{
+        width:680px;
+    }
+}
+
+@media screen and (min-width: 800px) {
+   
+    .computerScreen{
+        display:block;
+    }
+    
+    .smallScreen{
+        display: none;
+    }
+    
+
+    .themePics{
+       float:left;
+       margin-top:50px;
+    }
+    
+   .navBarInclude{
+    width:95%; 
+    display:inline-block;
+    margin-top:0;
+    }
+    
+    .navBarDiv:hover:before{
+    border-radius:10px 10px 0 0;
+}
+    
+    .navBarDiv{
+        width:21%;
+        height:30px;
+        margin-bottom: 0px;
+        border-radius:10px 10px 0px 0px;
+        margin-left:1.5%;
+        font-size:90%;
+    }
+    
+    .spanLinks{
+    text-align: center;
+    white-space: normal;
+    -webkit-transform:rotate(0deg);
+    -moz-transform:rotate(0deg);
+    -o-transform: rotate(0deg);
+    -ms-transform:rotate(0deg);
+    transform: rotate(0deg);
+    top:12px;
+    }
+    
+    .theMainDiv{
+        width:100%;
+        display:inline-block;
+        min-height:500px;
+        padding-left:2%;
+        padding-right:2%;
+        padding-top:0;
+        padding-bottom:2%;
+    }
+    
+    .userName{
+        font-size:100%;
+        margin-top:10px;
+        margin-bottom:10px;    
+    }
+    
+    #listCalToolsDiv{
+        position:relative;
+        background-color: white;
+        float:left;
+        width:25%;
+        padding:1.5%;
+        margin-top:0;
+        font-size:95%;
+    }
+    
+    #calendarDiv{
+       position:relative;
+       background-color:white;
+       margin-right:2%;
+       width:66%;
+       padding:2%;
+       margin-top:0;
+       font-size:95%;
+    }
+    
+    .userSettingsDivRight{
+        width:45%;
+        height:75%;
+        min-height: 450px;
+        padding:2%;
+        margin-top:0;
+        font-size:95%;
+    }
+    
+    .userSettingsDivLeft{
+       margin-right:2%;
+       width:45%;
+       height:75%;
+       min-height:450px;
+       padding:2%;
+       margin-top:0;
+       font-size:95%;
+    }
+    
+     .userSettingsDiv{
+       margin-right:5%;
+       width:90%;
+       height:75%;
+       min-height:400px;
+       padding:2%;
+       margin-top:0;
+       font-size:95%;
+    }
+    
+   
+  
+    .addForm{
+        width:150px; 
+        margin:auto;
+    }
+    
+    .menuForm{
+        font-size:90%;
+    }
+    
+    .questionModal{
+        font-size:85%;
+        width: 350px;
+    }
+    
+    .createQuestionModal-style{
+        width:350px;
+    }
+    
+    .createEventModal-style-content{
+      font-size:95%;
+    }
+    .createEventModal-style{
+      width:55%;
+      left:15%;
+    }
+    
+    .eTime{
+        font-size: 80%
+    }
+    
+    .eName{
+        font-size:90%;
+    }
+    
+    .tableDiv{
+        width:780px;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    .createEventModal-style{
+      width:45%;
+      left:25%;
+    }
+    
+    .createEventModal-style-content{
+      font-size:100%;
+    }
+    
+    
+    .mainInput{
+        width:400px;
+    }
+    
+    .barDiv-logo{
+        margin-right:250px;
+    }
+    
+    
+    .tableDiv{
+        width:880px;
+    }
+  
+}
+
+
+@media screen and (min-width: 950px) {
+
+    #listCalToolsDiv{
+        width:18%;
+    }
+    
+    #calendarDiv{
+       width:73%;
+    }
+    
+    .addForm{
+        width:150px; 
+        margin:auto;
+    }
+    
+    .navBarDiv{
+        width:19%;
+    }
+    
+    .barDiv-logo{
+        margin-right:350px;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .createEventModal-style{
+      width:40%;
+      left:20%;
+    }
+    
+    .barDiv-logo{
+        margin-right:450px;
+    }
+    
+    .tableDiv{
+        width:980px;
+    }
+}
+
+
+@media screen and (min-heigt:500px){
+    .uSetInput{
+        height: 10%;
+    }
+    
+}
+
+@media screen and (min-height: 450px) and (min-width:450px){
+    .secondBody{
+        font-size:105%;
+    }
+   
+    .mainInput{
+        height:40px;
+    }
+    
+    .mainButton{
+        height:25px;
+    }
+    
+    
+    .mainCircle{
+        font-size:125%;
+    }
+    
+    .mainCircleNav{
+        margin-top: 10px;
+    }
+    
+    .logo{
+        margin-top:5px;
+        width:60px;
+        height:60px;
+    }
+  
+}
+
+@media screen and (min-height: 550px) and (min-width:550px){
+    .secondBody{
+        font-size:115%;
+    }
+    
+    .mainCircle{
+        font-size:140%;
+    }
+    
+    .mainCircleNav{
+        margin-top: 20px;
+    }
+    
+    .logo{
+        margin-top:5px;
+        width:70px;
+        height:70px;
+    }
+    
+    .themPics{
+        height:100px;
+    }
+    
+}
+
+@media screen and (min-height: 650px) and (min-width:650px){
+    
+    .mainCircleDisplay{
+        height:95%;
+    }
+    
+    .mainCircle{
+        font-size:190%;
+    }
+    
+    .mainCircleNav{
+        margin-top: 30px;
+    }
+    
+    .logo{
+        margin-top:10px;
+        width:85px;
+        height:85px;
+    }
+    
+}
+
+@media screen and (min-height: 800px) and (min-width:800px){
+    .secondBody{
+        font-size:125%;
+    }
+    
+    .mainCircleDisplay{
+        height:90%;
+    }
+    
+    .mainCircle{
+        font-size:250%;
+    }
+    
+    .mainCircleNav{
+        margin-top: 40px;
+    }
+    
+    .logo{
+        margin-top:20px;
+        width:100px;
+        height:100px;
+    }
+}

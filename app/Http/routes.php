@@ -15,16 +15,11 @@ Route::get('/', 'PagesController@home');
 Route::get('denied', 'PagesController@deny');
 
 
-Route::get('settings', 'SettingsController@edit');
-Route::post('settings','SettingsController@update_user');
-Route::get('deleteAccount', 'SettingsController@deleteAccount');
-Route::post('delete', 'SettingsController@destroyAccount');
 
-
-Route::get('contactUs', 'EmailsController@contact_us');
-Route::get('forgotPassword', 'EmailsController@forgot_pass');
+Route::get('forgotPassword', 'EmailsController@index');
+Route::post('forgotPassword', 'EmailsController@store');
 Route::post('send', 'EmailsController@send');
-Route::post('sendTemp', 'EmailsController@tempPass');
+
 
 //register routes
 Route::get('users/register', 'Auth\AuthController@getRegister'); //displays the registration form
@@ -54,6 +49,7 @@ Route::group(array('prefix'=>'admin', 'namespace'=>'Admin', 'middleware'=>'manag
 Route::delete('deleteEvents/{deleteEvents}', 'EventsController@deleteEvents');
 Route::put('repetitionsChangeEnd', 'RepetitionsController@changeEnd');
 Route::get('mainCalendar', 'CalendarController@getMain');
+Route::put('updateStartDate', 'EventsController@updateStartDate');
 
 Route::resource('styles', 'SettingsController', 
     ['only'=>['index', 'update']]);
@@ -69,3 +65,8 @@ Route::resource('eventchanges', 'EventchangesController',
     ['only'=>['store', 'destroy']]);
 Route::resource('calendars', 'CalendarController', 
     ['only'=>['index', 'store', 'update', 'destroy']]);
+
+
+Route::get('settings', 'SettingsController@edit');
+Route::post('settings','SettingsController@update_user');
+Route::post('delete', 'SettingsController@destroyAccount');

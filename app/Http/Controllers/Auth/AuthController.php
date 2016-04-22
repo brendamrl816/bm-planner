@@ -98,13 +98,13 @@ class AuthController extends Controller
         Style::create(array(
             'theme_name'=>'default',
             'body_backgroundColor'=> '#ffffff',
-            'body_color'=> '#000000',
+            'body_color'=> '#663300',
             'body_fontFamily'=> 'Arial, Helvetica, sans-serif',
-            'buttons_backgroundColor'=>'#04D9A4',
-            'buttons_borderColor'=> '#bcfec5',
-            'navBar_backgroundColor'=> '#4dffa6',
+            'buttons_backgroundColor'=>'#99ffcc',
+            'buttons_borderColor'=> '#b4febe',
+            'navBar_backgroundColor'=> '#66ffb3',
             'navBar_color'=> '#ffffff',
-            'navBar_borderColor'=> '#1f9378',
+            'navBar_borderColor'=> '#79ecb3',
             'menuModal_backgroundColor'=> '#E1F5E6',
             'user_id'=> $user_id,
         ));

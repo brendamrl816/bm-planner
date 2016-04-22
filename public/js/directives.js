@@ -19,22 +19,76 @@ bmPlannerDirectives.directive('minicalendars', function(Style){
         controllerAs:'miniCalCtrl',
         controller: function($scope){
           
-          $scope.selected=  removeTime($scope.selected||moment());
-          $scope.showMiniCalendar = false;
+        $scope.selected=  removeTime($scope.selected||moment());
+        $scope.showMiniCalendar = false;
           
-          $scope.toggleShowMiniCalendar = function(event){
+        var element = angular.element($('#theminical'));
+          
+          
+          
+          $scope.$watch('showMiniCalendar', function(value){
+              $scope.isClickable = !value;
+                if(value == false)
+                {
+                  window.removeEventListener('click', eventfunction); 
+                }
+                // if(value == true)
+                // {
+                //      angular.element(document.body).append(element);
+                //      var top =  event.pageY;
+                //      var left = event.pageX;
+                     
+                //      $scope.y = top;
+                //      $scope.x = left;
+                // }
+            });
+            
+            
+            element.bind('mouseenter', function(){
+              $scope.isActive = true;
+              });
+            
+             element.bind('mouseleave', function(){
+              $scope.isActive = false;
+            });
+            
+            element.bind('click', function(){
+                if($scope.isActive == true){
+                    window.removeEventListener('click', eventfunction); 
+                }
+            });
+            
+            function eventfunction()
+            {
+                if($scope.showMiniCalendar == true)
+                {
+                    $scope.showMiniCalendar = false;
+                    $scope.$apply();
+                }
+            }
+                
+                window.addEventListener('click', function(){
+                    if($scope.isClickable == false)
+                    {
+                        window.addEventListener('click', eventfunction);
+                    }
+                    $scope.$apply();
+                });
+          
+    
+          $scope.toggleShowMiniCalendar = function(){
               $scope.showMiniCalendar = !$scope.showMiniCalendar;
-              event.stopPropagation();
+            //   event.stopPropagation();
           };
           
-       window.addEventListener('click', function() {
-            if($scope.showMiniCalendar==true)
-            {
-                $scope.showMiniCalendar = false;
-                $scope.$apply();
-            }
+    //   window.addEventListener('click', function() {
+    //         if($scope.showMiniCalendar==true)
+    //         {
+    //             $scope.showMiniCalendar = false;
+    //             $scope.$apply();
+    //         }
 
-        });
+    //     });
             
             var startDate= $scope.selected.clone();
             startDate.date(1);//get the first day of the selected month;
@@ -107,7 +161,7 @@ bmPlannerDirectives.directive('minicalendars', function(Style){
             }
             
             $scope.miniStyle = function(){
-                return {'font-size':'12px', 'font-weight':'bold', 'width':'22px', 'color':Style.css.navBar_borderColor};
+                return {'font-weight':'bold', 'color':Style.css.navBar_borderColor};
             };
         },
         
@@ -243,7 +297,7 @@ bmPlannerDirectives.directive('endtimeval', function() {
                 var startTime = scope.$eval(angular.element($('#' + attrs.name)).attr('ng-model'));
                 var endTime = modelValue;
 
-                if (startTime > endTime) {
+                if (startTime >= endTime) {
                     // it is invalid
                    return false;
                 }else{
@@ -335,14 +389,14 @@ bmPlannerDirectives.directive('addeventmodal', function(Style) {
                 return {'height': height, 'width': width};
             };
             
+        
             scope.$watch('showmodal', function(){
                 if(scope.showmodal == true )
                 {
                     var top =  event.pageY;
-                    var left = event.pageX;
                     
                     var windowHeight = window.innerHeight + window.scrollY;
-                    var height = windowHeight * .60;
+                    var height = windowHeight * .40;
                      if(top + height > windowHeight)
                      {
                         top =  window.scrollY + (window.innerHeight * .15);
@@ -350,18 +404,9 @@ bmPlannerDirectives.directive('addeventmodal', function(Style) {
                      else{
                          top = attrs.top;
                      }
-                     
-                     var windowWidth = window.innerWidth + window.scrollX;
-                     var width = windowWidth * .30;
-                     if(window.scrollX == 0){
-                         left = attrs.left;
-                     }
-                     else if(left + width > windowWidth)
-                     {
-                         left = window.scrollX + (window.innerWidth * .10);
-                     }
+
                     scope.style.top = top;
-                    scope.style.left = left;
+                   
                 }
             });
             
@@ -450,8 +495,14 @@ bmPlannerDirectives.directive('questionmodal', function() {
                          left = left - diff;
                      }
                      
+                     if(windowWidth > 300)
+                     {
+                         scope.style.left = left;
+                     }else{
+                         scope.style.left = '5%';
+                     }
                      scope.style.top = top;
-                     scope.style.left = left;
+                    
                 }
             });
             
@@ -556,7 +607,12 @@ bmPlannerDirectives.directive('continuemodal', function() {
                      }
                      
                      scope.style.top = top;
-                     scope.style.left = left;
+                     if(windowWidth > 300)
+                     {
+                         scope.style.left = left;
+                     }else{
+                         scope.style.left = '5%';
+                     }
                 }
             });
             
@@ -704,22 +760,103 @@ bmPlannerDirectives.directive('menumodal', function() {
 });
 
 
-bmPlannerDirectives.directive('navlink',  function($http) {
+bmPlannerDirectives.directive('navlink',  function($http, $rootScope, Style) {
    
    return {
+    //   scope: {},
        
        link: function(scope, element, attrs){
-            var path = attrs.href;
+       
+        scope.color = Style;
+        var path = attrs.href;
+        scope.location = window.location;
         
-            scope.location = window.location;
-            scope.$watch('window.location', function() {
-                if (path === window.location.pathname) {
-                    $http.get('/styles').success(function(response){
-                        element.css({backgroundColor: response.navBar_borderColor, height:'60px', top:'-15px', 'box-shadow': '0px -1px 10px -2px rgba(0,0,0,0.4)', 'z-index':2});
-                    });
+        scope.$watch(
+          // This is the important part
+          function() {
+            return Style.css;
+          },
+        
+          function(newValue, oldValue) {
+              if (path === window.location.hash) {
+                        if(window.innerWidth < 800)
+                        {
+                           element.css({backgroundColor: scope.color.css.buttons_backgroundColor, left:'-3px', bottom:'0','border-radius':'0px 10px 10px 0px',  'box-shadow': 'inset -20px 0px 20px -10px' + scope.color.css.navBar_borderColor, 'z-index':2}); 
+                        }
+                        else{
+                            element.css({backgroundColor: scope.color.css.buttons_backgroundColor, bottom:'-3px', left:'0', 'border-radius':'10px 10px 0px 0px', 'box-shadow': 'inset 2px 20px 20px -10px' + scope.color.css.navBar_borderColor, 'z-index':2});
+                        }
+                        
                 }else {
-                    element.css({backgroundColor: '', 'z-index':'none'});
+                    element.css({backgroundColor: '',  'box-shadow':'',  'z-index':'none'});
                 }
+            // console.log('Style has been changed');
+            //  if (path === window.location.hash) {
+                        
+            //         element.css({backgroundColor: scope.color.css.buttons_backgroundColor, 'box-shadow': 'inset -20px 0px 20px -10px' + scope.color.css.navBar_borderColor}); 
+                        
+            //     }else {
+            //         element.css({backgroundColor: '',  'box-shadow':''});
+            //     }
+          },
+          true
+        );
+        
+            // scope.$watch('window.location', function() {
+            //     if (path === window.location.hash) {
+            //             if(window.innerWidth < 800)
+            //             {
+            //               element.css({backgroundColor: scope.color.css.buttons_backgroundColor, left:'-3px', bottom:'0','border-radius':'0px 10px 10px 0px',  'box-shadow': 'inset -20px 0px 20px -10px' + scope.color.css.navBar_borderColor, 'z-index':2}); 
+            //             }
+            //             else{
+            //                 element.css({backgroundColor: scope.color.css.buttons_backgroundColor, bottom:'-3px', left:'0', 'border-radius':'10px 10px 0px 0px', 'box-shadow': 'inset 2px 20px 20px -10px' + scope.color.css.navBar_borderColor, 'z-index':2});
+            //             }
+                        
+            //     }else {
+            //         element.css({backgroundColor: '',  'box-shadow':'',  'z-index':'none'});
+            //     }
+            // }); 
+       
+       
+        $rootScope.$on('$stateChangeSuccess' , function(event, toState, toParams, fromState, fromParams, options){
+            var name = attrs.name;
+            var theName = toState.name;
+            
+           
+            if(toState.name == 'home.weeklyView' || toState.name == 'home.monthlyView')
+            {
+                theName = 'home';
+            }
+           
+            if(theName == name)
+            {
+                if(window.innerWidth < 800)
+                {
+                  element.css({backgroundColor: scope.color.css.buttons_backgroundColor, left:'-3px', bottom:'0','border-radius':'0px 10px 10px 0px',  'box-shadow': 'inset -20px 0px 20px -10px' + scope.color.css.navBar_borderColor, 'z-index':2}); 
+                }
+                else{
+                    element.css({backgroundColor: scope.color.css.buttons_backgroundColor, bottom:'-3px', left:'0', 'border-radius':'10px 10px 0px 0px', 'box-shadow': 'inset 2px 20px 20px -10px' + scope.color.css.navBar_borderColor, 'z-index':2});
+                }
+                        
+                  
+            }else {
+                element.css({backgroundColor: '', 'box-shadow':'', 'z-index':'none'});
+            }
+    
+        });
+            
+        $(window).resize(function(){
+                    if(window.innerWidth < 800)
+                    {
+                        scope.$apply(function(){
+                            element.css({left:'-3px', bottom:'0','border-radius':'0px 10px 10px 0px', 'box-shadow': 'inset -20px 0px 20px -10px' + scope.color.css.navBar_borderColor});
+                        });
+                    }
+                    else{
+                        scope.$apply(function(){
+                            element.css({bottom:'-3px', left:'0', 'border-radius':'10px 10px 0px 0px', 'box-shadow': 'inset 2px 20px 20px -10px' + scope.color.css.navBar_borderColor});
+                        });
+                    }
             });
             
        }

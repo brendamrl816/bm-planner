@@ -2,6 +2,31 @@
 
 var bmPlannerServices = angular.module('bmPlannerServices', []);
 
+bmPlannerServices.factory('User', function($http, Calendars) {
+    var User = {};
+    User.info = {};
+    
+    
+    User.get = function()
+    {
+        $http.get('/settings').success(function(response) {
+            User.info = response;
+            User.info.dob = new Date(User.info.dob);
+            User.displayName = User.info.first_name;
+        });   
+    };
+    
+    User.update = function(data){
+        return $http.post('/settings', data);
+    };
+    
+    User.deleteAccount = function(data){
+        return $http.post('/delete', data);
+    };
+    
+    return User;
+});
+
 bmPlannerServices.factory('Style', function($http) {
     var Style ={};
     Style.css= {};
@@ -16,6 +41,9 @@ bmPlannerServices.factory('Style', function($http) {
     
     Style.update = function(data, id) {
            $http.put('/styles/' + id, data).success(function(response){
+               Style.getStyle().success(function(getResponse){
+                   Style.css = getResponse;
+               });
            });
     };
     
@@ -112,6 +140,10 @@ bmPlannerServices.factory('Events', function($http, $q) {
         updateEvent: function(data, id) {
             return $http.put('/events/' + id, data);
         },
+        
+        updateStartDate: function(data) {
+            return $http.put('/updateStartDate', data);
+        },
 
         deleteEvent: function(id) {
             return $http.delete('/events/' + id);
@@ -169,6 +201,18 @@ bmPlannerServices.factory('Calendars', function($http) {
     $http.get('/mainCalendar').success(function(response) {
         Calendars.mainCalendar = response;
     });
+    
+    Calendars.getCalendars = function(){
+        $http.get('/calendars').success(function(response) {
+            Calendars.calendars = response;
+        });
+    };
+    
+    Calendars.getMainCalendar = function(){
+        $http.get('/mainCalendar').success(function(response) {
+            Calendars.mainCalendar = response;
+        });
+    };
     
     Calendars.addCalendar = function(data) {
         $http.post('/calendars', data).success(function(response) {
@@ -429,7 +473,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                 for (i = 0; i < response.length; i++) {
                     
                     var indexes = [];//to order long events
-                    
+                   
                     
                     for (var n = 0; n < response[i]['events'].length; n++) {
                         
@@ -558,6 +602,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                         {
                                             event.first = true;
                                             event.top = startMinutes;
+                                            days[i].events.push(event);
                                         }
                                         
                                         if((x == j-1) && (endMinutes != 0))
@@ -570,7 +615,6 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                   
                                        x++;
                                     }
-                                    
                                  
                                     break;
                                 }

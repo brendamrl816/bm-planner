@@ -306,7 +306,7 @@ class EventsController extends Controller
                         
                                         });
                             });
-            })->orderBy('startTime', 'asc')->get();
+            })->orderBy('startTime', 'asc')->orderBy('endTime', 'desc')->get();
             
            
             foreach($events as $event)
@@ -473,6 +473,15 @@ class EventsController extends Controller
          'eventLength'=>$eventLength, 'repeats'=>$repeats]);
         
          return Response::json(['id'=>$id, 'repeats'=>$repeats]);
+    }
+    
+    public function upddateStartDate()
+    {
+        $id = Input::get('id');
+        $startDate = Input::get('startDate');
+        DB::table('events')->where('id', '=', $id)->update(['startDate'=> $startDate]);
+        
+        return Response::json(array('success'=>true));
     }
     
 

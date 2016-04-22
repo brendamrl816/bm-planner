@@ -7,10 +7,7 @@ class PagesController extends Controller {
 
     public function home()
     {
-       $user_id = Auth::id();
-       $user = User::where('id', '=', $user_id)->first();
-        
-       return view('home', compact('user'));
+       return view('home');
     }
     
     public function deny()

@@ -3,59 +3,63 @@
 
 @section('content')
 
-    <div class="mainBody">
-        
-        <div class="barDiv">
-            <div style="float:left; position:relative; width:10%; margin-top:1px; margin-left:20%">
-                <a style="width:100%; height:100%; text-decoration:none; color:white" href="/">
-                  <div class="userPic" style="font-size:300%; margin-top:15px">gmPlanner</div>
-                  <!--<img class="userPic" style="top:0; position:absolute" src="" alt="logoPic">-->
+    <div class="secondCover">
+        <div class="secondBody">
+            
+            <div class="barDiv">
+                <div style="display:inline-block; height:100%; vertical-align:middle"></div>
+                
+                <a class="barDiv-logo" style="text-decoration:none; color:white" href="/">
+                  <div style="font-size:200%; font-weight:bold; text-shadow: 1px 1px 1px #000000">gmPlanner</div>
                 </a>
+                <div style="display:inline-block; width:75px">
+                    <a class="mainNavbar" href="/users/login">
+                        <span>Login</span>
+                    </a>
+                </div>
+                
+                <div class="barDiv-signUp">
+                    <a class="mainNavbar"  href="/users/register"><span>Sign Up</span></a>
+                </div>   
             </div>
             
-            <a class="mainNavbar" style="float:left; margin-left:30%; position:relative; width:8%; min-width:100px; height:30px; margin-top:35px" href="/users/register">
-                <span style="position:absolute; top:18%; left:28%">Register</span>
-            </a>
-            <a class="mainNavbar" style="float:left; position:relative; width:8%; min-width:100px; height:30px; margin-top:35px; margin-left:1%" href="/users/login">
-                <span  style="position:absolute; top:18%; left:35%">Login</span>
-            </a>
-
-        </div>
-        
-        <div class="mainBodyDiv">
-           <div style="width:50%; margin:auto">
-               <form id="emailForm" style="margin-top:12%" action="/sendTemp" method="post">
-                
-                    @foreach ($errors->all() as $error)
-                        <div class="mainError">!{{ $error}}</div>
-                    @endforeach
-                    
-                    @if (session('status'))
-                        <div class="mainError">
-                            <div style="margin:5px">{{ session('status') }}</div>
+            <div class="secondBodyDiv">
+               
+               <div style="width:100%">
+                   @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
                         </div>
                     @endif
+                    @foreach ($errors->all() as $error)
+                        <p class="mainError">*{{$error}}</p>
+                    @endforeach
+                </div>
+               
+               
+               <div style="display:inline-block; vertical-align:middle">
+                   
+                   <form  method="post" action="/forgotPassword">
+                        {!! csrf_field() !!}
+                        
+                      
+                            <p>Forgot your password?</p>
+                            <div>Do not worry, enter your email to receive instructions</div>
+                     
+                        <br>
+                        
+                         <input class="mainInput" style="margin-top:15px; margin-bottom:15px" type="email" id="email" name="email"  placeholder="Email"  value="{{ old('email') }}" required>
+                        <br>
+                        
+                        <div style="width:100%; text-align:center">
+                            <button class="mainButton" type="submit">Submit</button>
+                        </div>
                     
-                    {!! csrf_field() !!}
+                    </form>
                     
-                  
-                        <p style="width:45%; min-width:150px; margin:auto">Forgot your password?</p>
-                        <div style="width:65%; min-width:400px; margin:auto; margin-top:1.5%">Do not worry, enter your email to receive instructions</div>
-                 
-                    <br>
-                    
-                     <input class="mainInput" style="margin-left:10%; margin-top:2%; margin-bottom:2%" type="email" id="email" name="email"  placeholder="Email"  value="{{ old('email') }}">
-                    <br>
-                    <br>
-                    <div style="width:40%; margin:auto">
-                        <button class="mainButton" type="submit">Submit</button>
-                    </div>
-                
-                </form>
-                
-            </div>  
+                </div>  
+            </div>
         </div>
-    </div>
-   
+   </div>
    
 @endsection

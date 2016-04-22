@@ -11,26 +11,20 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmailFormRequest;
+use App\Http\Requests\ForgotPassRequest;
 use Illuminate\Support\Facades\Hash;
-use DB; 
+use DB;
 
 
 class EmailsController extends Controller
 {
     
-    public function contact_us()
-    {
-        $user_id = Auth::id();
-        $user = User::where('id', '=', $user_id)->first();
-        return view('settings.contactUs', compact('user'));
-    }
-    
-    public function forgot_pass()
+    public function index()
     {
         return view('settings.forgotPassword');
     }
     
-    public function send(EmailFormRequest $request)
+    public function send(Request $request)
     {
         $data = array(
         'user' => Auth::user()->first_name,
@@ -44,11 +38,9 @@ class EmailsController extends Controller
             $message->from('gmplanner.team@gmail.com', 'gmPlanner');
             $message->to('gmplanner.team@gmail.com')->subject('Email from user');
         });
-    
-        return redirect('/contactUs')->with('status', 'your message has been sent successfully!');
     }
     
-    public function tempPass(Request $request)
+    public function store(ForgotPassRequest $request)
     {
         $email = $request->get('email');
         
@@ -68,11 +60,13 @@ class EmailsController extends Controller
             $message->to($email)->subject('Temporary Password');
             });
             
+            // return view('settings.forgotPassword')->with('status', 'A temporary password has been emailed to you');
             return redirect('/forgotPassword')->with('status', 'A temporary password has been emailed to you');
          
         }
         else{
-            return redirect('/forgotPassword')->with('status', 'There is no account with this email!!');
+            // return view('settings.forgotPassword')->with('status', 'There is no account with this email!!');
+            return redirect(action('EmailsController@index'))->with('status', 'There is no account with this email!');
             
         }
     }

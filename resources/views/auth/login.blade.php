@@ -2,63 +2,75 @@
 @section('name', 'Login')
 
 @section('content')
-
-    <div class="mainBody">
-        
-         <div class="barDiv">
-              
-            <div style="float:left; position:relative; width:10%; margin-left:15%; margin-top:1px">
-                <a style="width:100%; height:100%; text-decoration:none; color:white" href="/">
-                      <div class="userPic" style="font-size:300%; margin-top:15px">gmPlanner</div>
+    <div class="secondCover">
+        <div class="secondBody">
+            
+             <div class="barDiv">
+                <div style="display:inline-block; height:100%; vertical-align:middle"></div>
+                <a class="barDiv-logo" style="text-decoration:none; color:white" href="/">
+                      <div style="font-size:200%; font-weight:bold; text-shadow: 1px 1px 1px #000000">gmPlanner</div>
                       <!--<img class="userPic" style="top:0; position:absolute" src="" alt="logoPic">-->
-                  </a>
-                <!--<a style="width:100%; height:100%" href="/">-->
-                <!--    <img class="userPic" style="top:0; left:0; position:absolute" src="" alt="logoPic">-->
-                <!--</a>-->
+                </a>
+                <div style="font-weight:bold; text-shadow: 1px 1px 1px #000000; display:inline-block">No account?</div>
+                
+                <div class="barDiv-signUp">
+                    <a  style="text-decoration:none; font-weight:bold; color:blue"  href="/users/register"><div>sign up</div></a>
+                </div>
             </div>
             
-              <div style="float:left; margin-left:30%; font-weight:bold; margin-top:40px">No account?</div>
-              
-              <a class="mainNavbar" style="float:left; position:relative; width:80px; height:25px; margin-top:35px; margin-left:10px"  href="/users/register">
-                  <span  style="position:absolute; top:15%; left:12%">Sign Up</span>
-              </a>
-          </div>
-        
-        <div class="mainBodyDiv">
-
-                <div style="margin-left:25%; margin-top:5%">
-                    @foreach ($errors->all() as $error)
-                        <p class="mainError">!{{ $error}}</p>
-                    @endforeach
-                </div>
+            <div class="secondBodyDiv">
                 
-                
-                <div style="diplay:block; margin-left:25%; margin-top:2%; width:40%">
-                    <form method="post" action="/users/login">
-                        {!! csrf_field() !!}
+                <!--<img  class="officePic" src="/pictures/office2.png" alt="officeLife">   -->
+                   
+                    <div style="width:100%">
+                         @if (session('status'))
+                            <div class="alert alert-success">
+                                {{ session('status') }}
+                            </div>
+                        @endif
                         
-                        <div style="margin:10px">
-                            <input class="mainInput" type="text" id="email" name="email"  placeholder="Email" value="{{ old('email') }}">
-                        </div>
-                        
-                        <div style="margin:10px">
-                            <input class="mainInput" type="password" placeholder="Password" name="password"><br>
-                            <input type="checkbox" name="remember">Remember Me?
-                        </div>
-                        
-                        
-                        <div style="margin-top:10px; width:50%; margin:auto">
-                            <button class="mainButton" type="submit">Login</button>
-                        </div>
+                        @foreach ($errors->all() as $error)
+                            <p class="mainError">*{{ $error}}</p>
+                        @endforeach
+                    </div>
                     
-                    </form>
-                </div>
-            
-            <div style="margin-left:25%; margin-top:2%">
-                <a style="text-decoration:none" href="/forgotPassword"><button style="float:left; margin-left:10px; color:blue; background-color:transparent; font-weight:bold"  style="font-size:80%; margin-left:5px">&#9755; Forgot Password?</button></a>
+                
+                  
+                    <div style="display:inline-block; vertical-align:middle">
+                        <form method="post" action="/users/login" style="float:left">
+                            {!! csrf_field() !!}
+                            
+                            <div style="margin-top:15px">
+                                <input class="mainInput" type="text" name="email"  placeholder="Email" value="{{ old('email') }}">
+                            </div>
+                            
+                            <div style="margin-top:15px">
+                                <input class="mainInput" type="password" placeholder="Password" name="password">
+                            </div>
+                            
+                            <div style="margin-top:5px">
+                                <input type="checkbox" name="remember">Remember Me?
+                            </div>
+                            
+                            
+                            <div style="margin-top:15px">
+                                <button class="mainButton" type="submit">Login</button>
+                            </div>
+                        
+                        </form>
+                        
+                        <div style="margin-top:20px; width:100%">
+                            <a style="text-decoration:none" href="/forgotPassword"><button style="color:blue; background-color:transparent; font-weight:bold">&#9755; Forgot Password?</button></a>
+                        </div>
+  
+                    </div>
+                    
+                    
+                    
             </div>
-            
+  
+                
+        
         </div>
     </div>
-
 @endsection

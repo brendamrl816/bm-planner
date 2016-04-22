@@ -81,7 +81,8 @@ class UsersController extends Controller
     public function update($id, UserEditFormRequest $request)
     {
         $user = User::whereId($id)->firstOrFail();
-        $user->name = $request->get('name');
+        $user->first_name = $request->get('first_name');
+        $user->last_name = $request->get('last_name');
         $user->email = $request->get('email');
         $password = $request->get('password');
             if($password != "") {

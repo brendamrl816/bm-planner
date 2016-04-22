@@ -2,42 +2,41 @@
 @section('title', 'Admin Control Panel')
 
 @section('content')
-    @include('shared.navbar')
-    <div></div><a href="/users/logout">Logout</a></div>
-    <div class="container">
-        <div class="row banner">
 
-            <div class="col-md-12">
-
-                <div class="list-group">
-                    <div class="list-group-item">
-                        <div class="row-action-primary">
-                            <i class="mdi-social-person"></i>
-                        </div>
-                        <div class="row-content">
-                            <div class="action-secondary"><i class="mdi-social-info"></i></div>
-                            <h4 class="list-group-item-heading">Manage User</h4>
-                                <a href="/admin/users" class="btn btn-default btn-raised">All Users</a>
-                        </div>
-                    </div>
-                    <div class="list-group-separator"></div>
-                    <div class="list-group-item">
-                        <div class="row-action-primary">
-                            <i class="mdi-social-group"></i>
-                        </div>
-                        <div class="row-content">
-                            <div class="action-secondary"><i class="mdi-material-info"></i></div>
-                            <h4 class="list-group-item-heading">Manage Roles</h4>
-                            <a href="/admin/roles" class="btn btn-default btn-raised">All Roles</a>
-                            <a href="/admin/roles/create" class="btn btn-primary btn-raised">Create A Role</a>
-                        </div>
-                    </div>
-                    <div class="list-group-separator"></div>
-                </div>
-
+    <div class="secondCover">
+        <div class="secondBody">
+            
+            <div class="barDiv">
+                <div style="display:inline-block; height:100%; vertical-align:middle"></div>
+                
+                <a class="barDiv-logo" style="text-decoration:none; color:white" href="/">
+                  <div style="font-size:150%; font-weight:bold; text-shadow: 1px 1px 1px #000000">gmPlanner</div>
+                </a>
             </div>
-
+            
+            <div class="secondBodyDiv">
+                
+                <div class="tableDiv">
+                    <table class="adminTable">
+                        <tr class="adminTr">
+                            <th class="adminTd">Manage User:</th>
+                            <td class="adminTd" colspan="2"><div class="adminTd-inside"><a class="adminLink" href="/admin/users" >All Users</a></div></td>
+                        </tr>
+                        <tr class="adminTr">
+                            <th class="adminTd">Manage Roles:</th>
+                            <td class="adminTd" ><div class="adminTd-inside"><a class="adminLink" href="/admin/roles">All Roles</a></div></td>
+                            <td class="adminTd" ><div class="adminTd-inside"><a class="adminLink" href="/admin/roles/create">Create A Role</a></div></td>
+                        </tr>
+                    </table>
+                </div>
+                    
+                 
+        
+            </div>
         </div>
-    </div>
+   </div>
+   
+   
+  
 
 @endsection

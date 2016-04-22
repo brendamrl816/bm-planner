@@ -47,10 +47,17 @@ class SettingsController extends Controller
     public function edit()
     {
         $id = Auth::id();
-        $user = User::whereId($id)->firstOrFail();
+        $user = User::whereId($id)->first();
         
-        return view('settings.userSettings', compact('user'));
+        if(Auth::check())
+        {
+            $dob= strtotime($user->dob);
+            $user->dob = date('m-d-Y',$dob);
+        }
+
+        return Response::json($user);
     }
+    
     
     public function update_user(UserEditRequest $request){
         $id = Auth::id();
@@ -58,9 +65,6 @@ class SettingsController extends Controller
         
         if (Auth::attempt(array('id' => $id, 'password' => $password)))
         {
-            $name = DB::table('users')->where('id', '=', $id)->value('first_name');
-            
-            $newName = $request->get('first_name');
             
             $user = User::whereId($id)->firstOrFail();
             $user->first_name = $request->get('first_name');
@@ -77,14 +81,13 @@ class SettingsController extends Controller
             $calendar->name = $request->get('first_name');
             $calendar->save();
             
-            
-            return redirect(action('SettingsController@edit'))->with('status', 'Your account settings have been updated!');  
-        }
-        else{
-            return redirect(action('SettingsController@edit'))->with('status', 'your current password is invalid!');
-        }
-        
-        
+            $message = 'valid';
+                return $message;  
+       }
+       else{
+           $message = 'invalid';
+           return $message;
+       }
     }
 
     /**
@@ -126,12 +129,6 @@ class SettingsController extends Controller
     
     
     
-    public function deleteAccount(){
-        $id = Auth::id();
-        $user = User::whereId($id)->firstOrFail();
-        return view('settings.deleteAccount', compact('user'));
-    }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -165,10 +162,12 @@ class SettingsController extends Controller
             $message->to($email)->subject('Account');
             });
            
-            return redirect(action('PagesController@home'));  
+            $message = 'valid';
+                return $message; 
         }
         else{
-            return redirect(action('SettingsController@deleteAccount'))->with('status', 'your password is invalid!');
+            $message = 'invalid';
+           return $message;
         }
         
     }
