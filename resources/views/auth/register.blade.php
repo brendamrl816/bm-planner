@@ -3,7 +3,7 @@
 
 
 @section('content')
-<div class="secondCover">
+<div class="mainBackground"><img class="mainBackground-image" src="/pictures/wood.jpg"></div>
   <div class="secondBody">
     
    <div class="barDiv">
@@ -84,8 +84,6 @@
     </div>
   
   </div>
-</div>    
-    
 
 @endsection
 

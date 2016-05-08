@@ -22,20 +22,22 @@
         
         <div style="float:left; width:100%; margin-left:10px">
             <div style="width:100%; float:left; height:100px; display:table; border-collapse: collapse" ng-controller="editEventCtrl as edit">
-                <div style="display:table-cell; position:relative; width:5%; border:1px solid #e6e6e6">
+                <div style="display:table-cell; position:relative; width:5%; border:1px solid #cccccc">
                     <div style="position:absolute; font-size:80%; font-weight:bold; left:5px; top:30%">All Day</div>
                 </div>
-                <div style="display:table-cell; width:13%; border:1px solid #e6e6e6" ng-style="getStyle(day.itsDate)" ng-repeat="day in calendar.currentDisplayWeek.days">
+                <div style="display:table-cell; width:13%; border:1px solid #cccccc" ng-style="getStyle(day.itsDate)" ng-repeat="day in calendar.currentDisplayWeek.days" ng-click='add.toggleCreateEvent(day.itsDate, "na")'>
+                    
+                    
                     <div ng-style="{'position':'relative', 'margin-bottom':'20px', 'height':day.longEventsHeight * 20, 'width':'100%'}">&nbsp
-                       <div style="display:table-row; position:absolute; width:100.5%; height:15px; z-index:20; pointer-events:none" ng-style="{'top':event.top, 'background-color':'rgba(255, 255, 255, 0.3)', 'cursor':'hand'}"ng-repeat-start="event in day.longEvents"></div> 
-                        <div style="display:table-row; position:absolute; width:100.5%; height:15px" ng-controller="eventCtrl" ng-click="toggleEventMenu()" ng-style="{'top':event.top, 'cursor':'hand', 'border-radius':getBorderRad(), 'background-color':getDisplayColor(day.itsDate)}" ng-repeat-end>
-                            <div ng-if="event.eventStartsOn == day.itsDate.format('YYYY-MM-DD') && event.eventLength > 1" ng-style="{'width':getLongWidth()}" style="position:absolute; height:13px; z-index:21; border: 2px solid #e6e6e6; overflow:hidden; text-align:center" >
+                       <div style="display:table-row; position:absolute; width:100.5%; height:15px; z-index:20; pointer-events:none" ng-style="{'top':event.top, 'background-color':'rgba(255, 255, 255, 0.3)', 'cursor':'hand'}" ng-repeat-start="event in day.longEvents"></div> 
+                        <div style="display:table-row; position:absolute; width:100.5%; height:15px" ng-controller="eventCtrl" ng-click="toggleEventMenu(); $event.stopPropagation()" ng-style="{'top':event.top, 'cursor':'hand', 'border-radius':getBorderRad(), 'background-color':getDisplayColor(day.itsDate)}" ng-repeat-end>
+                            <div ng-if="event.eventStartsOnFormatted == day.itsDate.format('YYYY-MM-DD') && event.eventLength > 0" ng-style="{'width':getLongWidth()}" style="position:absolute; height:13px; z-index:100; border: 1px solid #e6e6e6; overflow:hidden; text-align:center" >
                                 <span class="eName">{{event.name}}</span>
                             </div>
-                             <div ng-if="event.allDay == true && event.eventLength == 1" style="position:absolute; height:15px; width:100%; z-index:21; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" >
+                             <div ng-if="event.allDay == true && event.eventLength == 0" style="position:absolute; height:15px; width:100%; z-index:100; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" >
                                 <span class="eName">{{event.name}}</span>
                             </div>
-                            <div ng-if="event.eventStartsOn != day.itsDate.format('YYYY-MM-DD') && event.eventLength > 1">&nbsp</div>
+                            <div ng-if="event.eventStartsOnFormatted != day.itsDate.format('YYYY-MM-DD') && event.eventLength > 0">&nbsp</div>
                             
                                 <questionmodal question='eventMenu'>
                                     <div class="questionModal">
@@ -138,24 +140,25 @@
         </div>
         <br>
         
-        <div id="scrollDiv" style="float:left; width:101%; height:600px; margin-left:10px; overflow-y:scroll; overflow-x:hidden; border:1.5px solid #e6e6e6">
+        <div id="scrollDiv" style="float:left; width:101%; height:600px; margin-left:10px; overflow-y:scroll; overflow-x:hidden; border:1.5px solid #cccccc">
                 
             <div style="display:table; width:100%; height:100%; border-collapse: collapse" ng-controller="editEventCtrl as edit">
                 
-                    <div style="display:table-cell; position:relative; width:5%; border:1px solid #e6e6e6">
-                        <div id="anchor{{hour.id}}" ng-style="{'top':($index * 60)}" style="display:table-row; position:absolute; width:100%; height:30px; border:none; border-top: 1px solid #e6e6e6; text-align:center" ng-repeat-start="hour in hours"><span class="eTime">{{hour.name}}</span></div>
-                        <div ng-style="{'top':($index * 60) + 30}" style="display:table-row; position:absolute; width:100%; height:30px; border:none; border-top: 1px solid #e6e6e6" ng-repeat-end></div>
+                    <div style="display:table-cell; position:relative; width:5%; border:1px solid #cccccc">
+                        <div id="anchor{{hour.id}}" ng-style="{'top':($index * 60)}" style="display:table-row; position:absolute; width:100%; height:30px; border:none; border-top: 1px solid  #cccccc; text-align:center" ng-repeat-start="hour in hours"><span class="eTime">{{hour.name}}</span></div>
+                        <div ng-style="{'top':($index * 60) + 30}" style="display:table-row; position:absolute; width:100%; height:30px; border:none; border-top: 1px solid #cccccc" ng-repeat-end></div>
                     </div>
                     
-                    <div style="display:table-cell; width:13%; position:relative; border:1px solid #e6e6e6" ng-style="getStyle(day.itsDate)" ng-repeat="day in calendar.currentDisplayWeek.days">
-                        <div  ng-style="{'top':($index * 30)}" style="display:table-row; position:absolute; width:100%; height:30px; border:none; border-top: 1px solid #e6e6e6" ng-repeat="hour in day.hours">&nbsp</div>
-                        <div style="height:30px; width:100%; border:none; position:relative" ng-controller="weekEventsCtrl as weekEvents" ng-repeat="hour in day.hours">
+                    <div style="display:table-cell; width:13%; position:relative; border:1px solid #cccccc" ng-style="getStyle(day.itsDate)" ng-repeat="day in calendar.currentDisplayWeek.days">
+                        
+                        <div  ng-style="{'top':($index * 30)}" style="display:table-row; position:absolute; width:100%; height:30px; border:none; border-top: 1px solid #cccccc" ng-repeat="hour in day.hours" >&nbsp</div>
+                        <div style="height:30px; width:100%; border:none; position:relative" ng-controller="weekEventsCtrl as weekEvents" ng-repeat="hour in day.hours" ng-click='add.toggleCreateEvent(day.itsDate, hour.time_minutes)'>
                             
                             <div ng-style="{'background-color':'transparent', 'width':weekEvents.getWidth($parent.$index, $index, event), 'left':weekEvents.getLeft($parent.$index, $index, event.index, event), 'height':event.height, 'top':event.top, 'position':'absolute'}" ng-repeat="event in hour.events">
                                 
                                  <div ng-style="{'background-color':'rgba(' +weekEvents.getColor(event.calendar_id)+ ', 0.7)', 'width':'100%',  'height':event.totalHeight, 'top':0, 'border':'1px solid',  'border-color': 'rgb(' +weekEvents.getColor(event.calendar_id)+ ')', 'position':'absolute'}" ng-if="event.first == true"  ng-controller="eventCtrl">
                                          
-                                         <div style="background-color:transparent; height:100%; width:100%; position:absolute; z-index:3; text-align:center; overflow:hidden; font-weight:bold; cursor:hand" ng-click="toggleEventMenu()">
+                                         <div style="background-color:transparent; height:100%; width:100%; position:absolute; z-index:3; text-align:center; overflow:hidden; font-weight:bold; cursor:hand" ng-click="toggleEventMenu(); $event.stopPropagation()">
                                              <div style="width:90%; margin-top:5%; margin-left:5%; margin-right:5%; overflow:hidden; font-size:65%">{{event.startTimeDisplay}}-{{event.endTimeDisplay}}</div>
                                              <div style="width:90%; margin-left:5%; margin-right:5%; height:90%; font-size:75%; overflow:hidden">{{event.name}}</div>
                                          </div>

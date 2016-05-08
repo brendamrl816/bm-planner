@@ -1,11 +1,9 @@
 
-<div class="userName">{{u.user.displayName}}</div>
-
 <!--***************************   Theme Settings ******************************************************** -->
                 <div class="userSettingsDivLeft" ng-controller="editStyleCtrl as editStyle">
                     
-                    <div style="margin-bottom:5px">
-                        <div style="font-size:110%; font-weight:bold; width:100%; text-align:center">Page Settings</div>
+                    <div style="margin-bottom:5px; font-weight:bold;">
+                        <div style="font-size:110%; width:100%; text-align:center">Page Settings</div>
                         <div style="margin-left:5%; margin-top:10px">Pick Layout Theme: </div>
                     </div>
                         
@@ -53,19 +51,19 @@
                     
                     <div style="margin-top:10px; margin-left:auto">    
                         
-                        <form  name="userEditForm">
-                                <div ng-show="u.successMessage" ng-style="style.modernBackground()">Your account settings have been updated!</div>
+                        <form  name="userEditForm" style="text-align:center">
+                                <div ng-show="u.successMessage">Your account settings have been updated!</div>
                                 <div ng-style="style.errorStyle()" ng-repeat="error in u.errors">{{error}}</div>
                                 
                                 <div style="margin:10px">
                                     <span ng-show="userEditForm.first_name.$error.required" style="color:gray; font-size:90%; margin-bottom:5px">*required</span>
-                                    <input class="uSetInput" ng-style="style.textInputStyle()" type="text"   name="first_name" ng-model="u.user.info.first_name" required>
+                                    <input class="uSetInput" ng-style="style.modalInputStyle()" type="text"   name="first_name" ng-model="u.user.info.first_name" required>
                                 </div>
                                 
                                
                                 <div style="margin:10px">
                                     <span ng-show="userEditForm.last_name.$error.required" style="color:gray; font-size:90%; margin-bottom:5px">*required</span>
-                                    <input class="uSetInput" ng-style="style.textInputStyle()" type="text"  placeholder="Last Name" id="name"  name="last_name" ng-model="u.user.info.last_name" required>
+                                    <input class="uSetInput" ng-style="style.modalInputStyle()" type="text"  placeholder="Last Name" id="name"  name="last_name" ng-model="u.user.info.last_name" required>
                                     
                                 </div>
                                 
@@ -73,7 +71,7 @@
                                     Date of Birth:
                                     <br>
                                     <span ng-show="userEditForm.dob.$error.required" style="color:gray; font-size:90%; margin-bottom:5px">*required</span>
-                                    <input class="uSetInput" ng-style="style.textInputStyle()" type="date"  id="name"  name="dob"
+                                    <input class="uSetInput" ng-style="style.modalInputStyle()" type="date"  id="name"  name="dob"
                                              ng-model="u.user.info.dob" required>
                                     
                                 </div>
@@ -81,17 +79,17 @@
                                 <div style="margin:10px">
                                     <span ng-show="userEditForm.email.$error.email" style="display:inline-block; color:gray; font-size:90%; margin-bottom:5px">*Email form is invalid</span>
                                     <span ng-show="userEditForm.email.$error.required" style="display:inline-block; color:gray; font-size:90%; margin-bottom:5px">*required</span>
-                                    <input class="uSetInput" ng-style="style.textInputStyle()" type="email" placeholder="Email" id="email" placeholder="Email" name="email"
+                                    <input class="uSetInput" ng-style="style.modalInputStyle()" type="email" placeholder="Email" id="email" placeholder="Email" name="email"
                                             ng-model="u.user.info.email" required>
                                            
                                 </div>      
      
                                 <div style="margin:10px">
-                                    <input class="uSetInput" ng-style="style.textInputStyle()" type="password" placeholder="New Password" name="password" ng-model="u.newpass">
+                                    <input class="uSetInput" ng-style="style.modalInputStyle()" type="password" placeholder="New Password" name="password" ng-model="u.newpass">
                                 </div>
             
                                 <div style="margin:10px">
-                                    <input class="uSetInput" ng-style="style.textInputStyle()" type="password" placeholder="Confirm New Password" name="password_confirmation" ng-model="u.newpassconfirm">
+                                    <input class="uSetInput" ng-style="style.modalInputStyle()" type="password" placeholder="Confirm New Password" name="password_confirmation" ng-model="u.newpassconfirm">
                                 </div>
                                 
                                
@@ -99,7 +97,7 @@
                                 <div style="margin:10px; margin-top:2px">
                                     <div ng-style="style.errorStyle()" ng-show="u.wrongPass">The input password is incorrect!</div>
                                     <span ng-show="userEditForm.old_pass.$invalid" style="color:gray; font-size:90%; margin-bottom:5px">*</span>
-                                    <input class="uSetInput" ng-style="style.textInputStyle()" type="password" placeholder="Current Password" name="old_pass" ng-model="u.oldpass" required>
+                                    <input class="uSetInput" ng-style="style.modalInputStyle()" type="password" placeholder="Current Password" name="old_pass" ng-model="u.oldpass" required>
                                     
                                 </div>
                                 
@@ -112,6 +110,9 @@
                         
                         </form>
                     
-                        <a style="margin-left:10px; text-decoration:none; color:black" ui-sref="deleteAccount"><button style="width:180px; color:blue; height:20px" ><i class="fa fa-trash fa-lg"></i>&nbsp Delete Account </button></a>
+                        <div style="text-align:center">
+                           <a style="margin-left:5px; text-decoration:none" ui-sref="deleteAccount"><button ng-style="style.modalInputStyle()" style="width:150px; height:20px" ><i class="fa fa-trash fa-lg"></i>&nbsp Delete Account </button></a> 
+                        </div>
+                        
                     </div>
                 </div>

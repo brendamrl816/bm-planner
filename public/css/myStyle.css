@@ -3,28 +3,89 @@ input
 {
     padding:5px;
     background-color: #fff;
+    -webkit-box-shadow: /*your box-shadow*/ 0 0 1px 1px 2px #cccccc;
+    -moz-box-shadow: /*your box-shadow*/ 0 0 1px 1px 2px #cccccc;
+    -o-box-shadow: /*your box-shadow*/ 0 0 1px 1px 2px #cccccc;
+    -ms-box-shadow: /*your box-shadow*/ 0 0 1px 1px 2px #cccccc;
+    box-shadow: /*your box-shadow*/ 0 0 1px 1px 2px #cccccc;
+    border: 1px solid;
+    border-color: #cccccc;
 }
 
-input:focus
-{
-    -webkit-box-shadow: /*your box-shadow*/ 0 0 0 1px 2px #009900;
-    -moz-box-shadow: /*your box-shadow*/ 0 0 0 1px 2px #009900;
-    -o-box-shadow: /*your box-shadow*/ 0 0 0 1px 2px #009900;
-    -ms-box-shadow: /*your box-shadow*/ 0 0 0 1px 2px #009900;
-    box-shadow: /*your box-shadow*/ 0 0 0 1px 2px #009900;
-    border-color: #009900;
-    border-radius:5px;
+select{
+    background-color: #fff;
+    -webkit-box-shadow: /*your box-shadow*/ 0 0 1px 1px 2px #cccccc;
+    -moz-box-shadow: /*your box-shadow*/ 0 0 1px 1px 2px #cccccc;
+    -o-box-shadow: /*your box-shadow*/ 0 0 1px 1px 2px #cccccc;
+    -ms-box-shadow: /*your box-shadow*/ 0 0 1px 1px 2px #cccccc;
+    box-shadow: /*your box-shadow*/ 0 0 1px 1px 2px #cccccc;
+    border: 1px solid;
+    border-color: #cccccc;
 }
+
+button{
+    cursor:hand;
+    border:none;
+    font-size:90%;
+}
+
+button:hover{
+    font-weight:bolder;
+}
+
+button[disabled]{
+    cursor: not-allowed;
+}
+
+
+
+
+::-webkit-input-placeholder {
+   color: #4d4d4d;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: #4d4d4d;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #4d4d4d;  
+}
+
+:-ms-input-placeholder {  
+   color: #4d4d4d;  
+}
+
+
+:focus{
+    outline-color: #4d4d4d;
+    box-shadow: 0px 1px 3px #b3b3b3 inset;
+}
+
 
 input:-webkit-autofill {
-    -webkit-box-shadow:1px 1px 1px 50px #ffffff inset; /* Change the color to your own background color */
+    -webkit-box-shadow:1px 1px 1px 50px #fff inset;
+    -moz-box-shadow:  1px 1px 1px 50px #fff inset;
+    -o-box-shadow:  1px 1px 1px 50px #fff inset;
+    -ms-box-shadow:1px 1px 1px 50px #fff inset;
+    box-shadow: 1px 1px 1px 50px #fff inset;
     -webkit-text-fill-color: black;
+    -moz-text-fill-color: black;
+    -o-text-fill-color: black;
+    -ms-text-fill-color: black;
 }
 
 input:-webkit-autofill:focus {
     -webkit-border-radius:2px;
+    -moz-border-radius:2px;
+    -o-border-radius:2px;
+    -ms-border-radius:2px;
+    border-radius:2px;
     -webkit-box-shadow: /*your box-shadow*/ 0 0 0 50px #fff inset;
-    -webkit-text-fill-color: black;
+    -moz-box-shadow: /*your box-shadow*/ 0 0 0 50px #fff inset;
+    -o-box-shadow: /*your box-shadow*/ 0 0 0 50px #fff inset;
+    -ms-box-shadow: /*your box-shadow*/ 0 0 0 50px #fff inset;
+    box-shadow:  0 0 0 50px #fff inset;
 }  
 
 .mainError{
@@ -38,9 +99,9 @@ input:-webkit-autofill:focus {
     text-align:center;
 }
 
-#mainBackground{
-    background-color: rgba(255, 128, 128,  0.5);
-    position:absolute;
+.mainBackground{
+    background-color:rgba(189, 129, 97, 0.8);
+    position:fixed;
     z-index:-1;
     width:100%;
     height:100%;
@@ -50,13 +111,13 @@ input:-webkit-autofill:focus {
 }
 
 .mainBackground-image{
-    opacity: 0.6;
+    opacity: 0.3;
     width:100%;
     height:100%;
 }
 
 .mainCircleDisplay{
-    height:100%;
+    height:80%;
     min-height: 300px;
     display: inline-block;
     vertical-align: middle;
@@ -79,19 +140,6 @@ input:-webkit-autofill:focus {
     width:100%; 
     text-align:center;
 }
-.mainCircleLink{
-    background-color:#992600;
-    border-radius:4px;
-    color:white;
-    text-decoration: none;
-    padding:4px;
-    font-weight:bold;
-}
-
-.mainCircleLink:hover{
-    background-color:#04D9A4;
-}
-
 
 
 
@@ -101,17 +149,9 @@ input:-webkit-autofill:focus {
     height:30px;
 }
 
-.secondCover{
-    background-color:#ffcccc; 
-    height:100%; 
-    width:100%; 
-    min-width:300px;
-}
 
 .secondBody{
     color:#663300;
-    background-color:#ffcccc;
-    /*#E1F5E6;*/
     width:100%;
     min-width:300px;
     min-height:300px;
@@ -129,13 +169,14 @@ input:-webkit-autofill:focus {
 }
 
 .barDiv{
- background-color:#992600;
+ background-color:#C9D8C5;
  /*#04D9A4; */
  color:white; 
  width:100%;
  min-width:300px; 
  height:20%;
- box-shadow:1px 1px 1px #660000;
+ min-height:60px;
+ box-shadow:1px 1px 1px #93DD9B;
  text-align:center;
 }
 
@@ -155,16 +196,15 @@ input:-webkit-autofill:focus {
 .mainNavbar{
     text-decoration:none;
     font-weight: bold;
-    background-color:white;
-    color:#992600;
-    /*text-shadow: 1px 1px 1px #000000;*/
-    padding:5px;
+    background-color: #B0785A;
+    color: white;
+    text-shadow: 1px 1px 1px #000000;
+    padding:4px;
     border-radius:10px;
 }
 
 .mainNavbar:hover{
-    color:white;
-    background-color:#04D9A4;
+   padding:6px;
 }
 
 .mainInput{
@@ -180,24 +220,28 @@ input:-webkit-autofill:focus {
 }
 
 .mainButton{
-    height:15px;
-    min-width:100px;
-    max-width:200px;
-    background-color:#992600;
+    text-decoration:none;
+    padding:5px;
+    width:100px;
+    background-color:#c9d8c5;
     color: white;
+     font-weight: bold;
     text-shadow: 1px 1px 1px #000000;
-    border-radius:10px;
-    border:0px solid;
-    box-shadow: 0px 2px 2px #660000;
+    border-radius:5px;
+    box-shadow: 0px 2px 2px #93DD9B;
     font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
+    
 }
 
 .mainButton:hover{
     box-shadow: 0px 2px 2px #00cc88;
     background-color:#04D9A4;
+   
 }
 
+
+
+/*********************************Inside Page Styles**********************************/
 
 .computerScreen{
     display:none;
@@ -208,112 +252,132 @@ input:-webkit-autofill:focus {
 }
 
 
-
-.theMainDiv{
-    float:left;
-    width:83.5%;
-    padding-bottom:5%;
-    padding-left:5%;
-    padding-right:5%;
-    min-height:600px;
-}
-
-.navBarDiv:hover:before{
-    content: "";
-    position: absolute;
-    top:0;
-    bottom:0;
-    right: 0;
-    left: 0;
-    border-radius:0 10px 10px 0;
-    background-color: rgba(30,30,30,0.1);
-}
-
-
-
-.navBarDiv{
-    float:left;
-    width:90%;
-    height:150px;
-    margin-bottom: 10px;
-    border-radius:0px 10px 10px 0px;
-    position:relative;
-    font-size:80%;
-}
-
-
-.loggedNav{
-    position:absolute;
-    bottom:0;
-    left:0;
+.mainBackground{
+    position:fixed;
+    z-index:-1;
     width:100%;
     height:100%;
-    text-decoration: none;
-    color:white;
+    min-height:300px;
+    top:0;
+    left:0;
 }
 
-.spanLinks{
-    position:absolute;
-    text-align: center;
+.theMainDiv{
     width:100%;
-    top:50;
-    white-space: nowrap;
-    -webkit-transform:rotate(90deg);
-    -moz-transform:rotate(90deg);
-    -o-transform: rotate(90deg);
-    -ms-transform:rotate(90deg);
-    transform: rotate(90deg);
+    display:inline-block;
+    margin:0px;
+    /*padding-bottom:5%;*/
+    /*padding-left:5%;*/
+    /*padding-right:5%;*/
 }
+
+/*.navBarDiv:hover:before{*/
+/*    content: "";*/
+/*    position: absolute;*/
+/*    top:0;*/
+/*    bottom:0;*/
+/*    right: 0;*/
+/*    left: 0;*/
+/*    border-radius:0 10px 10px 0;*/
+/*    background-color: rgba(30,30,30,0.1);*/
+/*}*/
 
 
 .navBarInclude{
-    float:right;
-    margin-top:5%;
-    margin-left:0px;
-    width:6.5%;
+    height:50px;
+    width:100%;
+    display:inline-block;
+    margin:0;
 }
 
+.navButton{
+    display:inline-block;
+    margin-left:10px;
+    margin-top:10px;
+    color:white;
+    font-weight: bold;
+    cursor:hand;
+}
+
+.userName{
+    display:inline-block;
+    color: #e6e6e6;
+    font-size:120%;
+    font-weight:bolder;
+    margin-left:5px;
+    text-shadow: 1px 1px 1px #000000; 
+}
+
+.barMenu{
+    position:absolute;
+    display:block;
+    width:100px;
+    padding:10px;
+    z-index:100;
+}
+
+.navBarDiv{
+    margin-top:5px;
+}
+
+.navBarDiv:hover{
+    background-color:rgba(110, 87, 68, 0.4);
+}
+
+.borderb{
+    border-bottom:1px solid;
+}
+
+.loggedNav{
+    color:#f2f2f2;
+    text-decoration: none;
+}
+
+
+    
 .userSettingsDivLeft{
-    border-radius: 5px;
     float:left;
-    margin-top:2%;
-    width:94%;
+    margin:2%;
+    width:92%;
     height:50%;
     min-height: 400px;
     padding:2%;
     padding-bottom:5%;
     padding-top: 5%;
-    background-color:white;
     font-size:85%;
+    border-bottom:2px solid #f2f2f2;
 }
 
 .userSettingsDivRight{
-    border-radius: 5px;
     float:left;
-    margin-top:5%;
-    width:94%;
+    margin:2%;
+    width:92%;
     height:50%;
     min-height: 450px;
     padding:2%;
-    padding-bottom:5%;
+    padding-bottom:2%;
     padding-top: 5%;
-    background-color:white;
     position:relative;
-    background-color: white;
     font-size:85%;
 }
 
 
 .userSettingsDiv{
-    border-radius:5px;
     width:90%;
     padding:5%;
-    background-color:white; 
     margin:auto;
     height:90%;
     min-height: 700px;
     margin-top:5%;
     font-size:90%;
+}
+
+.messageTextArea{
+    width:60%; 
+    min-width:180px; 
+    max-width:500px;
+    height:20%; 
+    max-height:500px;
 }
 
 .themeHolder{
@@ -331,65 +395,65 @@ input:-webkit-autofill:focus {
 
 .uSetInput{
     height:25px;
+    width:150px;
 }
 
-.userName{
-    color: #e6e6e6;
-    font-size:90%;
-    font-weight:bolder;
-    margin-top:10px;
-    margin-bottom:2px;
-    margin-left:5px;
-    text-shadow: 1px 1px 1px #000000; 
-}
+
 
 #calendarDiv{
     border-radius: 5px;
     float:left;
     margin-top:2%;
-    width:94%;
-    padding:2%;
-    padding-bottom:5%;
-    padding-top: 5%;
-    background-color:white;
+    width:90%;
+    margin:5%;
+    /*padding:2%;*/
+    /*padding-bottom:5%;*/
+    /*padding-top: 5%;*/
+    /*background-color:white;*/
     font-size:85%;
 }
 #listCalToolsDiv{
     border-radius: 5px;
     float:left;
-    margin-top:5%;
-    width:94%;
-    padding:2%;
-    padding-bottom:5%;
-    background-color:white;
+    margin:5%;
+    width:90%;
+    /*padding:2%;*/
+    /*padding-bottom:5%;*/
+    /*background-color:white;*/
     position:relative;
-    background-color: white;
     font-size:85%;
 }
+
+.frontFont{
+    font-family: Comic Sans, Comic Sans MS;
+    font-stretch: semi-expanded;
+    font-weight:bold;
+}
+
+/*.taskStyle{*/
+/*    padding-top:10px;*/
+/*    padding-bottom: 10px;*/
+/*    margin-top:5px;*/
+/*    background-color:white;*/
+/*    border-radius:3px;*/
+/*}*/
 
 
 
 #smallScreenCalendar{
-    background-image:url('/pictures/blankpage.jpg'); 
+    /*background-image:url('/pictures/blankpage.jpg'); */
+    background-color:rgba(255, 255, 255, 0.2);
+    display:inline-block;
+    border: 2px solid gray;
     min-height:60px; 
-    width:90%; 
+    width:100%; 
     margin-left:auto;
     margin-right:auto;
     margin-top:3%; 
     position:relative;
- 
+    z-index:1;
 }
 
-
-button{
-    cursor:hand;
-    border:none;
-    font-size:90%;
-}
-
-button[disabled]{
-    cursor: not-allowed;
-}
 
 
 .all{
@@ -404,14 +468,14 @@ button[disabled]{
 
 
 .editColor {
-    width:80%;
+    color:black;
     margin:auto;
     margin-bottom:5%;
 }
 
 .textInput{
     height:30px;
-    width:102.5%;
+    width:100%;
 }
 
 .divInput{
@@ -442,8 +506,8 @@ button[disabled]{
 .headers{
     margin-top:15px;
     margin-bottom:5px;
-    font-weight:bold;
-    font-size: 110%;
+    font-weight:bolder;
+    font-size: 150%;
 }
 
 .menuButtons{
@@ -469,10 +533,11 @@ button[disabled]{
 .completedStyle{
     text-decoration: line-through;
     font-style: oblique;
-    color: gray;
+    color: #cccccc;
 }
 
 .calHeader{
+    color:black;
     width:100%;
     text-align:center;
 }
@@ -489,7 +554,7 @@ button[disabled]{
 }
 
 .miniCalDisplay {
-    background-color: white;
+    background-color:rgba(255, 255, 255, 1);
     position:absolute;
     z-index: 10;
     box-shadow: inset 0px -1px 25px #e6e6e6;
@@ -504,6 +569,7 @@ button[disabled]{
 }
 
 #monthlyDateTable{
+    margin-top:10px;
     width:100%; 
     font-size:90%; 
     font-weight:bold
@@ -523,8 +589,8 @@ button[disabled]{
 .bigCalDates{
     position:relative;
     font-weight:bold;
-    margin-left:5px;
-    font-size:80%;
+    width:100%;
+    font-size:90%;
 }
 
 
@@ -536,17 +602,19 @@ button[disabled]{
 
 
 .createEventModal-dark {
+    width:100%;
+    height:100%;
     position: absolute;
     z-index: 9999;
     top: 0;
     left: 0;
-    background-color: #000000;
     opacity: 0.9;
 }
 
 
+
 .createEventModal-style{
-    
+    background-image:url('/pictures/wood.jpg'); 
     z-index: 10000;
     position: absolute;
     
@@ -554,7 +622,7 @@ button[disabled]{
     min-height:420px;
    
      /*to center the content */
-    top: 20%;
+    top: 2%;
     left: 0%;
    
     border-radius:5px;
@@ -565,19 +633,27 @@ button[disabled]{
 }
 
 .createEventModal-style-content{
+   left:0;
+   top:0;
+   width:100%;
+   height:100%;
    position:absolute;
    font-size:70%;
+   font-weight: bold;
 }
 
 .addModalInput{
     font-size:95%;
+    /*color:white;*/
 }
 
 .addModalInputSelect{
     font-size:95%;
+    /*color:white;*/
 }
 
 .addModalInputDate{
+    /*color:white;*/
     margin-left:5px;
     width:100px;
     float:right;
@@ -586,6 +662,7 @@ button[disabled]{
 
 
 .addModalInputTime{
+    /*color:white;*/
     font-size:95%;
     position:relative;
 }
@@ -599,6 +676,7 @@ button[disabled]{
 }
 
 .selectRepInter{
+    /*color:white;*/
     position:relative;
     margin-left:5px;
     z-index:3;
@@ -625,10 +703,10 @@ button[disabled]{
 
 .addForm{
     position:relative;
+    background-image:url('/pictures/wood.jpg');
     width:150px; 
     height:220px;
     margin:auto;
-    box-shadow: inset 0px -1px 25px #e6e6e6;
 }
 
 .addListCalButton{
@@ -637,12 +715,13 @@ button[disabled]{
 
 
 .menuForm{
+    background-color:rgba(255, 255, 255, 0.7);
     position:absolute;
     top:0;
     left:0;
     width:200px;
     height:250px;
-    border-radius:5px;
+    border-radius:4px;
     font-size:80%;
 }
 
@@ -652,13 +731,13 @@ button[disabled]{
     width:90%;
     margin-left:auto;
     margin-right:auto;
-    margin-top:20px;
+    margin-top:35px;
 }
 
 .upperqDiv-content{
      margin-top:12px;
      margin-left:auto;
-    margin-right:auto;
+     margin-right:auto;
      width:90%;
 }
 
@@ -679,29 +758,39 @@ button[disabled]{
 
 
 .questionModal{
+    background-color:rgba(255, 255, 255, 0.7);
     position:absolute;
     top:0;
     left:0;
     width: 250px;
     height: 200px;
-    box-shadow: inset 0px -1px 15px #e6e6e6;
     border-radius:4px;
     font-size: 80%
 }
+
 .createQuestionModal-style{
-    
-    z-index: 10000;
+    background-image:url('/pictures/wood.jpg'); 
+    border-radius:4px;
+    z-index: 900;
     position: absolute;
     width: 250px;
     height: 200px;
+}
 
-    background-color: #fff;
+.createQuestionModal-header{
+    z-index:10;
+    position:absolute;
+    border-radius:4px 4px 0px 0px;
+    left:0;
+    top:0;
+    height:30px;
+    width:100%;
 }
 
 .createQuestionModal-style-content{
+    color:black;
     padding: 5px;
-    text-align: left;
-    color: #000000;
+    text-align: center;
 }
 
 .createQuestionModal-close{
@@ -712,9 +801,18 @@ button[disabled]{
     padding: 3px;
     cursor: pointer;
     display: inline-block;
+    color:white;
     font-weight: bold;
 }
 
+.createQuestionModal-footer{
+    position:absolute;
+    left:0;
+    bottom:0;
+    height:30px;
+    width:100%;
+    border-radius:0px 0px 4px 4px;
+}
 
 /*For the add List and add Calendars*/
 .createQuestionModal-tooldark {

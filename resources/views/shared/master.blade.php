@@ -24,8 +24,8 @@
     </head>
 
 
-    <body ng-app="bmPlannerApp" style=" font-family:'Arial Narrow', Arial, sans-serif; margin:0" ng-controller="userCtrl as u">
-        <div ng-style="style.bodyStyle()" ng-controller="styleCtrl as style">
+    <body ng-app="bmPlannerApp" style=" font-family:'Arial Narrow', Arial, sans-serif; margin:0; position:relative" ng-controller="userCtrl as u">
+        <div ng-controller="styleCtrl as style">
             @yield('content')
         </div>
     </body>

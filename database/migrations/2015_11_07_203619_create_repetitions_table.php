@@ -18,7 +18,7 @@ class CreateRepetitionsTable extends Migration
             $table->integer('event_id')->unsigned();
             $table->string('repeatOccurrence');
             $table->integer('repeatInterval')->nullable();
-            $table->date('repeatEndDate')->nullable();
+            $table->dateTime('repeatEndDate')->nullable();
             $table->char('repeatDaily')->nullable();
             $table->char('repeatWeekdays')->nullable();
             $table->string('repeatWeekly')->nullable();

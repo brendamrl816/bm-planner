@@ -1,17 +1,15 @@
 
-<div class="userName">{{u.user.displayName}}</div>
-
 <div class="userSettingsDiv" ng-controller="contactUsCtrl as c">
     <h3>Send us a message:</h3>
              <form name="emailForm">
-                    <div ng-show="c.successMessage" ng-style="style.modernBackground()">Your email has been sent!</div>
+                    <div ng-show="c.successMessage">Your email has been sent!</div>
                     
                     <div style="margin-top:2%; width:100%; text-align:center">
-                        <input class="uSetInput" ng-style="style.textInputStyle()"  type="text" placeholder="*Subject" id="subject" name="subject" ng-model="c.subject" required>
+                        <input class="uSetInput" ng-style="style.modalInputStyle()"  type="text" placeholder="*Subject" id="subject" name="subject" ng-model="c.subject" required>
                     </div>
                    
                     <div style="margin-top:25px; width:100%; text-align:center">
-                       <textarea ng-style="style.textInputStyle()" style="height:50%; width:60%; min-width:180px; max-width:500px; max-height:500px" placeholder="*Message Content" id="content" name="content" ng-model="c.content" required>
+                       <textarea ng-style="style.modalInputStyle()" class="messageTextArea" placeholder="*Message Content" id="content" name="content" ng-model="c.content" required>
                        </textarea> 
                     </div>
                     

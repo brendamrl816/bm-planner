@@ -89,51 +89,59 @@ bmPlannerControllers.controller('userCtrl', function(User, $window,  $http, Cale
     };
 });
 
+bmPlannerControllers.controller('navBarCtrl', function( $scope){
+    $scope.navMenu = false;
+    
+    
+    $scope.toggleNavMenu = function(){
+        $scope.navMenu = !$scope.navMenu;
+    };
+    
+    window.addEventListener('click', function(){
+        if($scope.navMenu == true)
+        {
+            $scope.navMenu = false;
+        }
+        $scope.$apply();
+    });
+    
+});
 
 bmPlannerControllers.controller('styleCtrl', function(Style, $scope, $rootScope){
     var self = this;
     self.theStyle = Style;
     
     self.homeView = function(){
-      return {'background-color': self.theStyle.css.buttons_backgroundColor,  'border-radius':'10px', 'box-shadow':'inset 0px 0px 2px 1px' + self.theStyle.css.navBar_borderColor};
+      return {'background-color': 'rgba(' + self.theStyle.css.body_backgroundColor + ', 1)'};
     };
     
-    self.bodyStyle = function(){
-        return { 'color':self.theStyle.css.body_color,
-            'font-family':self.theStyle.css.body_fontFamily};
-    };
-    
+   
     self.modernBackground = function(){
-        return {'width':'98%', 'color':'white', 'background-color':self.theStyle.css.buttons_backgroundColor, 'border-radius':'4px', 'text-shadow':' 1px 1px 1px #000000', 'padding':'3px'};
+        return { 'color':'#f2f2f2', 'border-bottom':'2px solid ' + 'rgb(' + self.theStyle.css.buttons_borderColor + ')', 'border-radius':'2px', 'text-shadow':' 1px 1px 1px #000000'};
     };
     
     self.buttonStyle = function(){
-        return {'background-color':self.theStyle.css.buttons_backgroundColor, 'color':self.theStyle.css.body_color,
-                'border-radius':'5px', 'box-shadow':'1px 1px 1px' + self.theStyle.css.navBar_borderColor, 'height':'15px'};
+        return {'background-color':'rgba(' + self.theStyle.css.buttons_backgroundColor + ', 1)', 'color':'white', 'text-shadow':' 1px 1px 1px #000000', 
+                'border-radius':'2px', 'padding':'4px', 'box-shadow':'1px 1px 1px rgba(' + self.theStyle.css.buttons_borderColor + ', 1)' };
     };
     
-    self.modalbuttonStyle = function(){
-        return {'text-decoration':'none',  'background-color': 'white', 'border-radius':'4px', 'border':'none', 'box-shadow':'1px 1px 1px 1px' + self.theStyle.css.buttons_borderColor, 
-         'padding':'4px', 'cursor':'hand'};  
+    self.textInputStyle = function(){
+        return {'text-decoration':'none',  'background-color':'rgba(' + self.theStyle.css.buttons_borderColor + ', 0.4)', 'border-radius':'2px', 'border':'none', 'box-shadow':'0px 1px 0px' + self.theStyle.css.buttons_borderColor};  
     };
     
     
     self.inputStyle = function(){
-        return {'background-color':self.theStyle.css.body_backgroundColor, 'color':'gray', 
-                'border-radius':'4px', 'border':'0px solid', 'padding':'5px'};
+        return { 'background-color':'transparent', 'box-shadow':'1px 1px 1px 1px rgba(' + self.theStyle.css.buttons_borderColor + ', 1)', 
+                'border-radius':'2px', 'padding':'5px'};
     };
     
-    self.textInputStyle = function(){
-        return {'background-color':self.theStyle.css.body_backgroundColor, 'color':'gray',
-                'border-radius':'4px', 'border':'1px solid' + self.theStyle.css.buttons_borderColor,   'padding-top':'2px', 'padding-bottom':'2px'};
+    self.modalInputStyle = function(){
+        return { 'background-color':'rgba(' + self.theStyle.css.body_backgroundColor + ', 1)', 'box-shadow':'1px 1px 1px 1px rgba(' + self.theStyle.css.buttons_borderColor + ', 1)', 
+                'border-radius':'2px', 'padding':'2px'};
     };
-    
-    self.menuModalStyle = function(){
-        return {'background-color':self.theStyle.css.menuModal_backgroundColor};  
-    };
-    
-    self.addModalStyle = function(){
-        return {'background-color':self.theStyle.css.menuModal_backgroundColor, 'color':'black'};  
+   
+    self.modalStyle = function(){
+        return {'box-shadow':' 1px 1px 5px 1px rgba(' + self.theStyle.css.buttons_borderColor + ', 0.8)'};  
     };
     
   
@@ -143,18 +151,22 @@ bmPlannerControllers.controller('styleCtrl', function(Style, $scope, $rootScope)
     };
     
     self.errorStyle = function(){
-        return {'color':'red', 'font-style':'oblique'};
+        return {'color':'rgba(' + self.theStyle.css.buttons_backgroundColor + ', 1)', 'font-style':'oblique', 'font-weight':'bolder',  'text-shadow':' 1px 1px 1px #000000', 'font-size':'150%'};
     };
     
     self.navbarStyle = function(){
-        return {'color':self.theStyle.css.body_backgroundColor, 'background-color': self.theStyle.css.navBar_backgroundColor,
-        'text-shadow':' 1px 1px 1px #000000', 'font-weight':'bold', 'padding':'5px'}; 
+        return {'color':self.theStyle.css.body_backgroundColor, 'background-color': 'rgb(' + self.theStyle.css.navBar_backgroundColor + ')',
+        'text-shadow':' 1px 1px 1px #000000', 'font-weight':'bold'}; 
+    };
+    
+    self.navMenu= function(){
+        return { 'background-color': 'rgba(' + self.theStyle.css.buttons_backgroundColor + ', 0.9)', 'box-shadow':' 1px 1px 2px 1px #D9D9D9'};
     };
     
     
-    self.navBar = function(){
-        return { 'color': self.theStyle.css.buttons_backgroundColor, 'text-shadow':' 1px 1px 1px #000000', 'font-weight':'bold'};  
-    };
+    // self.navBar = function(){
+    //     return { 'color': self.theStyle.css.navBar_backgroundColor, 'text-shadow':' 1px 1px 1px #000000', 'font-weight':'bold'};  
+    // };
     
 });
 
@@ -174,27 +186,27 @@ bmPlannerControllers.controller('editStyleCtrl', function(Style, $window, $scope
         switch(self.chosenTheme){
             case 'default':
                 data.theme_name = "default";
-                data.body_backgroundColor = '#ffffff';
+                data.body_backgroundColor = '218, 173, 134';
                 data.body_color = '#663300';
                 data.body_fontFamily = 'Arial, Helvetica, sans-serif';
-                data.buttons_backgroundColor = '#99ffcc';
-                data.buttons_borderColor = '#b4febe';
-                data.navBar_backgroundColor = '#66ffb3';
+                data.buttons_backgroundColor = '223, 141, 70';
+                data.buttons_borderColor = '89, 56, 28';
+                data.navBar_backgroundColor = '89,56,28';
                 data.navBar_color = '#ffffff';
-                data.navBar_borderColor = '#79ecb3';
-                data.menuModal_backgroundColor = '#E1F5E6';
+                // data.navBar_borderColor = '#ffad99';
+                data.menuModal_backgroundColor = '118, 180, 192';
                 break;
             case 'theme1':
                 data.theme_name = "theme1";
-                data.body_backgroundColor = '#ffffff';
+                data.body_backgroundColor = '218, 173, 134';
                 data.body_color = '#663300';
                 data.body_fontFamily = 'Arial, Helvetica, sans-serif';
-                data.buttons_backgroundColor = '#ffd6cc';
-                data.buttons_borderColor = '#ffcccc';
-                data.navBar_backgroundColor = '#ffc2b3';
+                data.buttons_backgroundColor = '223, 141, 70';
+                data.buttons_borderColor = '89, 56, 28';
+                data.navBar_backgroundColor = '89,56,28';
                 data.navBar_color = '#ffffff';
-                data.navBar_borderColor = '#ffad99';
-                data.menuModal_backgroundColor = '#fff5f0';
+                // data.navBar_borderColor = '#ffad99';
+                data.menuModal_backgroundColor = '118, 180, 192';
                 break;
             case 'theme2':
                 data.theme_name = "theme2";
@@ -488,8 +500,10 @@ bmPlannerControllers.controller("calendarMenuCtrl", function(Calendars, EventsCa
 /**************************************************************************EVENTS********************************************************/
 bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCalendar, Calendars, Events, Repeats){
 
+    
     var self = this;
     self.createEvent = false;
+    self.template ="/html/addEventTemplate.html";
     self.calendars = [];
     self.mainCalendar; 
     
@@ -546,20 +560,32 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
     };
     
     
-    self.toggleCreateEvent = function(){
+    self.toggleCreateEvent = function(day, time_minutes){
        self.createEvent = !self.createEvent;
        if(self.createEvent == true){
-            
             self.calendars = Calendars.calendars;
             self.name = "";
             self.calendar_id = self.mainCalendar;
-            self.startDate=moment();
-            self.startHour = moment().format('hh');
-            self.endHour = moment().add(1, 'h').format('hh');
+            if(day != "today")
+            {
+                self.startDate = day.clone();
+            }else{
+                self.startDate = moment();
+            }
+            if(time_minutes != "na")
+            {
+                self.startDate.hour(time_minutes/60);
+            }else{
+                self.startDate.hour(moment().format('HH'));
+            }
+            
+            self.endDate = self.startDate.clone().add(1, 'h');
+            self.startHour = self.startDate.format('hh');
+            self.endHour = self.endDate.format('hh');
             self.startMinutes ='00';
             self.endMinutes ='00';
-            self.startMeridiem = self.startDate.clone().format('a');
-            self.endMeridiem = self.startDate.clone().add(1, 'h').format('a');
+            self.startMeridiem = self.startDate.format('a');
+            self.endMeridiem = self.endDate.format('a');
             self.allDay=false;
             self.repeats=false;
             self.repeatOccurrence="";
@@ -581,7 +607,7 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
 
     
     $scope.$watch('add.startDate', function(newValue, oldValue){
-      $scope.add.endDate= newValue.clone();
+      $scope.add.endDate= newValue.clone().add(1, 'h');
       $scope.add.repeatEndDate = newValue.clone().add(1, 'd');
     });
     
@@ -681,26 +707,30 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
     //*******************************SET INFO TO BE SENT TO BACKEND*******************************************************
         var eventToSend={};
         eventToSend.name = self.name;
-        
         eventToSend.calendar_id = self.calendar_id.id;
         
-        eventToSend.startDate = self.startDate.format('YYYY-MM-DD');
-        eventToSend.endDate= self.endDate.format('YYYY-MM-DD');
+        self.startDate.hour(getHour(self.startHour, self.startMeridiem));
+        self.startDate.minutes(self.startMinutes);
+        self.endDate.hour(getHour(self.endHour, self.endMeridiem));
+        self.endDate.minutes(self.endMinutes);
         
-        eventToSend.eventLength = self.endDate.diff(self.startDate, 'days') + 1;
+        eventToSend.startDate = self.startDate.format('YYYY-MM-DD '+ getTimeToSend(self.startHour, self.startMinutes, self.startMeridiem));
+        eventToSend.endDate= self.endDate.format('YYYY-MM-DD ' + getTimeToSend(self.endHour, self.endMinutes, self.endMeridiem));
         
-    
+       
+        eventToSend.eventLength = Math.ceil(self.endDate.diff(self.startDate, 'hours', true));
+        
+        console.log(self.startDate);
+        console.log(self.endDate);
+        console.log(eventToSend.eventLength);
+      
         eventToSend.startTimeDisplay = self.startHour +':'+self.startMinutes+ self.startMeridiem;
         eventToSend.endTimeDisplay = self.endHour +':' + self.endMinutes+ self.endMeridiem;
-        
-        eventToSend.startTime = getTimeToSend(self.startHour, self.startMinutes, self.startMeridiem);
-        eventToSend.endTime = getTimeToSend(self.endHour, self.endMinutes, self.endMeridiem);
-        
-        
+
         eventToSend.repeats=self.repeats;
         eventToSend.allDay = self.allDay;
         
-        //***************************************send info to backend*****************************************
+        // ***************************************send info to backend*****************************************
         Events.addEvent(eventToSend).success(function(response){
             
             if(response.repeats==true){
@@ -712,7 +742,7 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
                     repeatData.neverEnds=true;
                     repeatData.repeatEndDate=null;
                 }else{
-                    repeatData.repeatEndDate = self.repeatEndDate.format('YYYY-MM-DD');
+                    repeatData.repeatEndDate = self.repeatEndDate.format('YYYY-MM-DD '+ getTimeToSend(self.endHour, self.endMinutes, self.endMeridiem));
                     repeatData.neverEnds=false;
                 }
             
@@ -774,24 +804,42 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
     
     function getTimeToSend(hour, minute, meridiem)
     {
+        console.log(hour, minute, meridiem);
         if(self.allDay == true){
             hour = '00';
             minute= '00';
         }
         else{
-            if(hour == 12 && meridiem == 'am')
+            if(hour == '12' && meridiem == 'am')
             {
-                hour='00';
+                hour ='00';
+                console.log(hour);
             }
             if(meridiem =='pm' && hour != '12')
             {
                 hour = parseInt(hour, 10) + 12;
             }
         }
-  
+        console.log(hour + ':' + minute + ':' + '00');
         return hour + ':' + minute + ':' + '00';
     }
     
+    function getHour(hour, meridiem)
+    {
+        
+            if(hour == '12' && meridiem == 'am')
+            {
+                hour ='00';
+            }
+            if(meridiem =='pm' && hour != '12')
+            {
+                console.log(hour);
+                hour = parseInt(hour, 10) + 12;
+            }
+       console.log(hour);
+        return hour;
+        
+    }
 });
 
 
@@ -813,18 +861,8 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
         }
         return color;
     };
-    
-    $scope.getShadow = function(day){
-        if(day < moment().subtract(1, 'd'))
-        {
-           return '1px 1px 5px #e6e6e6';
-        }
-        else{
-           
-             return '0px 0px gray';
-        }
-    };
-    
+   
+   
     $scope.getDisplayColor = function(day)
     {
         var color;
@@ -835,20 +873,21 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
                 color = Calendars.calendars[i].color;
             }
         }
-        //#e6e6e6
+        
         if(day < moment().subtract(1, 'd'))
         {
-           return 'rgba(' + color + ' ,0.7)';
+            return 'rgba(' + color +  ', 0.5)';//'#737373'; 
         }
         else{
            
-             return 'rgb(' + color +  ')';
+            return 'rgb(' + color +  ')';
         }
+ 
     };
     
     $scope.getBorderRad = function()
     {
-        if($scope.event.eventLength == 1)
+        if($scope.event.eventLength == 0)
         {
             return '20px';
         }else{
@@ -857,17 +896,20 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
     };
     
     $scope.getLongWidth = function(){
-        if($scope.event.eventLength > (7-$scope.day.itsDate.day()))
+        if($scope.event.eventLength/24 + 1 > (7 - $scope.day.itsDate.day()))
         {
-            return ((100 * (7 - $scope.day.itsDate.day()))- 1) + '%';
+            return ((100 * ( 7 - $scope.day.itsDate.day() + 1) ) ) + '%';
         }
         else{
-            return ((100 * $scope.event.eventLength) - 1) + '%';
+            return ((100 * (1  + $scope.event.eventLength)) ) + '%';
         }
     };
     
-    $scope.startDateDisplay = moment($scope.event.eventStartsOn).format('MMM DD, YYYY');
-    $scope.endDateDisplay = moment($scope.event.eventStartsOn).add($scope.event.eventLength - 1, 'd').format('MMM DD, YYYY');
+    // moment("2010-10-20 4:30",       "YYYY-MM-DD HH:mm");
+    $scope.startDateDisplay = moment($scope.event.eventStartsOn , 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
+    $scope.endDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').add(moment($scope.event.endDate, 'YYYY-MM-DD HH:mm:ss').diff(moment($scope.event.startDate, 'YYYY-MM-DD HH:mm:ss'), 'hours'), 'hours').format('MMM DD, YYYY');
+    
+    
     //****************************************** MODAL VARIABLES ***************************************************************
     $scope.eventMenu = false; //Ask user if it wants to edit or delete
     $scope.verifyDeletion = false; //Ask user if they really want to delete event
@@ -878,8 +920,10 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
    
     $scope.toggleEventMenu = function(){
         $scope.eventMenu = !$scope.eventMenu;
-        $scope.startDateDisplay = moment($scope.event.eventStartsOn).format('MMM DD, YYYY');
-        $scope.endDateDisplay = moment($scope.event.eventStartsOn).add($scope.event.eventLength - 1, 'd').format('MMM DD, YYYY');
+        $scope.startDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
+        $scope.endDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').add(moment($scope.event.endDate, 'YYYY-MM-DD HH:mm:ss').diff(moment($scope.event.startDate, 'YYYY-MM-DD HH:mm:ss'), 'hours'), 'hours').format('MMM DD, YYYY');
+    
+        console.log($scope.event.eventStartsOn);
     };
     $scope.toggleVerifyDeletion = function(){
         $scope.verifyDeletion = !$scope.Deletion;
@@ -1679,7 +1723,8 @@ bmPlannerControllers.controller('mainCalViewCtrl', function($scope, $rootScope, 
     //     }
         
     // });
-
+    
+  
     $scope.today = function(){
         EventsCalendar.goToToday();
     };
@@ -1688,7 +1733,7 @@ bmPlannerControllers.controller('mainCalViewCtrl', function($scope, $rootScope, 
     {
         if(day < moment().subtract(1, 'd'))
         {
-            return {'color':'#8c8c8c'};
+            return {'color':'#737373'};
         }else{
             return {'color':'black'};
         }

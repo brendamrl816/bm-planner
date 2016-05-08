@@ -477,11 +477,18 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                     
                     for (var n = 0; n < response[i]['events'].length; n++) {
                         
-                        if (response[i]['events'][n]['event'].eventLength == 1 && response[i]['events'][n]['event'].allDay == false) {
+                        if (response[i]['events'][n]['event'].eventLength == 0 && response[i]['events'][n]['event'].allDay == false) {
                             
-                            var startTime = response[i]['events'][n]['event'].startTime.split(":");
+                            var startTime1 = response[i]['events'][n]['event'].startDate.split(" ");
+                            
+                            var startTime = startTime1[1].split(":");
                             var start = (startTime[0] * 60) + parseInt(startTime[1], 10);
-                            var endTime = response[i]['events'][n]['event'].endTime.split(":");
+                            var endTime1 = response[i]['events'][n]['event'].endDate.split(" ");
+                            var endTime = endTime1[1].split(':');
+                            if(endTime[0]=='00' && endTime[1]=='00')
+                            {
+                                endTime[0]='24';
+                            }
                             var end = (endTime[0] * 60) + parseInt(endTime[1], 10);
                             var startMinutes = parseInt(startTime[1], 10);
                             var endMinutes = parseInt(endTime[1], 10);
@@ -571,8 +578,6 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                             startDate:response[i]['events'][n]['event'].startDate,
                                             endDate:response[i]['events'][n]['event'].endDate ,
                                             eventLength:response[i]['events'][n]['event'].eventLength,
-                                            startTime:response[i]['events'][n]['event'].startTime,
-                                            endTime:response[i]['events'][n]['event'].endTime ,
                                             allDay:response[i]['events'][n]['event'].allDay ,
                                             startTimeDisplay:response[i]['events'][n]['event'].startTimeDisplay,
                                             endTimeDisplay: response[i]['events'][n]['event'].endTimeDisplay,
@@ -587,6 +592,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                             repeatWeekly: response[i]['events'][n]['event'].repeatWeekly,
                                             repeatYearly: response[i]['events'][n]['event'].repeatYearly,
                                             eventStartsOn: response[i]['events'][n]['eventStartsOn'],
+                                            eventStartsOnFormatted : moment(response[i]['events'][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'),
                                             //frontend
                                             rowspan: rowspan,
                                             index: m,
@@ -625,7 +631,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                         { 
                             var topIndex;
                             
-                            if(days[i].itsDate.format('YYYY-MM-DD') == response[i]['events'][n]['eventStartsOn'])
+                            if(days[i].itsDate.format('YYYY-MM-DD') ==  moment(response[i]['events'][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'))
                             {   var k =0;
                                 if(days[i].longEvents.length == 0)
                                 {
@@ -687,8 +693,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                             startDate:response[i]['events'][n]['event'].startDate,
                                             endDate:response[i]['events'][n]['event'].endDate ,
                                             eventLength:response[i]['events'][n]['event'].eventLength,
-                                            startTime:response[i]['events'][n]['event'].startTime,
-                                            endTime:response[i]['events'][n]['event'].endTime ,
+                        
                                             allDay:response[i]['events'][n]['event'].allDay ,
                                             startTimeDisplay:response[i]['events'][n]['event'].startTimeDisplay,
                                             endTimeDisplay: response[i]['events'][n]['event'].endTimeDisplay,
@@ -703,7 +708,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                             repeatWeekly: response[i]['events'][n]['event'].repeatWeekly,
                                             repeatYearly: response[i]['events'][n]['event'].repeatYearly,
                                             eventStartsOn: response[i]['events'][n]['eventStartsOn'],
-                                            //frontend
+                                            eventStartsOnFormatted : moment(response[i]['events'][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'),
                                         //frontend
                                         topIndex: topIndex,
                                         top: topIndex * 20,
@@ -777,7 +782,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                 
                 for (var n = 0; n < response[i]['events'].length; n++)
                 {
-                    if(response[i]['events'][n]['event'].eventLength == 1){
+                    if(response[i]['events'][n]['event'].eventLength == 0){
                         var event = {
                                         id: response[i]['events'][n]['event'].id,
                                         calendar_id: response[i]['events'][n]['event'].calendar_id,
@@ -785,8 +790,6 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                         startDate:response[i]['events'][n]['event'].startDate,
                                         endDate:response[i]['events'][n]['event'].endDate ,
                                         eventLength:response[i]['events'][n]['event'].eventLength,
-                                        startTime:response[i]['events'][n]['event'].startTime,
-                                        endTime:response[i]['events'][n]['event'].endTime ,
                                         allDay:response[i]['events'][n]['event'].allDay ,
                                         startTimeDisplay:response[i]['events'][n]['event'].startTimeDisplay,
                                         endTimeDisplay: response[i]['events'][n]['event'].endTimeDisplay,
@@ -800,14 +803,15 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                         repeatWeekdays:response[i]['events'][n]['event'].repeatWeekdays,
                                         repeatWeekly: response[i]['events'][n]['event'].repeatWeekly,
                                         repeatYearly: response[i]['events'][n]['event'].repeatYearly,
-                                        eventStartsOn: response[i]['events'][n]['eventStartsOn']
+                                        eventStartsOn: response[i]['events'][n]['eventStartsOn'],
+                                        eventStartsOnFormatted : moment(response[i]['events'][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'),
                                     };
                         days[i].events.push(event);
                     }
                     else{
                         var topIndex;
                             
-                            if(days[i].itsDate.format('YYYY-MM-DD') == response[i]['events'][n]['eventStartsOn'])
+                            if(days[i].itsDate.format('YYYY-MM-DD') ==  moment(response[i]['events'][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'))
                             {   var k =0;
                                 if(days[i].longEvents.length == 0)
                                 {
@@ -868,8 +872,6 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                         startDate:response[i]['events'][n]['event'].startDate,
                                         endDate:response[i]['events'][n]['event'].endDate ,
                                         eventLength:response[i]['events'][n]['event'].eventLength,
-                                        startTime:response[i]['events'][n]['event'].startTime,
-                                        endTime:response[i]['events'][n]['event'].endTime ,
                                         allDay:response[i]['events'][n]['event'].allDay ,
                                         startTimeDisplay:response[i]['events'][n]['event'].startTimeDisplay,
                                         endTimeDisplay: response[i]['events'][n]['event'].endTimeDisplay,
@@ -884,6 +886,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                         repeatWeekly: response[i]['events'][n]['event'].repeatWeekly,
                                         repeatYearly: response[i]['events'][n]['event'].repeatYearly,
                                         eventStartsOn: response[i]['events'][n]['eventStartsOn'],
+                                        eventStartsOnFormatted : moment(response[i]['events'][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'),
                                         
                                         //frontend
                                         topIndex: topIndex,

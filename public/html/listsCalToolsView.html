@@ -9,19 +9,22 @@
             
             <div style="display:inline-block">
                 
-                <div style="float:left; margin-left:5px; font-size:85%" class="menuButtons" ng-click="toggleMenu()"><i class="fa fa-pencil fa-lg"></i></div>
-                <span ng-style="{'color':'rgb(' +list.color+ ')', 'float':'left', 'font-weight':'bold', 'margin-left':'5px'}">{{list.name}}</span>
+                <div style="display:inline-block; margin-left:5px; font-size:70%" class="menuButtons frontFont" ng-click="toggleMenu()"><i class="fa fa-pencil fa-lg"></i></div>
+                <span style="display:inline-block" ng-style="{'color':'rgb(' +list.color+ ')', 'font-size':'110%', 'font-weight':'bolder'}">{{list.name}}</span>
                 <menumodal question="showMenu">
-                    <form ng-style="style.menuModalStyle()" class="menuForm">
+                    <form class="menuForm" ng-style="style.modalStyle()">
                         <div style="margin:5%">
                             <div class="divInput">
                                 <input ng-style="style.inputStyle()" class="textInput" type="text" placeholder="{{listMenu.name}}" ng-model="listMenu.name">
                             </div>
                             
-                            <div ng-style="style.inputStyle()" class="editColor">
+                            <div class="editColor">
                                 <div style="margin-left:15%">
-                                    <span>Edit Color:</span>
-                                    <button style="height:15px; cursor: context-menu; width:15px; margin-right:5px" ng-style="{'background-color':'rgb(' +listMenu.color+ ')', 'margin-right':'5px'}"></button>
+                                    <div style="float:left">
+                                        Edit Color:
+                                        <button style="height:15px; cursor: context-menu; width:15px; margin-right:5px" ng-style="{'background-color':'rgb(' +listMenu.color+ ')', 'margin-right':'5px'}"></button>
+                                    </div>
+                                    
                                     <colorpicker selected="listMenu.color"></colorpicker>
                                 </div>
                             </div>
@@ -29,19 +32,19 @@
                             
                             <div class="divInput" style="height:25px">
                                 <div class="split">
-                                    <button ng-style="style.modalbuttonStyle()" class="all" ng-click="update($index, listMenu.name, listMenu.color)">save</button>
+                                    <button ng-style="style.buttonStyle()" class="all" ng-click="update($index, listMenu.name, listMenu.color)">save</button>
                                 </div>
                                 <div class="split">
-                                    <button ng-style="style.modalbuttonStyle()" class="all" ng-click="cancel()">cancel</button> 
+                                    <button ng-style="style.buttonStyle()" class="all" ng-click="cancel()">cancel</button> 
                                 </div>
                             </div>
                            
-                            <div class="div70" ng-style="style.modalbuttonStyle()" sng-click="delete_list($index)">
-                                <div style="margin-left:5px; text-align:center">
-                                    <div style="float:left; font-size:85%"><i class="fa fa-trash fa-lg"></i></div>
-                                    <span>Delete List</span>
+                            <button class="div70" ng-style="style.buttonStyle()" ng-click="delete_list($index)">
+                                <div style="width:100%; height:15px;  text-align:center">
+                                    <div style="display:inline-block; height:100%; vertical-align:middle"><i class="fa fa-trash fa-lg"></i></div>
+                                    <div style="display:inline-block">Delete List</div>
                                 </div>
-                            </div>
+                            </button>
                         </div>
                     </form>
                 </menumodal>
@@ -49,31 +52,29 @@
             
             <div style="display:block" ng-controller="tasksCtrl">
                 
-                <div ng-repeat="task in list.tasks">
-                    <div style="width:100%; position:relative; display:inline-block">
-                        <div style="float:left; width:90%; position:relative; display:inline-block; font-size:90%">
-                            <div style="float:left">
-                                <input  style="float:left" type="checkbox" ng-checked="task.completed" ng-click="updateCompleted($parent.$index, $index, task)">
+                <div ng-style="style.textInputStyle()" style="width:100%; height:40px; margin-top:5px; display:inline-block; color:#f2f2f2" ng-repeat="task in list.tasks">
+                        <div style="width:90%; position:relative; display:inline-block">
+                            <div style="display:inline-block; vertical-align:middle; height:90%">
+                                <input  style="height:100%" type="checkbox" ng-checked="task.completed" ng-click="updateCompleted($parent.$index, $index, task)">
                             </div>
                             
-                            <div style="float:left; max-width:85%; overflow-wrap:break-word">
+                            <div style="display:inline-block; max-width:85%; overflow-wrap:break-word">
                                 <span ng-class="completedClass(task.completed)" style="max-width:85%">{{task.name}}</span>
                             </div>
                             
                         
                         </div>
-                        <div style="float:left; cursor:hand; font-size:80%">
-                            <div style="position:absolute; top:5px; right:2px" ng-click="delete_task($parent.$index, $index, task.id)">
+                        <div  style="display:inline-block; color:black; text-shadow:1px 1px 2px #fff; cursor:hand; font-size:80%">
+                            <div ng-click="delete_task($parent.$index, $index, task.id)">
                                 <i class="fa fa-trash fa-lg"></i>
                             </div>
                         </div>
-                    </div>
                 </div>
         
-                <div style="margin-top:5px">
+                <div style="margin-top:10px">
                     <form ng-submit="add_tasks($parent.$index, taskName)">
-                        <div style="display:inline-block">
-                            <input ng-style="style.textInputStyle()" style="width:90%; min-width:10%" type="text" placeholder="add new task" ng-model="taskName">
+                        <div style="display:inline-block; width:100%">
+                            <input ng-style="style.textInputStyle()" style="width:100%; min-width:10%; height:40px" type="text" placeholder=" + add new task" ng-model="taskName">
                             <button ng-hide="hideAddButton" type="submit">add task</button>
                         </div>
                     </form>
@@ -87,13 +88,13 @@
         </div>
        
         <div ng-show="addListMenu" class="addForm" ng-click="$event.stopPropagation()">
-                <form ng-style="style.addModalStyle()" style="width:100%; height:100%">
+                <form ng-style="style.modalStyle()" style="width:100%; height:100%; background-color:rgba(255, 255, 255, 0.7);">
                     <div>
                         <br>
                         <div class="divInput">
                             <input ng-style="style.inputStyle()" type="text" placeholder="List Name" class="textInput" ng-model="todolist.listName">
                         </div>
-                        <div ng-style="style.inputStyle()" class="editColor">
+                        <div class="editColor">
                             <div style="margin-left:15%; font-size:90%">
                                 List Color: <button ng-style="{'background-color':'rgb(' +todolist.color+ ')'}" style="height:15px;width:15px; cursor: context-menu; margin-right:5px"></button>
                                 <colorpicker selected="todolist.color"></colorpicker>
@@ -101,10 +102,10 @@
                         </div>
                         <div class="divInput">
                             <div class="split">
-                                <button class="all" ng-style="style.modalbuttonStyle()" ng-click="add_list()">add</button>
+                                <button class="all" ng-style="style.buttonStyle()" ng-click="add_list()">add</button>
                             </div>
                             <div class="split">
-                                 <button class="all" ng-style="style.modalbuttonStyle()" ng-click="cancelAdd()">cancel</button>
+                                 <button class="all" ng-style="style.buttonStyle()" ng-click="cancelAdd()">cancel</button>
                             </div>
                         </div>
                             
@@ -113,20 +114,21 @@
         </div>
            
     </div>
-    
-    
+</div>
+
+
 <br>
 <div ng-controller="calendarsCtrl as calie">
     
     <div class="headers" ng-style="style.modernBackground()"><span style="margin-left:10px">Calendars</span></div>
     <div>
         <div ng-controller="calendarMenuCtrl as calmenu" ng-repeat="calendar in theCalendars.calendars">
-            <div style="display:inline-block; margin:2px">
-                <div style="float:left; margin-left:5px; position:relative" class="menuButtons" ng-click="calmenu.ToggleshowCalendarMenu()" ng-style="{'background-color':'rgb(' +calendar.color+ ')'}"><div style="position:absolute; top:25%; font-size:70%; left:25%"><i class="fa fa-pencil fa-lg"></i></div></div>
+            <div ng-style="style.textInputStyle()" class="frontFont" style="display:inline-block; width:100%; height:40px; margin-top:5px">
+                <div style="float:left; margin-top:5px; margin-left:5px; text-align:center; position:relative" class="menuButtons" ng-click="calmenu.ToggleshowCalendarMenu()" ng-style="{'background-color':'rgb(' +calendar.color+ ')'}"><div style="margin-top:25%; font-size:60%"><i class="fa fa-pencil fa-lg"></i></div></div>
                 <span style="float:left; margin-top:5px; margin-left:5px">{{calendar.name}}</span> 
                 
                 <menumodal question="calmenu.showCalendarMenu">
-                    <form ng-style="style.menuModalStyle()" class="menuForm">
+                    <form ng-style="style.modalStyle()" class="menuForm">
                         <div style="margin-top:15px">
                             <div class="divInput" ng-if="calendar.id != theCalendars.mainCalendar.id">
                                 <input ng-style="style.inputStyle()" class="textInput" type="text" placeholder="calmenu.nameToUpdate" ng-model="calmenu.nameToUpdate">
@@ -135,30 +137,31 @@
                                 <div>{{calendar.name}}'s Calendar</div>
                             </div>
         
-                            <div ng-style="style.inputStyle()" class="editColor">
-                                <div style="margin-left:15%">
-                                    <span>Edit color:</span>
-                                    <button style="height:15px; cursor: context-menu; width:15px; margin-right:5px" ng-style="{'background-color':'rgb(' + calmenu.colorToUpdate + ')', 'margin-right':'5px'}"></button>
+                            <div class="editColor">
+                                <div style=" margin-left:15%">
+                                    <div style="width:100%; text-align:left">
+                                       Edit color:<button style="height:15px; cursor: context-menu; margin-right:5px" ng-style="{'background-color':'rgb(' + calmenu.colorToUpdate + ')'}"></button>
+                                    </div>
                                     <colorpicker selected="calmenu.colorToUpdate"></colorpicker>  
                                 </div>
                                     
                             </div>
         
-                            <div ng-if="calendar.id != theCalendars.mainCalendar.id" class="div70" ng-style="style.modalbuttonStyle()" ng-click="calmenu.delete()">
-                                <div style="margin-left:5px; text-align:center">
-                                    <div style="float:left; font-size:85%"><i class="fa fa-trash fa-lg"></i></div>
-                                    <span>Delete Calendar</span>
+                            <button ng-if="calendar.id != theCalendars.mainCalendar.id" class="div70" ng-style="style.buttonStyle()" ng-click="calmenu.delete()">
+                                <div style="height:15px; text-align:center">
+                                    <div style="display:inline-block; height:100%; vertical-align:middle"><i class="fa fa-trash fa-lg"></i></div>
+                                    <div style="display:inline-block">Delete Calendar</div>
                                 </div>
-                            </div>
+                            </button>
                             
-                            <br ng-if="calendar.id == theCalendars.mainCalendar.id">
+                            </br ng-if="calendar.id == theCalendars.mainCalendar.id">
                             
                             <div class="divInput" style="display:inlilne-block">
                                 <div class="split">
-                                   <button ng-style="style.modalbuttonStyle()" class="all" ng-click="calmenu.update(calendar.id, calmenu.nameToUpdate, calmenu.colorToUpdate, $index)">save </button>
+                                   <button ng-style="style.buttonStyle()" class="all" ng-click="calmenu.update(calendar.id, calmenu.nameToUpdate, calmenu.colorToUpdate, $index)">save </button>
                                 </div>
                                 <div class="split">
-                                    <button ng-style="style.modalbuttonStyle()" class="all" ng-click="calmenu.cancelUpdate()">cancel</button>
+                                    <button ng-style="style.buttonStyle()" class="all" ng-click="calmenu.cancelUpdate()">cancel</button>
                                 </div>
                                 
                             </div>
@@ -197,14 +200,14 @@
    
     
     <div class="addForm" ng-show="addCalMenu">
-       <form ng-style="style.addModalStyle()"  style="width:100%; height:100%" ng-click="$event.stopPropagation()">
+       <form  ng-style="style.modalStyle()" style="width:100%; height:100%; background-color:rgba(255, 255, 255, 0.7);" ng-click="$event.stopPropagation()">
             <br>
             <div>
                 <div class="divInput">
                    <input ng-style="style.inputStyle()" class="textInput" placeholder="Calendar Name" type="text" ng-model="calie.name">
                 </div>
                 
-                <div ng-style="style.inputStyle()" class="editColor">
+                <div class="editColor">
                     <div style="margin-left:15%; font-size:90%">
                         Color: <button style="height:15px; width:15px; cursor: context-menu; margin-right:5px" ng-style="{'background-color':'rgb(' +calie.color+ ')', 'margin-right':'5px'}"></button>
                         <div>
@@ -215,10 +218,10 @@
                 
                 <div class="divInput">
                     <div class="split">
-                        <button ng-style="style.modalbuttonStyle()" class="all" ng-click="add()">add</button>
+                        <button ng-style="style.buttonStyle()" class="all" ng-click="add()">add</button>
                     </div>
                     <div class="split">
-                        <button ng-style="style.modalbuttonStyle()" class="all" ng-click="cancelAdd()">cancel</button>
+                        <button ng-style="style.buttonStyle()" class="all" ng-click="cancelAdd()">cancel</button>
                     </div>
                 </div> 
             </div>

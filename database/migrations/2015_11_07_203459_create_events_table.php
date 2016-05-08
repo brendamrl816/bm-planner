@@ -17,11 +17,9 @@ class CreateEventsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('calendar_id');
             $table->string('name');
-            $table->date('startDate');
-            $table->date('endDate');
+            $table->dateTime('startDate');
+            $table->dateTime('endDate');
             $table->integer('eventLength');
-            $table->time('startTime');
-            $table->time('endTime');
             $table->string('startTimeDisplay');
             $table->string('endTimeDisplay');
             $table->boolean('allDay');

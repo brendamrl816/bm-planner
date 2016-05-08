@@ -341,13 +341,11 @@ bmPlannerDirectives.directive('colorpicker', function(){
             
         },
         
-        template:   '<div>\
-                        <table id="colorPickerTable">\
-                            <tr ng-repeat="row in rows">\
-                                <td ng-repeat="color in row.colors" style="cursor:hand" ng-style={"background-color":color.color} ng-click="select(color.rgb)"></td>\
-                            </tr>\
-                        </table>\
-                    </div>'
+        template:   '<table id="colorPickerTable">\
+                        <tr ng-repeat="row in rows">\
+                            <td ng-repeat="color in row.colors" style="cursor:hand" ng-style={"background-color":color.color} ng-click="select(color.rgb)"></td>\
+                        </tr>\
+                    </table>'
     };
             
 });
@@ -373,20 +371,7 @@ bmPlannerDirectives.directive('addeventmodal', function(Style) {
            scope.style={};
            
             scope.darkStyle = function(){
-                var D = document;
-                var height = Math.max(
-                    D.body.scrollHeight, D.documentElement.scrollHeight,
-                    D.body.offsetHeight, D.documentElement.offsetHeight,
-                    D.body.clientHeight, D.documentElement.clientHeight
-                );
-                
-                var width = Math.max(
-                    D.body.scrollWidth, D.documentElement.scrollWidth,
-                    D.body.offsetWidth, D.documentElement.offsetWidth,
-                    D.body.clientWidth, D.documentElement.clientWidth
-                );
-                
-                return {'height': height, 'width': width};
+                return {'background-color':'rgba(' + Style.css.buttons_borderColor + ', 1)'};
             };
             
         
@@ -419,18 +404,22 @@ bmPlannerDirectives.directive('addeventmodal', function(Style) {
                scope.style.height = attrs.height;
             }
            
-            scope.style.color = Style.css.body_color;
+            
             
            scope.hide_modal = function() {
                scope.showmodal = false;
            };
+           
+           scope.contentStyle = function(){
+                return {'background-color':'rgba(' + Style.css.body_backgroundColor + ', 0.8)'};
+            };
            
        },
        
        template: '<div class="createEventModal" ng-show="showmodal">\
                     <div class="createEventModal-dark" ng-style=darkStyle() ng-click="hide_modal()"></div>\
                     <div class="createEventModal-style" ng-style="style">\
-                        <div class="createEventModal-style-content" ng-transclude></div>\
+                        <div ng-style="contentStyle()" class="createEventModal-style-content" ng-transclude></div>\
                     </div>\
                 </div>'
        
@@ -438,7 +427,7 @@ bmPlannerDirectives.directive('addeventmodal', function(Style) {
 });
 
 
-bmPlannerDirectives.directive('questionmodal', function() {
+bmPlannerDirectives.directive('questionmodal', function(Style) {
    
    return {
        
@@ -536,20 +525,30 @@ bmPlannerDirectives.directive('questionmodal', function() {
                     }
                     
                 });
+                
+            scope.hfStyle = function(){
+                return {'font-weight':'bold', 'background-color':'rgba(' + Style.css.buttons_borderColor + ', 0.6)'};
+            };
           
        },
        
+       
+       
+        
+       
        template: '<div class="createQuestionModal" ng-show="question">\
                     <div  class="createQuestionModal-style" ng-style="style">\
+                        <div class="createQuestionModal-header" ng-style="hfStyle()">&nbsp</div>\
                         <div class="createQuestionModal-close" ng-click="hideQuestionModal()">X</div>\
                         <br>\
                         <div class="createQuestionModal-style-content" ng-transclude></div>\
+                        <div class="createQuestionModal-footer" ng-style="hfStyle()">&nbsp</div>\
                     </div>\
                   </div>'
    }; 
 });
 
-bmPlannerDirectives.directive('continuemodal', function() {
+bmPlannerDirectives.directive('continuemodal', function(Style) {
    
    return {
        
@@ -646,14 +645,20 @@ bmPlannerDirectives.directive('continuemodal', function() {
                     }
                     
                 });
+                
+            scope.hfStyle = function(){
+                return {'font-weight':'bold', 'background-color':'rgba(' + Style.css.buttons_borderColor + ', 0.6)'};
+            };
           
        },
        
        template: '<div class="createQuestionModal" ng-show="question">\
                     <div  class="createQuestionModal-style" ng-style="style">\
+                    <div class="createQuestionModal-header" ng-style="hfStyle()">&nbsp</div>\
                         <div class="createQuestionModal-close" ng-click="hideQuestionModal()">X</div>\
                         <br>\
                         <div class="createQuestionModal-style-content" ng-transclude></div>\
+                        <div class="createQuestionModal-footer" ng-style="hfStyle()">&nbsp</div>\
                     </div>\
                   </div>'
    }; 
@@ -760,106 +765,106 @@ bmPlannerDirectives.directive('menumodal', function() {
 });
 
 
-bmPlannerDirectives.directive('navlink',  function($http, $rootScope, Style) {
+// bmPlannerDirectives.directive('navlink',  function($http, $rootScope, Style) {
    
-   return {
-    //   scope: {},
+//   return {
+//     //   scope: {},
        
-       link: function(scope, element, attrs){
+//       link: function(scope, element, attrs){
        
-        scope.color = Style;
-        var path = attrs.href;
-        scope.location = window.location;
+//         scope.color = Style;
+//         var path = attrs.href;
+//         scope.location = window.location;
         
-        scope.$watch(
-          // This is the important part
-          function() {
-            return Style.css;
-          },
+//         scope.$watch(
+//           // This is the important part
+//           function() {
+//             return Style.css;
+//           },
         
-          function(newValue, oldValue) {
-              if (path === window.location.hash) {
-                        if(window.innerWidth < 800)
-                        {
-                           element.css({backgroundColor: scope.color.css.buttons_backgroundColor, left:'-3px', bottom:'0','border-radius':'0px 10px 10px 0px',  'box-shadow': 'inset -20px 0px 20px -10px' + scope.color.css.navBar_borderColor, 'z-index':2}); 
-                        }
-                        else{
-                            element.css({backgroundColor: scope.color.css.buttons_backgroundColor, bottom:'-3px', left:'0', 'border-radius':'10px 10px 0px 0px', 'box-shadow': 'inset 2px 20px 20px -10px' + scope.color.css.navBar_borderColor, 'z-index':2});
-                        }
+//           function(newValue, oldValue) {
+//               if (path === window.location.hash) {
+//                         if(window.innerWidth < 800)
+//                         {
+//                           element.css({backgroundColor: scope.color.css.buttons_backgroundColor, left:'-3px', bottom:'0','border-radius':'0px 10px 10px 0px',  'box-shadow': 'inset -20px 0px 20px -10px' + scope.color.css.navBar_borderColor, 'z-index':2}); 
+//                         }
+//                         else{
+//                             element.css({backgroundColor: scope.color.css.buttons_backgroundColor, bottom:'-3px', left:'0', 'border-radius':'10px 10px 0px 0px', 'box-shadow': 'inset 2px 20px 20px -10px' + scope.color.css.navBar_borderColor, 'z-index':2});
+//                         }
                         
-                }else {
-                    element.css({backgroundColor: '',  'box-shadow':'',  'z-index':'none'});
-                }
-            // console.log('Style has been changed');
-            //  if (path === window.location.hash) {
+//                 }else {
+//                     element.css({backgroundColor: '',  'box-shadow':'',  'z-index':'none'});
+//                 }
+//             // console.log('Style has been changed');
+//             //  if (path === window.location.hash) {
                         
-            //         element.css({backgroundColor: scope.color.css.buttons_backgroundColor, 'box-shadow': 'inset -20px 0px 20px -10px' + scope.color.css.navBar_borderColor}); 
+//             //         element.css({backgroundColor: scope.color.css.buttons_backgroundColor, 'box-shadow': 'inset -20px 0px 20px -10px' + scope.color.css.navBar_borderColor}); 
                         
-            //     }else {
-            //         element.css({backgroundColor: '',  'box-shadow':''});
-            //     }
-          },
-          true
-        );
+//             //     }else {
+//             //         element.css({backgroundColor: '',  'box-shadow':''});
+//             //     }
+//           },
+//           true
+//         );
         
-            // scope.$watch('window.location', function() {
-            //     if (path === window.location.hash) {
-            //             if(window.innerWidth < 800)
-            //             {
-            //               element.css({backgroundColor: scope.color.css.buttons_backgroundColor, left:'-3px', bottom:'0','border-radius':'0px 10px 10px 0px',  'box-shadow': 'inset -20px 0px 20px -10px' + scope.color.css.navBar_borderColor, 'z-index':2}); 
-            //             }
-            //             else{
-            //                 element.css({backgroundColor: scope.color.css.buttons_backgroundColor, bottom:'-3px', left:'0', 'border-radius':'10px 10px 0px 0px', 'box-shadow': 'inset 2px 20px 20px -10px' + scope.color.css.navBar_borderColor, 'z-index':2});
-            //             }
+//             // scope.$watch('window.location', function() {
+//             //     if (path === window.location.hash) {
+//             //             if(window.innerWidth < 800)
+//             //             {
+//             //               element.css({backgroundColor: scope.color.css.buttons_backgroundColor, left:'-3px', bottom:'0','border-radius':'0px 10px 10px 0px',  'box-shadow': 'inset -20px 0px 20px -10px' + scope.color.css.navBar_borderColor, 'z-index':2}); 
+//             //             }
+//             //             else{
+//             //                 element.css({backgroundColor: scope.color.css.buttons_backgroundColor, bottom:'-3px', left:'0', 'border-radius':'10px 10px 0px 0px', 'box-shadow': 'inset 2px 20px 20px -10px' + scope.color.css.navBar_borderColor, 'z-index':2});
+//             //             }
                         
-            //     }else {
-            //         element.css({backgroundColor: '',  'box-shadow':'',  'z-index':'none'});
-            //     }
-            // }); 
+//             //     }else {
+//             //         element.css({backgroundColor: '',  'box-shadow':'',  'z-index':'none'});
+//             //     }
+//             // }); 
        
        
-        $rootScope.$on('$stateChangeSuccess' , function(event, toState, toParams, fromState, fromParams, options){
-            var name = attrs.name;
-            var theName = toState.name;
+//         $rootScope.$on('$stateChangeSuccess' , function(event, toState, toParams, fromState, fromParams, options){
+//             var name = attrs.name;
+//             var theName = toState.name;
             
            
-            if(toState.name == 'home.weeklyView' || toState.name == 'home.monthlyView')
-            {
-                theName = 'home';
-            }
+//             if(toState.name == 'home.weeklyView' || toState.name == 'home.main')
+//             {
+//                 theName = 'home';
+//             }
            
-            if(theName == name)
-            {
-                if(window.innerWidth < 800)
-                {
-                  element.css({backgroundColor: scope.color.css.buttons_backgroundColor, left:'-3px', bottom:'0','border-radius':'0px 10px 10px 0px',  'box-shadow': 'inset -20px 0px 20px -10px' + scope.color.css.navBar_borderColor, 'z-index':2}); 
-                }
-                else{
-                    element.css({backgroundColor: scope.color.css.buttons_backgroundColor, bottom:'-3px', left:'0', 'border-radius':'10px 10px 0px 0px', 'box-shadow': 'inset 2px 20px 20px -10px' + scope.color.css.navBar_borderColor, 'z-index':2});
-                }
+//             if(theName == name)
+//             {
+//                 if(window.innerWidth < 800)
+//                 {
+//                   element.css({backgroundColor: scope.color.css.buttons_backgroundColor, left:'-3px', bottom:'0','border-radius':'0px 10px 10px 0px',  'box-shadow': 'inset -20px 0px 20px -10px' + scope.color.css.navBar_borderColor, 'z-index':2}); 
+//                 }
+//                 else{
+//                     element.css({backgroundColor: scope.color.css.buttons_backgroundColor, bottom:'-3px', left:'0', 'border-radius':'10px 10px 0px 0px', 'box-shadow': 'inset 2px 20px 20px -10px' + scope.color.css.navBar_borderColor, 'z-index':2});
+//                 }
                         
                   
-            }else {
-                element.css({backgroundColor: '', 'box-shadow':'', 'z-index':'none'});
-            }
+//             }else {
+//                 element.css({backgroundColor: '', 'box-shadow':'', 'z-index':'none'});
+//             }
     
-        });
+//         });
             
-        $(window).resize(function(){
-                    if(window.innerWidth < 800)
-                    {
-                        scope.$apply(function(){
-                            element.css({left:'-3px', bottom:'0','border-radius':'0px 10px 10px 0px', 'box-shadow': 'inset -20px 0px 20px -10px' + scope.color.css.navBar_borderColor});
-                        });
-                    }
-                    else{
-                        scope.$apply(function(){
-                            element.css({bottom:'-3px', left:'0', 'border-radius':'10px 10px 0px 0px', 'box-shadow': 'inset 2px 20px 20px -10px' + scope.color.css.navBar_borderColor});
-                        });
-                    }
-            });
+//         $(window).resize(function(){
+//                     if(window.innerWidth < 800)
+//                     {
+//                         scope.$apply(function(){
+//                             element.css({left:'-3px', bottom:'0','border-radius':'0px 10px 10px 0px', 'box-shadow': 'inset -20px 0px 20px -10px' + scope.color.css.navBar_borderColor});
+//                         });
+//                     }
+//                     else{
+//                         scope.$apply(function(){
+//                             element.css({bottom:'-3px', left:'0', 'border-radius':'10px 10px 0px 0px', 'box-shadow': 'inset 2px 20px 20px -10px' + scope.color.css.navBar_borderColor});
+//                         });
+//                     }
+//             });
             
-       }
-   }; 
-});
+//       }
+//   }; 
+// });
 

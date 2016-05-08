@@ -8,12 +8,14 @@ bmPlanner.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.when('/home', 'home/main');
     
     $stateProvider
-    
         .state('home', {
             url: '/home',
             views: {
                 '': {
                    templateUrl: '/html/userHomePage.html'
+                },
+                'menu@home':{
+                    templateUrl:'/html/navBar.html'
                 },
                 'listsCalToolsView@home':{
                     templateUrl: '/html/listsCalToolsView.html'
