@@ -477,8 +477,8 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                     
                     for (var n = 0; n < response[i]['events'].length; n++) {
                         
-                        if (response[i]['events'][n]['event'].eventLength == 0 && response[i]['events'][n]['event'].allDay == false) {
-                            
+                        if ((response[i]['events'][n]['event'].eventLength <= 24) && (response[i]['events'][n]['event'].allDay == false))
+                        {
                             var startTime1 = response[i]['events'][n]['event'].startDate.split(" ");
                             
                             var startTime = startTime1[1].split(":");
@@ -782,7 +782,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                 
                 for (var n = 0; n < response[i]['events'].length; n++)
                 {
-                    if(response[i]['events'][n]['event'].eventLength == 0){
+                    if(response[i]['events'][n]['event'].eventLength <= 24){
                         var event = {
                                         id: response[i]['events'][n]['event'].id,
                                         calendar_id: response[i]['events'][n]['event'].calendar_id,

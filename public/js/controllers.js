@@ -896,18 +896,18 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
     };
     
     $scope.getLongWidth = function(){
-        if($scope.event.eventLength/24 + 1 > (7 - $scope.day.itsDate.day()))
+        if(Math.round($scope.event.eventLength/24) + 1 > (7 - $scope.day.itsDate.day()))
         {
             return ((100 * ( 7 - $scope.day.itsDate.day() + 1) ) ) + '%';
         }
         else{
-            return ((100 * (1  + $scope.event.eventLength)) ) + '%';
+            return ((100 * (1  + Math.round($scope.event.eventLength/24))) ) + '%';
         }
     };
     
     // moment("2010-10-20 4:30",       "YYYY-MM-DD HH:mm");
     $scope.startDateDisplay = moment($scope.event.eventStartsOn , 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
-    $scope.endDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').add(moment($scope.event.endDate, 'YYYY-MM-DD HH:mm:ss').diff(moment($scope.event.startDate, 'YYYY-MM-DD HH:mm:ss'), 'hours'), 'hours').format('MMM DD, YYYY');
+    $scope.endDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').add($scope.event.eventLength, 'hours').format('MMM DD, YYYY');
     
     
     //****************************************** MODAL VARIABLES ***************************************************************
@@ -921,9 +921,8 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
     $scope.toggleEventMenu = function(){
         $scope.eventMenu = !$scope.eventMenu;
         $scope.startDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
-        $scope.endDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').add(moment($scope.event.endDate, 'YYYY-MM-DD HH:mm:ss').diff(moment($scope.event.startDate, 'YYYY-MM-DD HH:mm:ss'), 'hours'), 'hours').format('MMM DD, YYYY');
-    
-        console.log($scope.event.eventStartsOn);
+        $scope.endDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').add($scope.event.eventLength, 'hours').format('MMM DD, YYYY');
+      
     };
     $scope.toggleVerifyDeletion = function(){
         $scope.verifyDeletion = !$scope.Deletion;

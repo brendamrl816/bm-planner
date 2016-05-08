@@ -33,7 +33,7 @@ class EventsController extends Controller
         
         $long_events = Event::where(function($mainquery) use($user_id){
             $mainquery->where('user_id', '=', $user_id)
-                      ->where('eventLength', '>', 24);
+                      ->where('eventLength', '!=', 'endDate');
                     
             })->get();
         
@@ -102,7 +102,7 @@ class EventsController extends Controller
                         $more->neverEnds = $rep->neverEnds;
                                 
                                 
-                        $extend = strtotime('+'.$more->eventLength.' hours' , strtotime($more->repeatEndDate));
+                        $extend = strtotime('+'.$more->eventLength.' hour' , strtotime($more->repeatEndDate));
                         $extend = date('Y-m-d', $extend);
                     
                         if(($more->startDate <= $e_date)  && (($more->neverEnds == true) ||  ($extend >= $b_date)) )
