@@ -19,9 +19,8 @@ class CreateEventsTable extends Migration
             $table->string('name');
             $table->dateTime('startDate');
             $table->dateTime('endDate');
-            $table->integer('eventLength');
-            $table->string('startTimeDisplay');
-            $table->string('endTimeDisplay');
+            $table->integer('length_hours');
+            $table->integer('length_days');
             $table->boolean('allDay');
             $table->boolean('repeats');
             $table->timestamps();

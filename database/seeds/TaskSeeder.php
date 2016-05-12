@@ -13,20 +13,11 @@ class TaskSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('tasks')->delete();
         
-        Task::create(array(
-            'name'=>'shampoo',
-            'id'=>1,
-            'todolist_id'=>1,
-            'completed'=>false
-            ));
-            
-        Task::create(array(
-            'name'=>'food',
-            'id'=>2,
-            'todolist_id'=>1,
-            'completed'=>false
-            ));
+        // Task::create(array(
+        //   'todolist_id'=>1,
+        //   'name'=>'a lot of stuff',
+        //   'completed'=>false
+        // ));
     }
 }

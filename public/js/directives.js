@@ -466,6 +466,7 @@ bmPlannerDirectives.directive('questionmodal', function(Style) {
                 }
                 if(value == true)
                 {
+                    
                      angular.element(document.body).append(element);
                      var top =  event.pageY;
                      var left = event.pageX;

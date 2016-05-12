@@ -248,7 +248,8 @@ input:-webkit-autofill:focus {
 }
 
 .smallScreen{
-    display:block;
+    display:inline-block;
+    width:100%;
 }
 
 
@@ -581,8 +582,9 @@ input:-webkit-autofill:focus {
 }
 
 #bigCalTable{
+    display:table;
+    min-height:15%;
     width: 100%;
-    display: table;
     border-collapse: collapse;
 }
 
@@ -592,7 +594,6 @@ input:-webkit-autofill:focus {
     width:100%;
     font-size:90%;
 }
-
 
 .timeDiv{
     float:left;

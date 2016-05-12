@@ -14,16 +14,10 @@ class TodolistTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('todolists')->delete();
-        
-        Todolist::create(array(
-            'id'=>1,
-            'name'=>'To Buy'
-        ));
-        
-        Todolist::create(array(
-            'id'=>2,
-            'name'=>'To Fix'
-        ));
+    //   Todolist::create(array(
+    //         'user_id'=>'1',
+    //         'name'=> 'To Do',
+    //         'color'=>'0, 153, 255'
+    //         ));
     }
 }

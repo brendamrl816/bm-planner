@@ -33,7 +33,7 @@ class EventsController extends Controller
         
         $long_events = Event::where(function($mainquery) use($user_id){
             $mainquery->where('user_id', '=', $user_id)
-                      ->where('eventLength', '!=', 'endDate');
+                      ->where('length_days', '>', 0);
                     
             })->get();
         
@@ -45,9 +45,8 @@ class EventsController extends Controller
             $bd = mktime(0, 0, 0, $startMonth, $startDay + $i, $startYear);
             $ed = mktime(23, 59, 59, $startMonth, $startDay + $i, $startYear);
             
-            $days[$i] = array('date' => date('Y-m-d H:i:s', $bd) , 'events'=>array());
-            $date = date('Y-m-d', $bd);
-            
+            $days[$i] = [];
+           
             $b_date = date('Y-m-d H:i:s', $bd);
             $e_date = date('Y-m-d H:i:s', $ed);
             
@@ -83,7 +82,7 @@ class EventsController extends Controller
                     if(($more->startDate <= $e_date)  && (!($more->endDate <= $b_date)))
                     {
                         $eventStartsOn = $more->startDate;
-                        array_push($days[$i]['events'], ['event'=> $more, 'eventStartsOn'=> $eventStartsOn]);
+                        array_push($days[$i], ['event'=>$more, 'eventStartsOn'=>$eventStartsOn]);
                     }
                 }
                 else
@@ -102,7 +101,7 @@ class EventsController extends Controller
                         $more->neverEnds = $rep->neverEnds;
                                 
                                 
-                        $extend = strtotime('+'.$more->eventLength.' hour' , strtotime($more->repeatEndDate));
+                        $extend = strtotime('+'.$more->length_hours.' hour' , strtotime($more->repeatEndDate));
                         $extend = date('Y-m-d', $extend);
                     
                         if(($more->startDate <= $e_date)  && (($more->neverEnds == true) ||  ($extend >= $b_date)) )
@@ -115,7 +114,7 @@ class EventsController extends Controller
                                 //subtract the number of days(z) of the event from the date; 
                                 //if the subtracted date falls between the startdate and repetition end date, 
                                 //then the event can be addeded to that date!
-                                while($z <= $more->eventLength/24)
+                                while($z <= $more->length_hours/24)
                                 {
                                     $d_0 = strtotime('-'.$z.' days' , $bd);
                                     $d_23 = strtotime('-'.$z.' days' , $ed);
@@ -132,7 +131,7 @@ class EventsController extends Controller
                                     {
                                         $sDate = strtotime($more->startDate);
                                         $eventStartsOn = date('Y-m-d H:i:s', mktime(date('G', $sDate), date('i', $sDate), 0, date('n', $d_0),date('d', $d_0) ,date('Y', $d_0)));
-                                        array_push($days[$i]['events'], ['event'=> $more, 'eventStartsOn'=> $eventStartsOn]);
+                                        array_push($days[$i], ['event'=>$more, 'eventStartsOn'=>$eventStartsOn]);
                                     }
                                     $z++;
                                 }
@@ -143,7 +142,7 @@ class EventsController extends Controller
                             {
                                 $z = 0;
                             
-                                while($z <= $more->eventLength/24)
+                                while($z <= $more->length_hours/24)
                                 {
     
                                     $d_0 = strtotime('-'.$z.' days' , $bd);
@@ -161,19 +160,19 @@ class EventsController extends Controller
                                     {
                                         $sDate = strtotime($more->startDate);
                                         $eventStartsOn = date('Y-m-d H:i:s', mktime(date('G', $sDate), date('i', $sDate), 0, date('n', $d_0),date('d', $d_0) ,date('Y', $d_0)));
-                                        array_push($days[$i]['events'], ['event'=> $more, 'eventStartsOn'=> $eventStartsOn]);
+                                        array_push($days[$i], ['event'=>$more, 'eventStartsOn'=>$eventStartsOn]);
                                     }
                                 
                                     $z++;
                                 }
                             }
                             
-                        
+                    
                             else if($more->repeatWeekly != null)
                             {
                                 $z = 0;
                                 
-                                while($z <= $more->eventLength/24)
+                                while($z <= $more->length_hours/24)
                                 {
                                     $d_0 = strtotime('-'.$z.' days' , $bd);
                                     $d_23 = strtotime('-'.$z.' days' , $ed);
@@ -213,55 +212,34 @@ class EventsController extends Controller
                                         if(($base - $repeat_start)  % $more->repeatInterval == 0)
                                         {
                                             $eventStartsOn = date('Y-m-d H:i:s', mktime(date('G', $sDate), date('i', $sDate), 0, date('n', $d_0),date('d', $d_0) ,date('Y', $d_0)));
-                                            array_push($days[$i]['events'], ['event'=> $more, 'eventStartsOn'=> $eventStartsOn]);
+                                            array_push($days[$i], ['event'=>$more, 'eventStartsOn'=>$eventStartsOn]);
                                         }
-                                        
-                                        
-                                        // $base = strtotime($d2);
-                                        // $day_week_ = date('l', $base);
-                                        // $start = strtotime($more->startDate);
-                                        // $start = strtotime('last sunday', mktime(0,0,0,date('n', $start),date('d', $start) - 7, date('Y', $start)));
-                                        
-                                        // if(date('l', $start) != $day_week_)
-                                        // {
-                                            
-                                        //     $start_date = date("Y-m-d", strtotime('next '.$day_week_, mktime(0,0,0,date('n', $start), date('d', $start),date('Y', $start))));
-                                        // }
-                                        // else{
-                                        //     $start_date = $more->startDate;
-                                        // }
-                                        // $base = date_timestamp_get(date_create($d2));
-                                        // $repeat_start = date_timestamp_get(date_create($start_date));
-                                        
-                                        // if(($base - $repeat_start) % $more->repeatInterval == 0)
-                                        // {
-                                        //     $eventStartsOn = $d2;
-                                        //     array_push($days[$i]['events'], ['event'=> $more, 'eventStartsOn'=> $eventStartsOn]);
-                                        // }
                                     }
                                     $z++;
                                 }
                             }
                             
                             else if($more->repeatMonthly != "")
-                            {
-                                
+                            { 
                                 $z=0;
-                                while($z < $more->eventLength/24)
+                                while($z < $more->length_hours/24)
                                 {
-                                    $d = strtotime($date);
-                                    $d1 = strtotime('-'.$z.' days' , $d);
-                                    $dayOfMonth = date('j', $d1);
-                                    $d2= date('Y-m-d', $d1);
+                                    $d_0 = strtotime('-'.$z.' days' , $bd);
+                                    $d_23 = strtotime('-'.$z.' days' , $ed);
+                                    $dayOfMonth = date('j', $d_0);
+                                    $d1= date('Y-m-d H:i:s', $d_0);
+                                    $d2= date('Y-m-d H:i:s', $d_23);
                                     
                                      $addOrNot = DB::table('eventchanges')
                                             ->where('event_id', '=', $more->id)
                                             ->where('dateOfChange', '=', $d2)
                                             ->get();
                                             
-                                    if(($dayOfMonth == $more->repeatMonthly) && (sizeof($addOrNot)==0) && ($d2 >= $more->startDate) && ($d2 <= $more->repeatEndDate || $more->neverEnds == true) )
+                                    if(($dayOfMonth == $more->repeatMonthly) && (sizeof($addOrNot)==0) && ($d2 >= $more->startDate) && ($d1 <= $more->repeatEndDate || $more->neverEnds == true) )
                                     {
-                                        $diff = date_diff(date_create($more->startDate), date_create($d2));
+                                        $sDate = strtotime($more->startDate);
+                                        $diff = date_diff(date_create(date('Y-m-d', $sDate)), date_create(date('Y-m-d', $d_0)));
+                                        
                                         $year_diff = $diff->format('%y');
                                         $month_diff = $diff->format('%m');
                                         if($year_diff > 0)
@@ -270,69 +248,67 @@ class EventsController extends Controller
                                         }
                                         if($month_diff % $more->repeatInterval == 0)
                                         {
-                                            $eventStartsOn = $d2;
-                                            array_push($days[$i]['events'], ['event'=> $more, 'eventStartsOn'=> $eventStartsOn]);
+                                            $eventStartsOn = date('Y-m-d H:i:s', mktime(date('G', $sDate), date('i', $sDate), 0, date('n', $d_0),date('d', $d_0) ,date('Y', $d_0)));
+                                            array_push($days[$i], ['event'=>$more, 'eventStartsOn'=>$eventStartsOn]);
                                         }
                                     }
-                                    
                                     $z++;
-                                    
                                 }
-                                
                             }
                             
                             
                             else if($more->repeatYearly != null)
                             {
                                 $z=0;
-                                while($z < $more->eventLength/24)
+                                while($z < $more->length_hours/24)
                                 {
-                                    $d = strtotime($date);
-                                    $d1 = strtotime('-'.$z.' days' , $d);
-                                    $month1 = date('n-j', $d1);
-                                    $d2= date('Y-m-d', $d1);
+                                    $d_0 = strtotime('-'.$z.' days' , $bd);
+                                    $d_23 = strtotime('-'.$z.' days' , $ed);
+                                    $month1 = date('n-j', $d_0);
+                                    $d1= date('Y-m-d H:i:s', $d_0);
+                                    $d2= date('Y-m-d H:i:s', $d_23);
                                     
                                     $addOrNot = DB::table('eventchanges')
                                             ->where('event_id', '=', $more->id)
                                             ->where('dateOfChange', '=', $d2)
                                             ->get();
                                     
-                                    if($month1 == $more->repeatYearly && (sizeof($addOrNot)==0) && ($d2 >= $more->startDate) && ($d2 <= $more->repeatEndDate || $more->neverEnds == true) )
+                                    if($month1 == $more->repeatYearly && (sizeof($addOrNot)==0) && ($d2 >= $more->startDate) && ($d1 <= $more->repeatEndDate || $more->neverEnds == true))
                                     {
-                                        $diff = date_diff(date_create($more->startDate), date_create($d2))->format('%y');
+                                        $sDate = strtotime($more->startDate);
+                                        $diff = date_diff(date_create(date('Y-m-d', $sDate)), date_create(date('Y-m-d', $d_0)))->format('%y');
+                                        
                                         if($diff % $more->repeatInterval == 0)
                                         {
-                                            $eventStartsOn = $d2;
-                                            array_push($days[$i]['events'], ['event'=> $more, 'eventStartsOn'=> $eventStartsOn]);
+                                            $eventStartsOn = date('Y-m-d H:i:s', mktime(date('G', $sDate), date('i', $sDate), 0, date('n', $d_0),date('d', $d_0) ,date('Y', $d_0)));
+                                            array_push($days[$i], ['event'=>$more, 'eventStartsOn'=>$eventStartsOn]);
                                         }
                                     }
                                     $z++;
                                 }
-                                
                             }
-                            
                         }
+                        
                 }
-
                 
             }
             
-            sort($days[$i]['events']);
-            usort($days[$i]['events'], function($a, $b){
+            sort($days[$i]);
+            usort($days[$i], function($a, $b){
                 return strcmp($a['eventStartsOn'], $b['eventStartsOn']);
             });
            
             $flag = '*';
-            $events = Event::where(function($eventquery) use($user_id, $date, $b_date, $e_date, $dayOfWeekString, $month, $day, $isWeekDay, $flag){
+            $events = Event::where(function($eventquery) use($user_id, $b_date, $e_date, $dayOfWeekString, $month, $day, $isWeekDay, $flag){
                 $eventquery ->where('user_id', '=', $user_id)
-                            ->where('eventLength', '<=', 24)
-                            ->where(function($query) use($date, $b_date, $e_date, $dayOfWeekString, $month, $day, $isWeekDay, $flag){
+                            ->where('length_days', '=', 0)
+                            ->where(function($query) use( $b_date, $e_date, $dayOfWeekString, $month, $day, $isWeekDay, $flag){
                                 $query  ->where(function($norepquery) use($b_date, $e_date){
                                             $norepquery->where('startDate', '>=', $b_date)
                                                         ->where('startDate', '<=', $e_date)
                                                        ->where('repeats', '=', false);
                                         })
-                                        ->orWhereHas('repetitions', function($repquery)use($date, $b_date, $e_date, $dayOfWeekString, $month, $day, $isWeekDay, $flag){
+                                        ->orWhereHas('repetitions', function($repquery)use($b_date, $e_date, $dayOfWeekString, $month, $day, $isWeekDay, $flag){
                                             $repquery->where('startDate', '<=', $e_date)
                                                      ->where(function($query1) use($b_date){
                                                         $query1 ->where('repeatEndDate', '>=', $b_date)
@@ -367,7 +343,7 @@ class EventsController extends Controller
                     $event->repeatMonthly = null;
                     $event->repeatYearly = null;
                     $event->neverEnds = null;
-                    array_push($days[$i]['events'], ['event'=>$event, 'eventStartsOn'=>$event->startDate]);
+                    array_push($days[$i], ['event'=>$event, 'eventStartsOn'=>$event->startDate]);
                 }
                 else{
                     $rep = Repetition::where('event_id', '=', $event->id)
@@ -386,7 +362,7 @@ class EventsController extends Controller
                         $okToAdd= true;
                         $addOrNot = DB::table('eventchanges')
                                 ->where('event_id', '=', $event->id)
-                                ->where('dateOfChange', '=', $date)
+                                ->where('dateOfChange', '=', $b_date)
                                 ->get();
                                 
                         if(sizeof($addOrNot)==0)
@@ -396,13 +372,13 @@ class EventsController extends Controller
                                     
                                     $sDate = strtotime($event->startDate);
                                     $eventStartsOn = date('Y-m-d H:i:s', mktime(date('G', $sDate), date('i', $sDate), 0, date('n', $bd),date('d', $bd) ,date('Y', $bd)));
-                                    array_push($days[$i]['events'], ['event'=> $event, 'eventStartsOn'=> $eventStartsOn]);
+                                    array_push($days[$i], ['event'=> $event, 'eventStartsOn'=> $eventStartsOn]);
                                 }
                                 else if($event->repeatOccurrence == "weekday")
                                 {
                                     $sDate = strtotime($event->startDate);
                                     $eventStartsOn = date('Y-m-d H:i:s', mktime(date('G', $sDate), date('i', $sDate), 0, date('n', $bd),date('d', $bd) ,date('Y', $bd)));
-                                    array_push($days[$i]['events'], ['event'=> $event, 'eventStartsOn'=> $eventStartsOn]);
+                                    array_push($days[$i], ['event'=> $event, 'eventStartsOn'=> $eventStartsOn]);
                                 }
                                 else if($event->repeatOccurrence == "weekly")
                                 {
@@ -410,10 +386,8 @@ class EventsController extends Controller
                                     // Log::info('startDate: '. $event->startDate);
                                     // Log::info('e_date: '. $e_date);
                                     
-                                    // $dDate = strtotime($b_date);
                                     $day_week_ = date('l', $bd);
                                     $sDate = strtotime($event->startDate);
-                                    // $start = strtotime('last sunday', mktime(0, 0, 0, date('n', $sDate), date('d', $sDate) - 7, date('Y', $sDate)));
                                     
                                     if(date('l', $sDate) != $day_week_)
                                     {
@@ -429,25 +403,24 @@ class EventsController extends Controller
                                     }
                                     else{
                                         
-                                        // $start_date = date("Y-m-d", strtotime('next '.$day_week_, mktime(0, 0, 0, date('n', $start), date('d', $start), date('Y', $start))));
-                                        $start_date = date("Y-m-d", mktime(0, 0, 0, date('n', $sDate), date('d', $sDate), date('Y', $sDate)));
+                                       $start_date = date("Y-m-d", mktime(0, 0, 0, date('n', $sDate), date('d', $sDate), date('Y', $sDate)));
                                         // Log::info('eventName: '.$event->name. ', $startDate: '. $start_date .', $date: '. $date);
                                     }
                                     
-                                    $base = date_timestamp_get(date_create($date));
+                                    $base = date_timestamp_get(date_create(date('Y-m-d', $bd)));
                                     $repeat_start = date_timestamp_get(date_create($start_date));
                                     
                                     if(($base - $repeat_start)  % $event->repeatInterval == 0)
                                     {
                                         $eventStartsOn = date('Y-m-d H:i:s', mktime(date('G', $sDate), date('i', $sDate), 0, date('n', $bd),date('d', $bd) ,date('Y', $bd)));
-                                        array_push($days[$i]['events'], ['event'=> $event, 'eventStartsOn'=> $eventStartsOn]);
+                                        array_push($days[$i], ['event'=> $event, 'eventStartsOn'=> $eventStartsOn]);
                                     }
                                 }
                                 
                                 else if($event->repeatOccurrence == "monthly"){
                                     
                                     $sDate = strtotime($event->startDate);
-                                    $diff = date_diff(date_create(date('Y-m-d', $sDate)), date_create($date));
+                                    $diff = date_diff(date_create(date('Y-m-d', $sDate)), date_create(date('Y-m-d', $bd)));
                                     $year_diff = $diff->format('%y');
                                     $month_diff = $diff->format('%m');
                                     if($year_diff > 0)
@@ -457,18 +430,18 @@ class EventsController extends Controller
                                     if($month_diff % $event->repeatInterval == 0)
                                     {
                                         $eventStartsOn = date('Y-m-d H:i:s', mktime(date('G', $sDate), date('i', $sDate), 0, date('n', $bd),date('d', $bd) ,date('Y', $bd)));
-                                        array_push($days[$i]['events'], ['event'=> $event, 'eventStartsOn'=> $eventStartsOn]);
+                                        array_push($days[$i], ['event'=> $event, 'eventStartsOn'=> $eventStartsOn]);
                                     }
                                    
                                 }
                                 else if($event->repeatOccurrence == "yearly"){
                                     
                                     $sDate = strtotime($event->startDate);
-                                    $diff = date_diff(date_create(date('Y-m-d', $sDate)), date_create($date))->format('%y');
+                                    $diff = date_diff(date_create(date('Y-m-d', $sDate)), date_create(date('Y-m-d', $bd)))->format('%y');
                                     if($diff % $event->repeatInterval == 0)
                                     {
                                         $eventStartsOn = date('Y-m-d H:i:s', mktime(date('G', $sDate), date('i', $sDate), 0, date('n', $bd),date('d', $bd) ,date('Y', $bd)));
-                                        array_push($days[$i]['events'], ['event'=> $event, 'eventStartsOn'=> $eventStartsOn]);
+                                        array_push($days[$i], ['event'=> $event, 'eventStartsOn'=> $eventStartsOn]);
                                     }
                                 }
                         }
@@ -478,7 +451,6 @@ class EventsController extends Controller
         }
 
         return Response::json($days);
-        
     }
 
   
@@ -488,9 +460,8 @@ class EventsController extends Controller
         $calendar_id = Input::get('calendar_id');
         $startDate= Input::get('startDate');
         $endDate=Input::get('endDate');
-        $eventLength= Input::get('eventLength');
-        $startTimeDisplay= Input::get('startTimeDisplay');
-        $endTimeDisplay = Input::get('endTimeDisplay');
+        $length_hours= Input::get('length_hours');
+        $length_days= Input::get('length_days');
         $allDay = Input::get('allDay');
         $repeats=Input::get('repeats');
        
@@ -503,9 +474,8 @@ class EventsController extends Controller
             'calendar_id'=>$calendar_id,
             'startDate'=>$startDate,
             'endDate'=>$endDate,
-            'eventLength'=>$eventLength,
-            'startTimeDisplay'=>$startTimeDisplay,
-            'endTimeDisplay'=>$endTimeDisplay,
+            'length_hours'=>$length_hours,
+            'length_days'=>$length_days,
             'allDay'=>$allDay,
             'repeats'=>$repeats
             ))->id;
@@ -524,15 +494,15 @@ class EventsController extends Controller
         $calendar_id = Input::get('calendar_id');
         $startDate= Input::get('startDate');
         $endDate=Input::get('endDate');
-        $eventLength= Input::get('eventLength');
+        $length_days= Input::get('length_days');
+        $length_hours= Input::get('length_hours');
         $allDay = Input::get('allDay');
         $startTimeDisplay= Input::get('startTimeDisplay');
         $endTimeDisplay = Input::get('endTimeDisplay');
         $repeats=Input::get('repeats');
         
         DB::table('events')->where('id', '=', $id)->update(['name' => $name, 'calendar_id'=>$calendar_id, 'startDate'=> $startDate, 'endDate'=>$endDate,
-         'allDay'=>$allDay,  'startTimeDisplay'=>$startTimeDisplay, 'endTimeDisplay'=>$endTimeDisplay,
-         'eventLength'=>$eventLength, 'repeats'=>$repeats]);
+         'allDay'=>$allDay,  'length_days'=>$length_days, 'length_hours'=>$length_hours, 'repeats'=>$repeats]);
         
          return Response::json(['id'=>$id, 'repeats'=>$repeats]);
     }

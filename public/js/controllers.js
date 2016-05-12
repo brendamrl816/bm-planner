@@ -525,14 +525,12 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
     self.startDate = moment();
     self.endDate = self.startDate.clone();
     self.repeatEndDate = moment().add(1, 'd');
-    
     self.startHour = moment().format('hh');
     self.endHour = moment().add(1, 'h').format('hh');
     self.startMinutes ='0';
     self.endMinutes ='0';
     self.startMeridiem = moment().format('a');
     self.endMeridiem = moment().add(1, 'h').format('a');
-    
     self.allDay=false;
     self.repeats=false;
     self.repeatOccurrence="";
@@ -560,8 +558,16 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
     };
     
     
-    self.toggleCreateEvent = function(day, time_minutes){
-       self.createEvent = !self.createEvent;
+    self.toggleCreateEvent = function(day, time_minutes, event){
+    
+      if(event.target.className == 'eNameTimeHolder ng-scope' || event.target.className == 'eTime ng-binding' || event.target.className == 'eName ng-binding' || event.target.className == 'ng-binding' )
+      {
+          self.createEvent = false;
+      }else{
+           self.createEvent = !self.createEvent;
+      }
+   
+       
        if(self.createEvent == true){
             self.calendars = Calendars.calendars;
             self.name = "";
@@ -603,7 +609,9 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
         }
     };
     
-    
+    self.cancelAdd = function(){
+        self.createEvent = false;
+    }
 
     
     $scope.$watch('add.startDate', function(newValue, oldValue){
@@ -714,18 +722,29 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
         self.endDate.hour(getHour(self.endHour, self.endMeridiem));
         self.endDate.minutes(self.endMinutes);
         
-        eventToSend.startDate = self.startDate.format('YYYY-MM-DD '+ getTimeToSend(self.startHour, self.startMinutes, self.startMeridiem));
-        eventToSend.endDate= self.endDate.format('YYYY-MM-DD ' + getTimeToSend(self.endHour, self.endMinutes, self.endMeridiem));
+        if(self.allDay == true)
+        {
+            eventToSend.startDate = self.startDate.format('YYYY-MM-DD ') + '00:00:00';
+            eventToSend.endDate= self.endDate.format('YYYY-MM-DD ') + '23:59:00';
+        }else{
+            eventToSend.startDate = self.startDate.format('YYYY-MM-DD ')+ getTimeToSend(self.startHour, self.startMinutes, self.startMeridiem);
+            eventToSend.endDate= self.endDate.format('YYYY-MM-DD ') + getTimeToSend(self.endHour, self.endMinutes, self.endMeridiem);
+        }
+        
         
        
-        eventToSend.eventLength = Math.ceil(self.endDate.diff(self.startDate, 'hours', true));
+        eventToSend.length_hours = Math.ceil(self.endDate.diff(self.startDate, 'hours', true));
+        if(self.endDate.format('MM-DD-YY') == self.startDate.format('MM-DD-YY') || ((self.endDate.diff(self.startDate, 'days') == 0) && (self.endDate.format('HH:mm a') == '00:00 am' || self.startDate.format('HH:mm a') == '00:00 am'))
+            || ((self.endDate.diff(self.startDate, 'days') == 1) && (self.endDate.format('HH:mm a') == '00:00 am' && self.startDate.format('HH:mm a') == '00:00 am')))
+        {
+            eventToSend.length_days = 0;
+        }else{
+            eventToSend.length_days = Math.ceil(self.endDate.diff(self.startDate, 'days', true));
+        }
         
-        console.log(self.startDate);
-        console.log(self.endDate);
-        console.log(eventToSend.eventLength);
       
-        eventToSend.startTimeDisplay = self.startHour +':'+self.startMinutes+ self.startMeridiem;
-        eventToSend.endTimeDisplay = self.endHour +':' + self.endMinutes+ self.endMeridiem;
+        // eventToSend.startTimeDisplay = self.startHour +':'+self.startMinutes+ self.startMeridiem;
+        // eventToSend.endTimeDisplay = self.endHour +':' + self.endMinutes+ self.endMeridiem;
 
         eventToSend.repeats=self.repeats;
         eventToSend.allDay = self.allDay;
@@ -804,23 +823,15 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
     
     function getTimeToSend(hour, minute, meridiem)
     {
-        console.log(hour, minute, meridiem);
-        if(self.allDay == true){
-            hour = '00';
-            minute= '00';
-        }
-        else{
-            if(hour == '12' && meridiem == 'am')
+        if(hour == '12' && meridiem == 'am')
             {
                 hour ='00';
                 console.log(hour);
             }
-            if(meridiem =='pm' && hour != '12')
+        if(meridiem =='pm' && hour != '12')
             {
                 hour = parseInt(hour, 10) + 12;
             }
-        }
-        console.log(hour + ':' + minute + ':' + '00');
         return hour + ':' + minute + ':' + '00';
     }
     
@@ -833,12 +844,9 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
             }
             if(meridiem =='pm' && hour != '12')
             {
-                console.log(hour);
                 hour = parseInt(hour, 10) + 12;
             }
-       console.log(hour);
         return hour;
-        
     }
 });
 
@@ -896,22 +904,24 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
     };
     
     $scope.getLongWidth = function(){
-        if(Math.round($scope.event.eventLength/24) + 1 > (7 - $scope.day.itsDate.day()))
+        if(Math.round($scope.event.length_hours/24) + 1 > (6 - $scope.day.itsDate.day()))
         {
-            return ((100 * ( 7 - $scope.day.itsDate.day() + 1) ) ) + '%';
+            return ((100 * ( 6 - $scope.day.itsDate.day() + 1) ) ) + '%';
         }
         else{
-            return ((100 * (1  + Math.round($scope.event.eventLength/24))) ) + '%';
+            return ((100 * (Math.ceil($scope.event.length_hours/24))) ) + '%';
         }
     };
     
-    // moment("2010-10-20 4:30",       "YYYY-MM-DD HH:mm");
+   
     $scope.startDateDisplay = moment($scope.event.eventStartsOn , 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
-    $scope.endDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').add($scope.event.eventLength, 'hours').format('MMM DD, YYYY');
+    $scope.endDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').add($scope.event.length_hours, 'hours').format('MMM DD, YYYY');
     
     
     //****************************************** MODAL VARIABLES ***************************************************************
     $scope.eventMenu = false; //Ask user if it wants to edit or delete
+
+    
     $scope.verifyDeletion = false; //Ask user if they really want to delete event
     $scope.verificationQuestion;
     $scope.verificationAnswer;
@@ -919,11 +929,12 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
     $scope.kindOfEdition = false;//If event repeats, ask user if they want to edit all event occurrances or just this one
    
     $scope.toggleEventMenu = function(){
+        
         $scope.eventMenu = !$scope.eventMenu;
-        $scope.startDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
-        $scope.endDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').add($scope.event.eventLength, 'hours').format('MMM DD, YYYY');
-      
+        $scope.startDateDisplay = moment($scope.event.eventStartsOn , 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
+        $scope.endDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').add($scope.event.length_hours, 'hours').format('MMM DD, YYYY');
     };
+    
     $scope.toggleVerifyDeletion = function(){
         $scope.verifyDeletion = !$scope.Deletion;
     };
@@ -970,27 +981,28 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
                         var data={};
                         data.event_id = $scope.event.id;
                         var day = $scope.todaysDate.clone();
+                        var startDate = moment($scope.event.startDate, 'YYYY-MM-DD HH:mm:ss');
 
                         
-                        if($scope.event.startDate == $scope.todaysDate)
+                        if(startDate.format('YY-MM-DD') == $scope.todaysDate.format('YY-MM-DD'))
                         {
                             var update={};
                             update.id = $scope.event.id;
-                            update.date = $scope.event.startDate.clone().add($scope.event.eventLength + 1, 'd');
+                            update.date = startDate.clone().add($scope.event.length_hours , 'hours').format('YYYY-MM-DD HH:mm:ss');
                             Events.updateStartDate(update).sucess(function(response){
                                 EventsCalendar.refreshCalendar();
                             });
                         }
                         else{
-                            if($scope.event.eventLength > 1)
+                            if($scope.event.length_days > 0)
                             {
                                 var month = day.month();
-                                var eventStartsOn = moment($scope.event.eventStartsOn);
+                                var eventStartsOn = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss');
                                 var dateUpdate = eventStartsOn.month(month);
-                                data.dateOfChange = dateUpdate.format('YYYY-MM-DD');
+                                data.dateOfChange = dateUpdate.format('YYYY-MM-DD HH:mm:ss');
                                 
                             }else{
-                                data.dateOfChange = day.format('YYYY-MM-DD');
+                                data.dateOfChange = day.format('YYYY-MM-DD HH:mm:ss');
                             }
             
                             RepetitionUpdates.saveEventToChange(data).success(function(response){
@@ -1013,12 +1025,13 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
     
     $scope.deleteAllOcurrences = function(){
         $scope.eventsRepQuestion = false;
+        
         $scope.verificationQuestion = "Are you sure you would like to delete all events in this series?";
-        $scope.startDateDisplay = moment($scope.event.startDate).format('MMM DD, YYYY');
-        $scope.endDateDisplay = moment($scope.event.endDate).format('MMM DD, YYYY');
+        $scope.startDateDisplay = moment($scope.event.startDate, 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
+        $scope.endDateDisplay = moment($scope.event.endDate, 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
         if($scope.event.neverEnds == false)
         {
-            $scope.repeatEndDateDisplay =  moment($scope.event.repeatEndDate).format('MMM DD, YYYY');
+            $scope.repeatEndDateDisplay =  moment($scope.event.repeatEndDate, 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
         }
         else{
             $scope.repeatEndDateDisplay = "never";
@@ -1033,8 +1046,8 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
         $scope.verificationQuestion = "Are you sure you would like to delete this event in the series?";
         $scope.verifyDeletion = true;
         $scope.verificationAnswer = 'this';
-        $scope.startDateDisplay = moment($scope.event.eventStartsOn).format('MMM DD, YYYY');
-        $scope.endDateDisplay = moment($scope.event.eventStartsOn).add($scope.event.eventLength - 1, 'd').format('MMM DD, YYYY');
+        $scope.startDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
+        $scope.endDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').add($scope.event.length_hours, 'hours').format('MMM DD, YYYY');
     };
     
     
@@ -1069,8 +1082,8 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
         $scope.editionType = 'all_future';
         $scope.toggleEditModal(event, $scope.todaysDate, $scope.editionType);
     };
-    
 });
+
 
 
 
@@ -1082,19 +1095,20 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
     
     self.name = "";
     self.startDate = moment();
-    self.endDate = moment()
+    self.endDate = self.startDate.clone();
     self.repeatEndDate = moment().add(1, 'd');
     self.startHour = moment().format('hh');
     self.endHour = moment().add(1, 'h').format('hh');
-    self.startMinutes ='00';
-    self.endMinutes ='00';
+    self.startMinutes ='0';
+    self.endMinutes ='0';
     self.startMeridiem = moment().format('a');
     self.endMeridiem = moment().add(1, 'h').format('a');
     self.allDay=false;
     self.repeats=false;
     self.repeatOccurrence="";
-    self.repeatEndValue="never";
+    self.repeatEndValue ="never";
     self.repeatsWeeklyMenu=false;
+
     self.repeatWeeklyOptions=[];
     self.repeatWeeklyOptions[0]= {id:'0', name: 'Sun', selected: false};
     self.repeatWeeklyOptions[1]= {id:'1', name: 'Mon', selected: false};
@@ -1162,9 +1176,7 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
     
     
     self.validateStartTime = getValidateTime(self.startDate, self.startHour, self.startMinutes, self.startMeridiem);
-    
-     
-    
+   
     $scope.$watchGroup(['edit.startDate', 'edit.startHour', 'edit.startMinutes', 'edit.startMeridiem'], function(newValues, oldValues, scope) {
         self.validateStartTime = getValidateTime(newValues[0], newValues[1], newValues[2], newValues[3]);
         self.validateEndTime = getValidateTime(self.endDate, self.endHour, self.endMinutes, self.endMeridiem);
@@ -1212,14 +1224,7 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
         
         if(self.editModal == true)
         {
-            $scope.$watch('edit.startDate', function(newValue, oldValue){
-              if(self.event.eventLength == 1)
-              {
-                $scope.edit.endDate= newValue.clone();
-              }
-                  
-            });
-            
+           
             self.name = event.name;
             self.calendars = [];
             for(var i=0; i<Calendars.calendars.length; i++)
@@ -1231,29 +1236,26 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
                 }
             }
             
-            self.startDate = moment(event.startDate);
-            self.endDate = moment(event.endDate);
+            self.startDate = moment(event.startDate, 'YYYY-MM-DD HH:mm:ss');
+            self.endDate = moment(event.endDate, 'YYYY-MM-DD HH:mm:ss');
             self.repeatEndDate = moment(event.startDate).add(1, 'd');
             if(event.allDay == true)
             {
                 self.allDay = true;
-                var startTime = moment();
-                var endTime = moment().add(1, 'h');
+                self.startDate.hour(moment().format('hh'));
+                self.endDate.hour(moment().format('hh'));
             }else{
                 self.allDay = false;
-                var startTime = moment(self.startDate.format('YYYY-MM-DD') + " " + event.startTime);
-                var endTime = moment(self.endDate.format('YYYY-MM-DD') + " " + event.endTime);
             }
                 
-            self.startHour = startTime.format('hh');
-            self.endHour = endTime.format('hh');
-            self.startMinutes = startTime.format('mm');
-            self.endMinutes = endTime.format('mm');
-            self.startMeridiem = startTime.format('a');
-            self.endMeridiem = endTime.format('a');
+            self.startHour = self.startDate.format('hh');
+            self.endHour = self.endDate.format('hh');
+            self.startMinutes = self.startDate.format('mm');
+            self.endMinutes = self.endDate.format('mm');
+            self.startMeridiem = self.startDate.format('a');
+            self.endMeridiem = self.endDate.format('a');
             self.repeats = event.repeats;
-            self.repeatInterval ="1";
-            self.repeatOccurrence = "";
+           
             self.repeatsWeeklyMenu = false;
             for( i=0; i<self.repeatWeeklyOptions.length; i++){
                 self.repeatWeeklyOptions[i].selected = false;
@@ -1263,14 +1265,12 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
             {
                 if(event.neverEnds == false)
                 {
-                    self.repeatEndDate = moment(event.repeatEndDate);
+                    self.repeatEndDate = moment(event.repeatEndDate,  'YYYY-MM-DD HH:mm:ss');
                     self.repeatEndValue = "date";
                 }else
                 {
                     self.repeatEndValue = "never";
-                    self.repeatEndDate = self.startDate.clone().add(1, 'd');
                 }
-                
                 
                 
                 switch(event.repeatOccurrence){
@@ -1315,7 +1315,7 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
             switch (self.editionType) {
                 case 'only_this':
                         self.startDate = self.todaysDate.clone();
-                        self.endDate = self.startDate.clone().add(event.eventLength -1, 'd');
+                        self.endDate = self.startDate.clone().add(event.length_hours, 'hours');
                         self.repeats = false;
                         self.repeatEndDate = self.todaysDate.clone().add(1,'d');
                         self.repeatOccurrence = "";
@@ -1326,7 +1326,7 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
                 
                 case 'all_future':
                         self.startDate = self.todaysDate.clone();
-                        self.endDate = self.startDate.clone().add(event.eventLength -1, 'd');
+                        self.endDate = self.startDate.clone().add(event.length_hours, 'hours');
                         if(self.repeatEndValue=="never")
                         {
                             self.repeatEndDate = self.startDate.clone().add(1, 'd');
@@ -1335,9 +1335,7 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
                     
                 default:
                     break;
-            }
-            
-            
+            } 
         }
 
     };
@@ -1350,21 +1348,35 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
         var editData = {};
         editData.name = self.name;
         editData.calendar_id = self.calendar_id.id;
-        editData.startDate=self.startDate.format('YYYY-MM-DD');
-        editData.endDate= self.endDate.format('YYYY-MM-DD');
-        editData.eventLength= self.endDate.diff(self.startDate, 'days')+1;
-        editData.startTimeDisplay = self.startHour +':'+self.startMinutes+ self.startMeridiem;
-        editData.endTimeDisplay = self.endHour +':' + self.endMinutes+ self.endMeridiem;
-        editData.startTime = getTimeToSend(self.startHour, self.startMinutes, self.startMeridiem);
-        editData.endTime = getTimeToSend(self.endHour, self.endMinutes, self.endMeridiem);
+        
+        self.startDate.hour(getHour(self.startHour, self.startMeridiem));
+        self.startDate.minutes(self.startMinutes);
+        self.endDate.hour(getHour(self.endHour, self.endMeridiem));
+        self.endDate.minutes(self.endMinutes);
+        
+        if(self.allDay == true)
+        {
+            editData.startDate = self.startDate.format('YYYY-MM-DD ') + '00:00:00';
+            editData.endDate= self.endDate.format('YYYY-MM-DD ') + '23:59:00';
+        }else{
+            editData.startDate = self.startDate.format('YYYY-MM-DD ')+ getTimeToSend(self.startHour, self.startMinutes, self.startMeridiem);
+            editData.endDate= self.endDate.format('YYYY-MM-DD ') + getTimeToSend(self.endHour, self.endMinutes, self.endMeridiem);
+        }
+       
+        editData.length_hours = Math.ceil(self.endDate.diff(self.startDate, 'hours', true));
+        if(self.endDate.format('MM-DD-YY') == self.startDate.format('MM-DD-YY') || (self.endDate.diff(self.startDate, 'days') == 0 && self.endDate.format('HH:mm') == '00:00'))
+        {
+            editData.length_days = 0;
+        }else{
+            editData.length_days = Math.ceil(self.endDate.diff(self.startDate, 'days', true));
+        }
+        
         editData.repeats = self.repeats;
         editData.allDay = self.allDay;
        
-        
         switch(self.editionType)
         {
             case 'one':
-                
                 Events.updateEvent(editData, self.event_id).success(function(response){
                     if(response.repeats == true){
                         var repeatData = {};
@@ -1375,7 +1387,9 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
                             repeatData.neverEnds = true;
                             repeatData.repeatEndDate = "";
                         }else{
-                            repeatData.repeatEndDate = self.repeatEndDate.format('YYYY-MM-DD');
+                            self.repeatEndDate.hour(getHour(self.endHour, self.endMeridiem));
+                            self.repeatEndDate.minutes(self.endMinutes);
+                            repeatData.repeatEndDate = self.repeatEndDate.format('YYYY-MM-DD HH:mm:ss');
                             repeatData.neverEnds = false;
                         }
                     
@@ -1431,7 +1445,6 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
                         EventsCalendar.refreshCalendar();
                     }
                 });
-                   
                 break;
             
             case 'only_this':
@@ -1439,15 +1452,15 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
                 data.event_id = self.event_id;
                 
                 var day = self.todaysDate.clone();  
-                if(self.event.eventLength > 1)
+                if(self.event.length_days > 0)
                 {
                     var month = day.month();
-                    var eventDate = moment(self.startDate);
+                    var eventDate = moment(self.startDate, 'YYYY-MM-DD HH:mm:ss');
                     var dateUpdate = eventDate.month(month);
-                    data.dateOfChange = dateUpdate.format('YYYY-MM-DD');
+                    data.dateOfChange = dateUpdate.format('YYYY-MM-DD HH:mm:ss');
                     
                 }else{
-                    data.dateOfChange = day.format('YYYY-MM-DD');
+                    data.dateOfChange = day.format('YYYY-MM-DD HH:mm:ss');
                 }
                 
                 RepetitionUpdates.saveEventToChange(data).success(function(response){
@@ -1460,7 +1473,7 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
                                 repeatData.neverEnds = true;
                                 repeatData.repeatEndDate = "";
                             }else{
-                                repeatData.repeatEndDate = self.repeatEndDate.format('YYYY-MM-DD');
+                                repeatData.repeatEndDate = self.repeatEndDate.format('YYYY-MM-DD HH:mm:ss');
                                 repeatData.neverEnds = false;
                             }
                         
@@ -1531,7 +1544,7 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
                             repeatData.neverEnds = true;
                             repeatData.repeatEndDate = "";
                         }else{
-                            repeatData.repeatEndDate = self.repeatEndDate.format('YYYY-MM-DD');
+                            repeatData.repeatEndDate = self.repeatEndDate.format('YYYY-MM-DD HH:mm:ss');
                             repeatData.neverEnds = false;
                         }
                     
@@ -1599,16 +1612,16 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
                 var data={};
                 data.event_id= self.event_id;
                 var day = self.todaysDate.clone();
-                if(self.event.eventLength > 1)
+                if(self.event.length_days > 0)
                 {
                     var month = day.month();
                     var eventDate= self.startDate.clone();
                     var newEndDate = eventDate.month(month);
                     newEndDate = newEndDate.subtract(1, 'd');
-                    data.newRepeatEndDate = newEndDate.format('YYYY-MM-DD');
+                    data.newRepeatEndDate = newEndDate.format('YYYY-MM-DD HH:mm:ss');
                     
                 }else{
-                    data.newRepeatEndDate = day.clone().subtract(1, 'd').format('YYYY-MM-DD');
+                    data.newRepeatEndDate = day.clone().subtract(1, 'd').format('YYYY-MM-DD HH:mm:ss');
                 }
                 
                 Repeats.changeEndDate(data).success(function(response){
@@ -1623,7 +1636,7 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
                                 repeatData.neverEnds = true;
                                 repeatData.repeatEndDate = "";
                             }else{
-                                repeatData.repeatEndDate = self.repeatEndDate.format('YYYY-MM-DD');
+                                repeatData.repeatEndDate = self.repeatEndDate.format('YYYY-MM-DD HH:mm:ss');
                                 repeatData.neverEnds = false;
                             }
                         
@@ -1687,22 +1700,30 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
     
     function getTimeToSend(hour, minute, meridiem)
     {
-        if(self.allDay ==true){
-            hour = '00';
-            minute= '00';
+       
+        if(hour == '12' && meridiem == 'am')
+        {
+            hour ='00';
+            console.log(hour);
         }
-        else{
-            if(hour==12 && meridiem =='am')
+        if(meridiem =='pm' && hour != '12')
+        {
+            hour = parseInt(hour, 10) + 12;
+        }
+        return hour + ':' + minute + ':' + '00';
+    }
+    
+    function getHour(hour, meridiem)
+    {
+        if(hour == '12' && meridiem == 'am')
             {
-                hour='00';
+                hour ='00';
             }
-            if(meridiem =='pm' && hour!=12)
+            if(meridiem =='pm' && hour != '12')
             {
                 hour = parseInt(hour, 10) + 12;
             }
-        }
-  
-        return hour + ':' + minute + ':' + '00';
+        return hour;
     }
     
 });
@@ -1737,10 +1758,7 @@ bmPlannerControllers.controller('mainCalViewCtrl', function($scope, $rootScope, 
             return {'color':'black'};
         }
     };
-    
-    
-    
-    $scope.todays = moment().format('MM-DD-YYYY');
+ 
 });
 
 
@@ -1820,7 +1838,6 @@ bmPlannerControllers.controller("weekViewCtrl", function($scope, EventsCalendar,
         }, 'fast');
     });
     
-
     //  $scope.goToAnchor = function(x){
     //     var oldHash = $location.hash();
     //     var newHash = 'anchor' + x;
@@ -1861,8 +1878,6 @@ bmPlannerControllers.controller("weekEventsCtrl", function($scope,  EventsCalend
     
     self.getWidth = function( hourindex, index, event)
     {
-        
-       
         if(event.first == true)
         {
             var width;
@@ -1875,8 +1890,7 @@ bmPlannerControllers.controller("weekEventsCtrl", function($scope,  EventsCalend
                     tds = $scope.day.hours[hourindex + i].tds;
                 }
             }
-            
-            
+           
             width = (100/tds);
             if(tds == 1)
             {
@@ -1892,7 +1906,6 @@ bmPlannerControllers.controller("weekEventsCtrl", function($scope,  EventsCalend
                         
                     }
                 }
-         
             }
             return  (width - 1) +'%';
         }
@@ -1911,8 +1924,6 @@ bmPlannerControllers.controller("weekEventsCtrl", function($scope,  EventsCalend
         else{
             return (eventindex * event.width) + '%';
         }
-            
-    
     };
 });
 

@@ -445,17 +445,16 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
     function createWeek(the_date) {
         var days = [];
         var i;
-        for (i = 0; i < 7; i++) {
-
-            days[i] = {
-                dateOfMonth: the_date.date(),
+        for (i = 0; i < 7; i++) 
+        {   
+            days[i] = 
+            {   dateOfMonth: the_date.date(),
                 month: the_date.month(),
                 itsDate: the_date,
                 hours: createHours(),
                 longEvents:[],
-                events:[]
-            };
-            
+                events:[] };
+                
             the_date = the_date.clone();
             the_date.add(1, "d");
         }
@@ -475,15 +474,15 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                     var indexes = [];//to order long events
                    
                     
-                    for (var n = 0; n < response[i]['events'].length; n++) {
+                    for (var n = 0; n < response[i].length; n++) {
                         
-                        if ((response[i]['events'][n]['event'].eventLength <= 24) && (response[i]['events'][n]['event'].allDay == false))
+                        if ((response[i][n]['event'].length_days == 0) && (response[i][n]['event'].allDay == false))
                         {
-                            var startTime1 = response[i]['events'][n]['event'].startDate.split(" ");
+                            var startTime1 = response[i][n]['event'].startDate.split(" ");
                             
                             var startTime = startTime1[1].split(":");
                             var start = (startTime[0] * 60) + parseInt(startTime[1], 10);
-                            var endTime1 = response[i]['events'][n]['event'].endDate.split(" ");
+                            var endTime1 = response[i][n]['event'].endDate.split(" ");
                             var endTime = endTime1[1].split(':');
                             if(endTime[0]=='00' && endTime[1]=='00')
                             {
@@ -561,38 +560,33 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                     
                                     the_indexes.sort(function(a,b){return a-b});
                                  
-                                //   while(days[i].hours[x].events[days[i].hours[x].events.length - m] != undefined && days[i].hours[x].events[days[i].hours[x].events.length - m].index == tds - m)
-                                //   {
-                                //         m++;
-                                //   }
-                                   
-                                   
                                     while(x <= j)
                                     {
                                         
                                         var event = {
                                             //backend:
-                                            id: response[i]['events'][n]['event'].id,
-                                            calendar_id: response[i]['events'][n]['event'].calendar_id,
-                                            name: response[i]['events'][n]['event'].name,
-                                            startDate:response[i]['events'][n]['event'].startDate,
-                                            endDate:response[i]['events'][n]['event'].endDate ,
-                                            eventLength:response[i]['events'][n]['event'].eventLength,
-                                            allDay:response[i]['events'][n]['event'].allDay ,
-                                            startTimeDisplay:response[i]['events'][n]['event'].startTimeDisplay,
-                                            endTimeDisplay: response[i]['events'][n]['event'].endTimeDisplay,
-                                            repeats:response[i]['events'][n]['event'].repeats,
-                                            repeatEndDate: response[i]['events'][n]['event'].repeatEndDate,
-                                            neverEnds: response[i]['events'][n]['event'].neverEnds,
-                                            repeatDaily: response[i]['events'][n]['event'].repeatDaily,
-                                            repeatMonthly: response[i]['events'][n]['event'].repeatMonthly,
-                                            repeatOccurrence: response[i]['events'][n]['event'].repeatOccurrence,
-                                            repeatInterval: response[i]['events'][n]['event'].repeatInterval,
-                                            repeatWeekdays:response[i]['events'][n]['event'].repeatWeekdays,
-                                            repeatWeekly: response[i]['events'][n]['event'].repeatWeekly,
-                                            repeatYearly: response[i]['events'][n]['event'].repeatYearly,
-                                            eventStartsOn: response[i]['events'][n]['eventStartsOn'],
-                                            eventStartsOnFormatted : moment(response[i]['events'][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'),
+                                            id: response[i][n]['event'].id,
+                                            calendar_id: response[i][n]['event'].calendar_id,
+                                            name: response[i][n]['event'].name,
+                                            startDate:response[i][n]['event'].startDate,
+                                            endDate:response[i][n]['event'].endDate ,
+                                            length_hours:response[i][n]['event'].length_hours,
+                                            length_days: response[i][n]['event'].length_days,
+                                            allDay:response[i][n]['event'].allDay,
+                                            repeats:response[i][n]['event'].repeats,
+                                            repeatEndDate: response[i][n]['event'].repeatEndDate,
+                                            neverEnds: response[i][n]['event'].neverEnds,
+                                            repeatDaily: response[i][n]['event'].repeatDaily,
+                                            repeatMonthly: response[i][n]['event'].repeatMonthly,
+                                            repeatOccurrence: response[i][n]['event'].repeatOccurrence,
+                                            repeatInterval: response[i][n]['event'].repeatInterval,
+                                            repeatWeekdays:response[i][n]['event'].repeatWeekdays,
+                                            repeatWeekly: response[i][n]['event'].repeatWeekly,
+                                            repeatYearly: response[i][n]['event'].repeatYearly,
+                                            eventStartsOn: response[i][n]['eventStartsOn'],
+                                            eventStartsOnFormatted : moment(response[i][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'),
+                                            startTimeDisplay:  moment(response[i][n]['event'].startDate, 'YYYY-MM-DD HH:mm:ss').format('hh:mma'),
+                                            endTimeDisplay:  moment(response[i][n]['event'].endDate, 'YYYY-MM-DD HH:mm:ss').format('hh:mma'),
                                             //frontend
                                             rowspan: rowspan,
                                             index: m,
@@ -631,7 +625,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                         { 
                             var topIndex;
                             
-                            if(days[i].itsDate.format('YYYY-MM-DD') ==  moment(response[i]['events'][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'))
+                            if(days[i].itsDate.format('YYYY-MM-DD') ==  moment(response[i][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'))
                             {   var k =0;
                                 if(days[i].longEvents.length == 0)
                                 {
@@ -666,7 +660,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                 {
                                     for(k=0; k<days[i-1].longEvents.length; k++)
                                     {
-                                        if((days[i-1].longEvents[k].eventStartsOn == response[i]['events'][n]['eventStartsOn'])  && (days[i-1].longEvents[k].id == response[i]['events'][n]['event'].id))
+                                        if((days[i-1].longEvents[k].eventStartsOn == response[i][n]['eventStartsOn'])  && (days[i-1].longEvents[k].id == response[i][n]['event'].id))
                                         {
                                             topIndex = days[i-1].longEvents[k].topIndex;
                                             indexes.push(topIndex);
@@ -687,37 +681,37 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                             
                             var event = {
                                         //backend:
-                                        id: response[i]['events'][n]['event'].id,
-                                            calendar_id: response[i]['events'][n]['event'].calendar_id,
-                                            name: response[i]['events'][n]['event'].name,
-                                            startDate:response[i]['events'][n]['event'].startDate,
-                                            endDate:response[i]['events'][n]['event'].endDate ,
-                                            eventLength:response[i]['events'][n]['event'].eventLength,
-                        
-                                            allDay:response[i]['events'][n]['event'].allDay ,
-                                            startTimeDisplay:response[i]['events'][n]['event'].startTimeDisplay,
-                                            endTimeDisplay: response[i]['events'][n]['event'].endTimeDisplay,
-                                            repeats:response[i]['events'][n]['event'].repeats,
-                                            repeatEndDate: response[i]['events'][n]['event'].repeatEndDate,
-                                            neverEnds: response[i]['events'][n]['event'].neverEnds,
-                                            repeatDaily: response[i]['events'][n]['event'].repeatDaily,
-                                            repeatMonthly: response[i]['events'][n]['event'].repeatMonthly,
-                                            repeatOccurrence: response[i]['events'][n]['event'].repeatOccurrence,
-                                            repeatInterval: response[i]['events'][n]['event'].repeatInterval,
-                                            repeatWeekdays:response[i]['events'][n]['event'].repeatWeekdays,
-                                            repeatWeekly: response[i]['events'][n]['event'].repeatWeekly,
-                                            repeatYearly: response[i]['events'][n]['event'].repeatYearly,
-                                            eventStartsOn: response[i]['events'][n]['eventStartsOn'],
-                                            eventStartsOnFormatted : moment(response[i]['events'][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'),
-                                        //frontend
+                                        id: response[i][n]['event'].id,
+                                            calendar_id: response[i][n]['event'].calendar_id,
+                                            name: response[i][n]['event'].name,
+                                            startDate:response[i][n]['event'].startDate,
+                                            endDate:response[i][n]['event'].endDate ,
+                                            length_hours:response[i][n]['event'].length_hours,
+                                            length_days: response[i][n]['event'].length_days,
+                                            allDay:response[i][n]['event'].allDay,
+                                            repeats:response[i][n]['event'].repeats,
+                                            repeatEndDate: response[i][n]['event'].repeatEndDate,
+                                            neverEnds: response[i][n]['event'].neverEnds,
+                                            repeatDaily: response[i][n]['event'].repeatDaily,
+                                            repeatMonthly: response[i][n]['event'].repeatMonthly,
+                                            repeatOccurrence: response[i][n]['event'].repeatOccurrence,
+                                            repeatInterval: response[i][n]['event'].repeatInterval,
+                                            repeatWeekdays:response[i][n]['event'].repeatWeekdays,
+                                            repeatWeekly: response[i][n]['event'].repeatWeekly,
+                                            repeatYearly: response[i][n]['event'].repeatYearly,
+                                            eventStartsOn: response[i][n]['eventStartsOn'],
+                                            eventStartsOnFormatted : moment(response[i][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'),
+                                            startTimeDisplay:  moment(response[i][n]['event'].startDate, 'YYYY-MM-DD HH:mm:ss').format('hh:mma'),
+                                            endTimeDisplay:  moment(response[i][n]['event'].endDate, 'YYYY-MM-DD HH:mm:ss').format('hh:mma'),
+                                            //frontend
                                         topIndex: topIndex,
-                                        top: topIndex * 20,
+                                        top: topIndex * 16,
                                         left:0,
                                         width:'100%',
                                         height:'15px'
                                         };
                             days[i].longEvents.push(event);
-                            days[i].longEventsHeight = indexes[indexes.length - 1];
+                            days[i].longEventsHeight = indexes.length;
                         }
                     }
                 }
@@ -780,38 +774,40 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                 
                 var indexes = [];//to order long events
                 
-                for (var n = 0; n < response[i]['events'].length; n++)
+                for (var n = 0; n < response[i].length; n++)
                 {
-                    if(response[i]['events'][n]['event'].eventLength <= 24){
+                    if(response[i][n]['event'].length_days == 0){
                         var event = {
-                                        id: response[i]['events'][n]['event'].id,
-                                        calendar_id: response[i]['events'][n]['event'].calendar_id,
-                                        name: response[i]['events'][n]['event'].name,
-                                        startDate:response[i]['events'][n]['event'].startDate,
-                                        endDate:response[i]['events'][n]['event'].endDate ,
-                                        eventLength:response[i]['events'][n]['event'].eventLength,
-                                        allDay:response[i]['events'][n]['event'].allDay ,
-                                        startTimeDisplay:response[i]['events'][n]['event'].startTimeDisplay,
-                                        endTimeDisplay: response[i]['events'][n]['event'].endTimeDisplay,
-                                        repeats:response[i]['events'][n]['event'].repeats,
-                                        repeatEndDate: response[i]['events'][n]['event'].repeatEndDate,
-                                        neverEnds: response[i]['events'][n]['event'].neverEnds,
-                                        repeatDaily: response[i]['events'][n]['event'].repeatDaily,
-                                        repeatMonthly: response[i]['events'][n]['event'].repeatMonthly,
-                                        repeatOccurrence: response[i]['events'][n]['event'].repeatOccurrence,
-                                        repeatInterval: response[i]['events'][n]['event'].repeatInterval,
-                                        repeatWeekdays:response[i]['events'][n]['event'].repeatWeekdays,
-                                        repeatWeekly: response[i]['events'][n]['event'].repeatWeekly,
-                                        repeatYearly: response[i]['events'][n]['event'].repeatYearly,
-                                        eventStartsOn: response[i]['events'][n]['eventStartsOn'],
-                                        eventStartsOnFormatted : moment(response[i]['events'][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'),
+                                        id: response[i][n]['event'].id,
+                                            calendar_id: response[i][n]['event'].calendar_id,
+                                            name: response[i][n]['event'].name,
+                                            startDate:response[i][n]['event'].startDate,
+                                            endDate:response[i][n]['event'].endDate ,
+                                            length_hours:response[i][n]['event'].length_hours,
+                                            length_days: response[i][n]['event'].length_days,
+                                            allDay:response[i][n]['event'].allDay,
+                                            repeats:response[i][n]['event'].repeats,
+                                            repeatEndDate: response[i][n]['event'].repeatEndDate,
+                                            neverEnds: response[i][n]['event'].neverEnds,
+                                            repeatDaily: response[i][n]['event'].repeatDaily,
+                                            repeatMonthly: response[i][n]['event'].repeatMonthly,
+                                            repeatOccurrence: response[i][n]['event'].repeatOccurrence,
+                                            repeatInterval: response[i][n]['event'].repeatInterval,
+                                            repeatWeekdays:response[i][n]['event'].repeatWeekdays,
+                                            repeatWeekly: response[i][n]['event'].repeatWeekly,
+                                            repeatYearly: response[i][n]['event'].repeatYearly,
+                                            eventStartsOn: response[i][n]['eventStartsOn'],
+                                             eventStartsOnFormatted : moment(response[i][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'),
+                                            startTimeDisplay:  moment(response[i][n]['event'].startDate, 'YYYY-MM-DD HH:mm:ss').format('hh:mma'),
+                                            endTimeDisplay:  moment(response[i][n]['event'].endDate, 'YYYY-MM-DD HH:mm:ss').format('hh:mma'),
+                                            
                                     };
                         days[i].events.push(event);
                     }
                     else{
                         var topIndex;
                             
-                            if(days[i].itsDate.format('YYYY-MM-DD') ==  moment(response[i]['events'][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'))
+                            if(days[i].itsDate.format('YYYY-MM-DD') ==  moment(response[i][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'))
                             {   var k =0;
                                 if(days[i].longEvents.length == 0)
                                 {
@@ -846,7 +842,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                 {
                                     for(k=0; k<days[i-1].longEvents.length; k++)
                                     {
-                                        if((days[i-1].longEvents[k].eventStartsOn == response[i]['events'][n]['eventStartsOn'])  && (days[i-1].longEvents[k].id == response[i]['events'][n]['event'].id))
+                                        if((days[i-1].longEvents[k].eventStartsOn == response[i][n]['eventStartsOn'])  && (days[i-1].longEvents[k].id == response[i][n]['event'].id))
                                         {
                                             topIndex = days[i-1].longEvents[k].topIndex;
                                             indexes.push(topIndex);
@@ -866,38 +862,39 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                             indexes.sort(function(a,b){return a-b});
                             var event = {
                                         //backend:
-                                        id: response[i]['events'][n]['event'].id,
-                                        calendar_id: response[i]['events'][n]['event'].calendar_id,
-                                        name: response[i]['events'][n]['event'].name,
-                                        startDate:response[i]['events'][n]['event'].startDate,
-                                        endDate:response[i]['events'][n]['event'].endDate ,
-                                        eventLength:response[i]['events'][n]['event'].eventLength,
-                                        allDay:response[i]['events'][n]['event'].allDay ,
-                                        startTimeDisplay:response[i]['events'][n]['event'].startTimeDisplay,
-                                        endTimeDisplay: response[i]['events'][n]['event'].endTimeDisplay,
-                                        repeats:response[i]['events'][n]['event'].repeats,
-                                        repeatEndDate: response[i]['events'][n]['event'].repeatEndDate,
-                                        neverEnds: response[i]['events'][n]['event'].neverEnds,
-                                        repeatDaily: response[i]['events'][n]['event'].repeatDaily,
-                                        repeatMonthly: response[i]['events'][n]['event'].repeatMonthly,
-                                        repeatOccurrence: response[i]['events'][n]['event'].repeatOccurrence,
-                                        repeatInterval: response[i]['events'][n]['event'].repeatInterval,
-                                        repeatWeekdays:response[i]['events'][n]['event'].repeatWeekdays,
-                                        repeatWeekly: response[i]['events'][n]['event'].repeatWeekly,
-                                        repeatYearly: response[i]['events'][n]['event'].repeatYearly,
-                                        eventStartsOn: response[i]['events'][n]['eventStartsOn'],
-                                        eventStartsOnFormatted : moment(response[i]['events'][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'),
-                                        
+                                        id: response[i][n]['event'].id,
+                                            calendar_id: response[i][n]['event'].calendar_id,
+                                            name: response[i][n]['event'].name,
+                                            startDate:response[i][n]['event'].startDate,
+                                            endDate:response[i][n]['event'].endDate ,
+                                            length_hours:response[i][n]['event'].length_hours,
+                                            length_days: response[i][n]['event'].length_days,
+                                            allDay:response[i][n]['event'].allDay,
+                                            repeats:response[i][n]['event'].repeats,
+                                            repeatEndDate: response[i][n]['event'].repeatEndDate,
+                                            neverEnds: response[i][n]['event'].neverEnds,
+                                            repeatDaily: response[i][n]['event'].repeatDaily,
+                                            repeatMonthly: response[i][n]['event'].repeatMonthly,
+                                            repeatOccurrence: response[i][n]['event'].repeatOccurrence,
+                                            repeatInterval: response[i][n]['event'].repeatInterval,
+                                            repeatWeekdays:response[i][n]['event'].repeatWeekdays,
+                                            repeatWeekly: response[i][n]['event'].repeatWeekly,
+                                            repeatYearly: response[i][n]['event'].repeatYearly,
+                                            eventStartsOn: response[i][n]['eventStartsOn'],
+                                             eventStartsOnFormatted : moment(response[i][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'),
+                                            startTimeDisplay:  moment(response[i][n]['event'].startDate, 'YYYY-MM-DD HH:mm:ss').format('hh:mma'),
+                                            endTimeDisplay:  moment(response[i][n]['event'].endDate, 'YYYY-MM-DD HH:mm:ss').format('hh:mma'),
+                                            
                                         //frontend
                                         topIndex: topIndex,
-                                        top: topIndex * 20,
+                                        top: topIndex * 16,
                                         left:0,
                                         width:'100%',
                                         height:'15px'
                                         };
                     
                             days[i].longEvents.push(event);
-                            days[i].longEventsHeight = indexes[indexes.length - 1];
+                            days[i].longEventsHeight = indexes.length;
                         }
                 }
                 
