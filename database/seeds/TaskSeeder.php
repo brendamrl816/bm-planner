@@ -14,10 +14,10 @@ class TaskSeeder extends Seeder
     public function run()
     {
         
-        // Task::create(array(
-        //   'todolist_id'=>1,
-        //   'name'=>'a lot of stuff',
-        //   'completed'=>false
-        // ));
+        Task::create(array(
+          'todolist_id'=>1,
+          'name'=>'a lot of stuff',
+          'completed'=>false
+        ));
     }
 }

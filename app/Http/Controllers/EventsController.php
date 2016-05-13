@@ -102,7 +102,7 @@ class EventsController extends Controller
                                 
                                 
                         $extend = strtotime('+'.$more->length_hours.' hour' , strtotime($more->repeatEndDate));
-                        $extend = date('Y-m-d', $extend);
+                        $extend = date('Y-m-d H:i:s', $extend);
                     
                         if(($more->startDate <= $e_date)  && (($more->neverEnds == true) ||  ($extend >= $b_date)) )
                         {

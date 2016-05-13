@@ -27,13 +27,13 @@
                 <div class="bigCalDates">{{day.dateOfMonth}}</div>
                 
                 <div ng-style="{'position':'relative', 'height':((day.longEventsHeight *15) + day.longEventsHeight + 1), 'width':'100%'}">
-                   <div style="display:table-row; position:absolute; width:100.5%; height:15px; z-index:20; pointer-events:none" ng-style="{'top':event.top, 'border-radius':getBorderRad(), 'background-color':'rgba(255, 255, 255, 0.3)', 'cursor':'hand'}"ng-repeat-start="event in day.longEvents"></div> 
+                   <div style="display:table-row; position:absolute; width:100.5%; height:15px; z-index:100; pointer-events:none" ng-style="{'top':event.top, 'border-radius':getBorderRad(), 'background-color':'rgba(255, 255, 255, 0.4)', 'cursor':'hand'}"ng-repeat-start="event in day.longEvents"></div> 
                     
                     <div  style="display:table-row; position:absolute; width:100.5%; height:15px" ng-controller="eventCtrl" ng-click="toggleEventMenu()" ng-style="{'top':event.top,  'border-radius':getBorderRad(), 'background-color':getDisplayColor(day.itsDate), 'cursor':'hand'}" ng-repeat-end>
-                        <div class="eNameTimeHolder" ng-if="event.eventStartsOnFormatted == day.itsDate.format('YYYY-MM-DD')" ng-style="{'width':getLongWidth()}" style="position:absolute; height:15px; z-index:100; border: 1px solid #e6e6e6; overflow:hidden; text-align:center">
+                        <div class="eNameTimeHolder" ng-if="event.eventStartsOnFormatted == day.itsDate.format('YYYY-MM-DD')" ng-style="{'width':getLongWidth()}" style="position:absolute; height:15px; z-index:101; border: 1px solid #e6e6e6; overflow:hidden; text-align:center">
                             <span class="eName">{{event.name}}</span>
                         </div>
-                        <div class="eNameTimeHolder" ng-if="event.eventStartsOnFormatted != day.itsDate.format('YYYY-MM-DD')">&nbsp</div>
+                        <div class="eNameTimeHolder"  ng-if="event.eventStartsOnFormatted != day.itsDate.format('YYYY-MM-DD')">&nbsp</div>
                         
                         <questionmodal question='eventMenu'>
                             <div class="questionModal">
@@ -222,12 +222,9 @@
                         
                     </div>
                 </div>
-
-                
-                 <addeventmodal showmodal="edit.editModal">
-                    <div ng-include="urlTemplate"></div>
-                </addeventmodal>  
             </div>
         </div>
-   
+        <addeventmodal showmodal="edit.editModal">
+            <div ng-include="urlTemplate"></div>
+        </addeventmodal>  
     </div>

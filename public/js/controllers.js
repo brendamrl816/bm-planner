@@ -826,7 +826,6 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
         if(hour == '12' && meridiem == 'am')
             {
                 hour ='00';
-                console.log(hour);
             }
         if(meridiem =='pm' && hour != '12')
             {
@@ -904,12 +903,12 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
     };
     
     $scope.getLongWidth = function(){
-        if(Math.round($scope.event.length_hours/24) + 1 > (6 - $scope.day.itsDate.day()))
+        if($scope.event.length_days  > (6 - $scope.day.itsDate.day()))
         {
             return ((100 * ( 6 - $scope.day.itsDate.day() + 1) ) ) + '%';
         }
         else{
-            return ((100 * (Math.ceil($scope.event.length_hours/24))) ) + '%';
+            return (100 * ($scope.event.length_days ) + 1) + '%';
         }
     };
     
@@ -1704,7 +1703,6 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
         if(hour == '12' && meridiem == 'am')
         {
             hour ='00';
-            console.log(hour);
         }
         if(meridiem =='pm' && hour != '12')
         {

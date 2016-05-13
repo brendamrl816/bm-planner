@@ -19,8 +19,8 @@
             </tr>
         </table>
         
-        <div style="float:left; width:100%; margin-left:10px">
-            <div style="width:100%; float:left; height:100px; display:table; border-collapse: collapse" ng-controller="editEventCtrl as edit">
+        <div style="float:left; width:100%; margin-left:10px" ng-controller="editEventCtrl as edit">
+            <div style="width:100%; float:left; height:100px; display:table; border-collapse: collapse" >
                 <div style="display:table-cell; position:relative; width:5%; border:1px solid #cccccc">
                     <div style="position:absolute; font-size:80%; font-weight:bold; left:5px; top:30%">All Day</div>
                 </div>
@@ -126,11 +126,10 @@
                         </div>
                     </div>
                 </div>
-                
-                <addeventmodal showmodal="edit.editModal">
-                    <div ng-include="urlTemplate"></div>
-                </addeventmodal>
             </div>
+            <addeventmodal showmodal="edit.editModal">
+                <div ng-include="urlTemplate"></div>
+            </addeventmodal>
         </div>  
         
         <br>

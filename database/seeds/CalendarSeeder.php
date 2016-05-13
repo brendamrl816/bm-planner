@@ -41,5 +41,10 @@ class CalendarSeeder extends Seeder
             'color'=> '0, 51, 153',
             'user_id'=>1
             ));
+        Calendar::create(array(
+            'name'=> 'banana',
+            'color'=> '204, 204, 0',
+            'user_id'=>1
+            ));
     }
 }

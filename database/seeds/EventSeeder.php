@@ -152,6 +152,77 @@ class EventSeeder extends Seeder
             'allDay'=>false,
             'repeats'=>1
             ));
+
+            Event::create(array(
+            'name'=>'rep11',
+            'user_id'=>1,
+            'calendar_id'=>5,
+            'startDate'=>'2016-08-09 13:13:00',
+            'endDate'=>'2016-08-13 00:00:00',
+            'length_hours'=>83,
+            'length_days'=> 4,
+            'allDay'=>false,
+            'repeats'=>1
+            ));
+
+            Event::create(array(
+            'name'=>'rep13',
+            'user_id'=>1,
+            'calendar_id'=>5,
+            'startDate'=>'2016-05-16 00:00:00',
+            'endDate'=>'2016-05-18 16:18:00',
+            'length_hours'=>65,
+            'length_days'=> 3,
+            'allDay'=>false,
+            'repeats'=>1
+            ));
+
+            Event::create(array(
+            'name'=>'montly1',
+            'user_id'=>1,
+            'calendar_id'=>6,
+            'startDate'=>'2016-05-03 00:00:00',
+            'endDate'=>'2016-05-03 15:19:00',
+            'length_hours'=>16,
+            'length_days'=>0,
+            'allDay'=>false,
+            'repeats'=>1
+            ));
             
+            Event::create(array(
+            'name'=>'year1',
+            'user_id'=>1,
+            'calendar_id'=>1,
+            'startDate'=>'2016-05-03 00:00:00',
+            'endDate'=>'2016-05-07 15:13:00',
+            'length_hours'=>4,
+            'length_days'=>0,
+            'allDay'=>false,
+            'repeats'=>1
+            ));
+
+            Event::create(array(
+            'name'=>'montly long',
+            'user_id'=>1,
+            'calendar_id'=>6,
+            'startDate'=>"2016-05-10 00:00:00",
+            'endDate'=>'2016-05-13 00:00:00',
+            'length_hours'=>72,
+            'length_days'=>3,
+            'allDay'=>false,
+            'repeats'=>1
+            ));
+
+            Event::create(array(
+            'name'=>'year long',
+            'user_id'=>1,
+            'calendar_id'=>5,
+            'startDate'=>'2016-05-10 14:00:00',
+            'endDate'=>'2016-05-13 00:00:00',
+            'length_hours'=>58,
+            'length_days'=>3,
+            'allDay'=>false,
+            'repeats'=>1
+            ));
     }
 }
