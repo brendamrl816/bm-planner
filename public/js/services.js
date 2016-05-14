@@ -479,7 +479,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                         if ((response[i][n]['event'].length_days == 0) && (response[i][n]['event'].allDay == false))
                         {
                             var startTime1 = response[i][n]['event'].startDate.split(" ");
-                            
+                        
                             var startTime = startTime1[1].split(":");
                             var start = (startTime[0] * 60) + parseInt(startTime[1], 10);
                             var endTime1 = response[i][n]['event'].endDate.split(" ");
@@ -492,7 +492,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                             var startMinutes = parseInt(startTime[1], 10);
                             var endMinutes = parseInt(endTime[1], 10);
                  
-                            var rowspan = Math.round((end - start) /30); // Math.round(endTime[0] - startTime[0]) * 2; 
+                            var rowspan = Math.round((end - start) /30) ; // Math.round(endTime[0] - startTime[0]) * 2; 
                             if (startMinutes >= 30) {
                                 startMinutes = startMinutes - 30;
                             }
@@ -595,7 +595,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                             width:'100%',
                                             height:'100%',
                                             first: false,
-                                            totalHeight: ((rowspan*30) - startMinutes - (endMinutes))
+                                            totalHeight: (((rowspan) *30) - startMinutes - (endMinutes))
                                             };
                                             
                                         if(x == x2) //if it's the first one
@@ -711,7 +711,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                         height:'15px'
                                         };
                             days[i].longEvents.push(event);
-                            days[i].longEventsHeight = indexes.length;
+                            days[i].longEventsHeight = indexes[indexes.length-1] + 1;
                         }
                     }
                 }
@@ -894,7 +894,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                         };
                     
                             days[i].longEvents.push(event);
-                            days[i].longEventsHeight = indexes.length;
+                            days[i].longEventsHeight = indexes[indexes.length-1] + 1;
                         }
                 }
                 

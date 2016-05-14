@@ -28,10 +28,14 @@
                     
                     
                     <div ng-style="{'position':'relative', 'margin-bottom':'20px', 'height':day.longEventsHeight * 20, 'width':'100%'}">&nbsp
-                       <div style="display:table-row; position:absolute; width:100.5%; height:15px; z-index:20; pointer-events:none" ng-style="{'top':event.top, 'background-color':'rgba(255, 255, 255, 0.3)', 'cursor':'hand'}" ng-repeat-start="event in day.longEvents"></div> 
-                        <div style="display:table-row; position:absolute; width:100.5%; height:15px" ng-controller="eventCtrl" ng-click="toggleEventMenu()" ng-style="{'top':event.top, 'cursor':'hand', 'border-radius':getBorderRad(), 'background-color':getDisplayColor(day.itsDate)}" ng-repeat-end>
-                            <div class="eNameTimeHolder" ng-if="event.eventStartsOnFormatted == day.itsDate.format('YYYY-MM-DD') && event.length_days > 0" ng-style="{'width':getLongWidth()}" style="position:absolute; height:13px; z-index:100; border: 1px solid #e6e6e6; overflow:hidden; text-align:center" >
-                                <span class="eName">{{event.name}}</span>
+                       
+                      
+                       <div style="position:absolute; height:17px; display:table-row; width:100%" ng-style="{'top':event.top}" ng-repeat="event in day.longEvents" ng-controller="eventCtrl" ng-click="toggleEventMenu()"> 
+                       
+                             <div ng-if="event.eventStartsOnFormatted == day.itsDate.format('YYYY-MM-DD')|| day.itsDate.day() == 0" ng-style="getWidthBorder()" style="position:absolute; height:15px; background-color:rgba(255, 255, 255, 0.9)">
+                                <div class="eNameTimeHolder ng-scope"  ng-style="{'background-color':getDisplayColor(day.itsDate), 'width':'100%', 'cursor':'hand'}" style="position:absolute; height:15px; z-index:100; overflow:hidden; text-align:center" >
+                                    <span class="eName">{{event.name}}</span>
+                                </div>
                             </div>
                              <div class="eNameTimeHolder" ng-if="event.allDay == true && event.length_days == 0" style="position:absolute; height:15px; width:100%; z-index:100; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" >
                                 <span class="eName">{{event.name}}</span>

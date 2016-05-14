@@ -68,7 +68,7 @@ class RepetitionTableSeeder extends Seeder
             'event_id'=>15,
             'repeatOccurrence' =>'yearly',
             'repeatInterval' =>1,
-            'repeatEndDate'=>nul,
+            'repeatEndDate'=>null,
             'repeatDaily'=>null,
             'repeatWeekdays'=>null,
             'repeatWeekly'=>null,

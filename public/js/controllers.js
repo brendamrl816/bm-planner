@@ -559,7 +559,7 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
     
     
     self.toggleCreateEvent = function(day, time_minutes, event){
-    
+    //   console.log(event.target.className);
       if(event.target.className == 'eNameTimeHolder ng-scope' || event.target.className == 'eTime ng-binding' || event.target.className == 'eName ng-binding' || event.target.className == 'ng-binding' )
       {
           self.createEvent = false;
@@ -740,6 +740,10 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
             eventToSend.length_days = 0;
         }else{
             eventToSend.length_days = Math.ceil(self.endDate.diff(self.startDate, 'days', true));
+            if(eventToSend.length_hours/eventToSend.length_days < 12)
+            {
+                eventToSend.length_days = eventToSend.length_days + 1;
+            }
         }
         
       
@@ -887,7 +891,7 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
         }
         else{
            
-            return 'rgb(' + color +  ')';
+            return 'rgba(' + color +  ', 0.8)';
         }
  
     };
@@ -902,13 +906,17 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
         }
     };
     
-    $scope.getLongWidth = function(){
+    $scope.getWidthBorder = function(){
         if($scope.event.length_days  > (6 - $scope.day.itsDate.day()))
         {
-            return ((100 * ( 6 - $scope.day.itsDate.day() + 1) ) ) + '%';
+            return {'width': ((100 * ( 6 - $scope.day.itsDate.day() + 1) ) ) + '%', 'border':'1px solid #e6e6e6', 'border-right':'none'};
+        }
+        else if($scope.day.itsDate.day() == 0 && $scope.day.itsDate.format('YYYY-MM-DD') != $scope.event.eventStartsOnFormatted)
+        {
+            return {'width': ((100 * ( $scope.event.length_days - (6 - moment($scope.event.eventStartsOn, 'YYY-MM-DD HH:mm:ss').day() + 1)) ) ) + '%',  'border':'1px solid #e6e6e6', 'border-left':'none'};
         }
         else{
-            return (100 * ($scope.event.length_days ) + 1) + '%';
+            return {'width':(100 * ($scope.event.length_days ) ) + '%', 'border':'1px solid #e6e6e6'};
         }
     };
     
@@ -1368,6 +1376,10 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
             editData.length_days = 0;
         }else{
             editData.length_days = Math.ceil(self.endDate.diff(self.startDate, 'days', true));
+            if(eventToSend.length_hours/eventToSend.length_days < 12)
+            {
+                eventToSend.length_days = eventToSend.length_days + 1;
+            }
         }
         
         editData.repeats = self.repeats;

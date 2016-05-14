@@ -83,7 +83,7 @@ class EventSeeder extends Seeder
             'startDate'=>'2016-05-18 18:56:00',
             'endDate'=>'2016-05-19 04:20:00',
             'length_hours'=> 10,
-            'length_days'=> 1,
+            'length_days'=> 2,
             'allDay'=>false,
             'repeats'=>false
             ));
