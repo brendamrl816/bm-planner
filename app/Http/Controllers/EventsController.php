@@ -99,9 +99,9 @@ class EventsController extends Controller
                         $more->repeatMonthly = $rep->repeatMonthly;
                         $more->repeatYearly = $rep->repeatYearly;
                         $more->neverEnds = $rep->neverEnds;
+
                                 
-                                
-                        $extend = strtotime('+'.$more->length_hours.' hour' , strtotime($more->repeatEndDate));
+                        $extend = strtotime('+'.ceil($more->length_hours).' hour' , strtotime($more->repeatEndDate));
                         $extend = date('Y-m-d H:i:s', $extend);
                     
                         if(($more->startDate <= $e_date)  && (($more->neverEnds == true) ||  ($extend >= $b_date)) )
@@ -114,7 +114,7 @@ class EventsController extends Controller
                                 //subtract the number of days(z) of the event from the date; 
                                 //if the subtracted date falls between the startdate and repetition end date, 
                                 //then the event can be addeded to that date!
-                                while($z <= $more->length_hours/24)
+                                while($z <= ceil($more->length_hours)/24)
                                 {
                                     $d_0 = strtotime('-'.$z.' days' , $bd);
                                     $d_23 = strtotime('-'.$z.' days' , $ed);
@@ -124,7 +124,8 @@ class EventsController extends Controller
                                     
                                      $addOrNot = DB::table('eventchanges')
                                         ->where('event_id', '=', $more->id)
-                                        ->where('dateOfChange', '=', $d2)
+                                        ->where('dateOfChange', '>=', $d1)
+                                        ->where('dateOfChange', '<=', $d2)
                                         ->get();
                                 
                                     if(($d1 <= $more->repeatEndDate || $more->neverEnds == true) && ($d2 >= $more->startDate) && (sizeof($addOrNot)==0))
@@ -142,7 +143,7 @@ class EventsController extends Controller
                             {
                                 $z = 0;
                             
-                                while($z <= $more->length_hours/24)
+                                while($z <= ceil($more->length_hours)/24)
                                 {
     
                                     $d_0 = strtotime('-'.$z.' days' , $bd);
@@ -153,7 +154,8 @@ class EventsController extends Controller
                                     
                                     $addOrNot = DB::table('eventchanges')
                                         ->where('event_id', '=', $more->id)
-                                        ->where('dateOfChange', '=', $d2)
+                                        ->where('dateOfChange', '>=', $d1)
+                                        ->where('dateOfChange', '<=', $d2)
                                         ->get();
                                 
                                     if(($d2 >= $more->startDate) && ($d1 <= $more->repeatEndDate || $more->neverEnds == true) && !($week_day == 0 || $week_day == 6)  && (sizeof($addOrNot)==0))
@@ -172,7 +174,7 @@ class EventsController extends Controller
                             {
                                 $z = 0;
                                 
-                                while($z <= $more->length_hours/24)
+                                while($z <= ceil($more->length_hours)/24)
                                 {
                                     $d_0 = strtotime('-'.$z.' days' , $bd);
                                     $d_23 = strtotime('-'.$z.' days' , $ed);
@@ -182,7 +184,8 @@ class EventsController extends Controller
                                     
                                      $addOrNot = DB::table('eventchanges')
                                         ->where('event_id', '=', $more->id)
-                                        ->where('dateOfChange', '=', $d2)
+                                        ->where('dateOfChange', '>=', $d1)
+                                        ->where('dateOfChange', '<=', $d2)
                                         ->get();
                                 
                                     if(($d2 >= $more->startDate) && ($d1 <= $more->repeatEndDate || $more->neverEnds == true) && (sizeof($addOrNot)==0) && (strpbrk($more->repeatWeekly, $week_day) != null) )
@@ -222,7 +225,7 @@ class EventsController extends Controller
                             else if($more->repeatMonthly != "")
                             { 
                                 $z=0;
-                                while($z < $more->length_hours/24)
+                                while($z < ceil($more->length_hours)/24)
                                 {
                                     $d_0 = strtotime('-'.$z.' days' , $bd);
                                     $d_23 = strtotime('-'.$z.' days' , $ed);
@@ -232,7 +235,8 @@ class EventsController extends Controller
                                     
                                      $addOrNot = DB::table('eventchanges')
                                             ->where('event_id', '=', $more->id)
-                                            ->where('dateOfChange', '=', $d2)
+                                            ->where('dateOfChange', '>=', $d1)
+                                            ->where('dateOfChange', '<=', $d2)
                                             ->get();
                                             
                                     if(($dayOfMonth == $more->repeatMonthly) && (sizeof($addOrNot)==0) && ($d2 >= $more->startDate) && ($d1 <= $more->repeatEndDate || $more->neverEnds == true) )
@@ -260,7 +264,7 @@ class EventsController extends Controller
                             else if($more->repeatYearly != null)
                             {
                                 $z=0;
-                                while($z < $more->length_hours/24)
+                                while($z < ceil($more->length_hours)/24)
                                 {
                                     $d_0 = strtotime('-'.$z.' days' , $bd);
                                     $d_23 = strtotime('-'.$z.' days' , $ed);
@@ -270,7 +274,8 @@ class EventsController extends Controller
                                     
                                     $addOrNot = DB::table('eventchanges')
                                             ->where('event_id', '=', $more->id)
-                                            ->where('dateOfChange', '=', $d2)
+                                            ->where('dateOfChange', '>=', $d1)
+                                            ->where('dateOfChange', '<=', $d2)
                                             ->get();
                                     
                                     if($month1 == $more->repeatYearly && (sizeof($addOrNot)==0) && ($d2 >= $more->startDate) && ($d1 <= $more->repeatEndDate || $more->neverEnds == true))
@@ -294,6 +299,10 @@ class EventsController extends Controller
             }
             
             sort($days[$i]);
+            
+            usort($days[$i], function($a, $b){
+                return strcmp($a['event']->startDate, $b['event']->startDate);
+            });
             usort($days[$i], function($a, $b){
                 return strcmp($a['eventStartsOn'], $b['eventStartsOn']);
             });
@@ -362,14 +371,14 @@ class EventsController extends Controller
                         $okToAdd= true;
                         $addOrNot = DB::table('eventchanges')
                                 ->where('event_id', '=', $event->id)
-                                ->where('dateOfChange', '=', $b_date)
+                                ->where('dateOfChange', '>=', $b_date)
+                                ->where('dateOfChange', '<=', $e_date)
                                 ->get();
                                 
                         if(sizeof($addOrNot)==0)
                         {
                                 if($event->repeatOccurrence == "daily")
                                 {
-                                    
                                     $sDate = strtotime($event->startDate);
                                     $eventStartsOn = date('Y-m-d H:i:s', mktime(date('G', $sDate), date('i', $sDate), 0, date('n', $bd),date('d', $bd) ,date('Y', $bd)));
                                     array_push($days[$i], ['event'=> $event, 'eventStartsOn'=> $eventStartsOn]);

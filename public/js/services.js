@@ -479,7 +479,6 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                         if ((response[i][n]['event'].length_days == 0) && (response[i][n]['event'].allDay == false))
                         {
                             var startTime1 = response[i][n]['event'].startDate.split(" ");
-                        
                             var startTime = startTime1[1].split(":");
                             var start = (startTime[0] * 60) + parseInt(startTime[1], 10);
                             var endTime1 = response[i][n]['event'].endDate.split(" ");
@@ -489,10 +488,9 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                 endTime[0]='24';
                             }
                             var end = (endTime[0] * 60) + parseInt(endTime[1], 10);
+                            
                             var startMinutes = parseInt(startTime[1], 10);
                             var endMinutes = parseInt(endTime[1], 10);
-                 
-                            var rowspan = Math.round((end - start) /30) ; // Math.round(endTime[0] - startTime[0]) * 2; 
                             if (startMinutes >= 30) {
                                 startMinutes = startMinutes - 30;
                             }
@@ -502,6 +500,8 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                     endMinutes = endMinutes - 30;
                                 }
                             }
+                            var rowspan = Math.round((end - start ) /30); // Math.round(endTime[0] - startTime[0]) * 2; 
+                            
                             var x2;
                             
                             
@@ -588,14 +588,14 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                             startTimeDisplay:  moment(response[i][n]['event'].startDate, 'YYYY-MM-DD HH:mm:ss').format('hh:mma'),
                                             endTimeDisplay:  moment(response[i][n]['event'].endDate, 'YYYY-MM-DD HH:mm:ss').format('hh:mma'),
                                             //frontend
-                                            rowspan: rowspan,
+                                            rowspan: (rowspan),
                                             index: m,
                                             top: 0,
                                             left:'0%',
                                             width:'100%',
                                             height:'100%',
                                             first: false,
-                                            totalHeight: (((rowspan) *30) - startMinutes - (endMinutes))
+                                            totalHeight:((((endTime[0] * 60) - (startTime[0] * 60))) + (60 - parseInt(startTime[1], 10)) - (60 - (parseInt(endTime[1], 10))))
                                             };
                                             
                                         if(x == x2) //if it's the first one
@@ -609,7 +609,6 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                         {
                                             event.height = endMinutes;
                                         }
-
                                         days[i].hours[x].events.push(event);
                                         
                   

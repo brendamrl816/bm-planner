@@ -32,15 +32,14 @@
                       
                        <div style="position:absolute; height:17px; display:table-row; width:100%" ng-style="{'top':event.top}" ng-repeat="event in day.longEvents" ng-controller="eventCtrl" ng-click="toggleEventMenu()"> 
                        
-                             <div ng-if="event.eventStartsOnFormatted == day.itsDate.format('YYYY-MM-DD')|| day.itsDate.day() == 0" ng-style="getWidthBorder()" style="position:absolute; height:15px; background-color:rgba(255, 255, 255, 0.9)">
+                             <div ng-if="(event.eventStartsOnFormatted == day.itsDate.format('YYYY-MM-DD')|| day.itsDate.day() == 0)" ng-style="getWidthBorder()" style="position:absolute; height:15px; background-color:rgba(255, 255, 255, 0.9)">
                                 <div class="eNameTimeHolder ng-scope"  ng-style="{'background-color':getDisplayColor(day.itsDate), 'width':'100%', 'cursor':'hand'}" style="position:absolute; height:15px; z-index:100; overflow:hidden; text-align:center" >
                                     <span class="eName">{{event.name}}</span>
                                 </div>
                             </div>
-                             <div class="eNameTimeHolder" ng-if="event.allDay == true && event.length_days == 0" style="position:absolute; height:15px; width:100%; z-index:100; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" >
+                             <div class="eNameTimeHolder" ng-if="event.allDay == true && event.length_days == 0"  ng-style="{'background-color':getDisplayColor(day.itsDate), 'cursor':'hand'}"  style="position:absolute; border-radius:20px; height:15px; width:100%; z-index:100; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" >
                                 <span class="eName">{{event.name}}</span>
                             </div>
-                            <div ng-if="event.eventStartsOnFormatted != day.itsDate.format('YYYY-MM-DD')">&nbsp</div>
                             
                                 <questionmodal question='eventMenu'>
                                     <div class="questionModal">
@@ -108,7 +107,7 @@
                                                 <div style="font-size:120%; font-weight:bold" ng-style="{'color': 'rgb(' +getColor()+ ')'}">{{event.name}}</div>
                                                 <div ng-if="event.allDay == true">{{startDateDisplay}} - {{endDateDisplay}}</div>
                                                 <div ng-if="event.allDay == false">{{startDateDisplay}} at {{event.startTimeDisplay}} - {{endDateDisplay}} at {{event.endTimeDisplay}}</div>
-                                                <div ng-if="verificationAnswer == 'all'">Repeats until: {{startDateDisplay}}</div>
+                                                <div ng-if="verificationAnswer == 'all'">Repeats until: {{repeatEndDateDisplay}}</div>
                                             </div>
                                         </div>
                                         <div class="lowerqDiv">
@@ -231,7 +230,7 @@
                                                         <div style="font-size:120%; font-weight:bold" ng-style="{'color': 'rgb(' +getColor()+ ')'}">{{event.name}}</div>
                                                         <div ng-if="event.allDay == true">{{startDateDisplay}} - {{endDateDisplay}}</div>
                                                         <div ng-if="event.allDay == false">{{startDateDisplay}} at {{event.startTimeDisplay}} - {{endDateDisplay}} at {{event.endTimeDisplay}}</div>
-                                                        <div ng-if="verificationAnswer == 'all'">Repeats until: {{startDateDisplay}}</div>
+                                                        <div ng-if="verificationAnswer == 'all'">Repeats until: {{repeatEndDateDisplay}}</div>
                                                     </div>
                                                 </div>
                                                 <div class="lowerqDiv">

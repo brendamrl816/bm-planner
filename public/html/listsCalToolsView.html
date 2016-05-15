@@ -4,7 +4,7 @@
         <span style="margin-left:10px">To-Do Lists</span>
     </div> 
     
-    <div>
+   
         <div ng-controller="listMenuCtrl as listMenu" ng-repeat="list in lists">
             
             <div style="display:inline-block">
@@ -50,22 +50,22 @@
                 </menumodal>
             </div>
             
-            <div style="display:block" ng-controller="tasksCtrl">
+            <div style="display:block">
                 
-                <div ng-style="style.textInputStyle()" style="width:100%; height:40px; margin-top:5px; display:inline-block; color:#f2f2f2" ng-repeat="task in list.tasks">
+                <div ng-style="style.textInputStyle()" style="width:100%; height:40px; margin-top:5px; display:inline-block; color:#f2f2f2" ng-repeat="task in list.tasks" ng-controller="tasksCtrl">
                         <div style="width:90%; position:relative; display:inline-block">
                             <div style="display:inline-block; vertical-align:middle; height:90%">
-                                <input  style="height:100%" type="checkbox" ng-checked="task.completed" ng-click="updateCompleted($parent.$index, $index, task)">
+                                <input  style="height:100%" type="checkbox"  ng-checked="completed" ng-click="updateCompleted($parent.$parent.$index, $parent.$index, task)">
                             </div>
                             
                             <div style="display:inline-block; max-width:85%; overflow-wrap:break-word">
-                                <span ng-class="completedClass(task.completed)" style="max-width:85%">{{task.name}}</span>
+                                <span ng-class="completedClass()" style="max-width:85%">{{task.name}}</span>
                             </div>
                             
                         
                         </div>
                         <div  style="display:inline-block; color:black; text-shadow:1px 1px 2px #fff; cursor:hand; font-size:80%">
-                            <div ng-click="delete_task($parent.$index, $index, task.id)">
+                            <div ng-click="delete_task($parent.$parent.$index, $parent.$index, task.id)">
                                 <i class="fa fa-trash fa-lg"></i>
                             </div>
                         </div>
@@ -112,8 +112,7 @@
                     </div>
                 </form>
         </div>
-           
-    </div>
+
 </div>
 
 
@@ -121,7 +120,7 @@
 <div ng-controller="calendarsCtrl as calie">
     
     <div class="headers" ng-style="style.modernBackground()"><span style="margin-left:10px">Calendars</span></div>
-    <div>
+    
         <div ng-controller="calendarMenuCtrl as calmenu" ng-repeat="calendar in theCalendars.calendars">
             <div ng-style="style.textInputStyle()" class="frontFont" style="display:inline-block; width:100%; height:40px; margin-top:5px">
                 <div style="float:left; margin-top:5px; margin-left:5px; text-align:center; position:relative" class="menuButtons" ng-click="calmenu.ToggleshowCalendarMenu()" ng-style="{'background-color':'rgb(' +calendar.color+ ')'}"><div style="margin-top:25%; font-size:60%"><i class="fa fa-pencil fa-lg"></i></div></div>
@@ -154,7 +153,7 @@
                                 </div>
                             </button>
                             
-                            </br ng-if="calendar.id == theCalendars.mainCalendar.id">
+                            <br ng-if="calendar.id == theCalendars.mainCalendar.id">
                             
                             <div class="divInput" style="display:inlilne-block">
                                 <div class="split">
@@ -190,8 +189,7 @@
                 </continuemodal>
             </div>
         </div>
-    </div>
-    
+   
     <br>
     
     <div style="width:100%; text-align:center">

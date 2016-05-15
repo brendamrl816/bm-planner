@@ -95,7 +95,7 @@ class EventSeeder extends Seeder
             'calendar_id'=>3,
             'startDate'=>'2016-05-02 19:14:00',
             'endDate'=>'2016-05-04 22:57:00',
-            'length_hours'=> 52,
+            'length_hours'=>51.72,
             'length_days'=> 3,
             'allDay'=>false,
             'repeats'=>false
@@ -147,7 +147,7 @@ class EventSeeder extends Seeder
             'calendar_id'=>4,
             'startDate'=>'2016-05-30 13:07:00 ',
             'endDate'=>' 2016-05-30 23:39:00',
-            'length_hours'=>11,
+            'length_hours'=>10.53,
             'length_days'=> 0,
             'allDay'=>false,
             'repeats'=>1
@@ -194,8 +194,8 @@ class EventSeeder extends Seeder
             'user_id'=>1,
             'calendar_id'=>1,
             'startDate'=>'2016-05-03 00:00:00',
-            'endDate'=>'2016-05-07 15:13:00',
-            'length_hours'=>4,
+            'endDate'=>'2016-05-03 15:13:00',
+            'length_hours'=>15.22,
             'length_days'=>0,
             'allDay'=>false,
             'repeats'=>1

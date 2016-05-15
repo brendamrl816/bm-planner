@@ -225,7 +225,7 @@
     <div starttimeval id="editendtimeval" ng-show=false name="editstarttimeval" ng-model="edit.validateStartTime">{{edit.validateStartTime}}</div>
     <div endtimeval id="editstarttimeval"  ng-show=false name="editendtimeval" ng-model="edit.validateEndTime">{{edit.validateEndTime}}</div>
     <div starttimeval id="editrepeatval" ng-show=false name="editstarttimeval" ng-model="edit.validateStartTime">{{edit.validateStartTime}}</div>
-    <div endtimeval id="editstarttimeval"  ng-show=false name="editrepeatval" ng-model="edit.validateRepeatDate">{{edit.validateRepeatDate}}</div>
+    <div ng-if="edit.repeatEndValue == 'date'"  endtimeval id="editstarttimeval"  ng-show=false name="editrepeatval" ng-model="edit.validateRepeatDate">{{edit.validateRepeatDate}}</div>
     <div class="divSep" ng-style="style.errorStyle()" ng-show="editForm.editendtimeval.$error.endtimeval">*Event must end after it starts!</div>
     
     
@@ -294,16 +294,16 @@
         
         <div clas="divSep" style="margin-top:1%">Ends On:</div>
         <div class="divSep" style="display:inline-block; margin-top:5px">
-            <minicalendars style="display:inline-block" selected="edit.repeatEndDate">
-                <input type="radio" style="margin-top:4px; float:left"  ng-model="edit.repeatEndValue" value="date"> 
-                <div style="margin-left:0; float:left">date</div> 
-                <input class="addModalInputDate" style="float:right" enddate type="text" ng-style="style.modalInputStyle()" ng-model="edit.repeatEndDate" ng-model-options="{ updateOn: 'blur', allowInvalid:true}">
-            </minicalendars>
-
             <div style="float:left; display:inline-block">
                     <input type="radio" style="float:left; margin-top:4px" ng-model="edit.repeatEndValue" value="never">
                     <div style="float:left; margin-right:5px">never</div> 
             </div>
+            <input type="radio" style="margin-top:4px; float:left"  ng-model="edit.repeatEndValue" value="date"> 
+            <div style="margin-left:0; float:left">date</div> 
+            <div class="addModalInputDate" style="float:left; margin-left:4px" ng-style="style.modalInputStyle()" ng-if="edit.repeatEndValue != 'date'" ng-click="edit.repeatEndValue = 'date'">&nbsp</div>
+            <minicalendars style="display:inline-block; float:left" selected="edit.repeatEndDate" ng-if="edit.repeatEndValue == 'date'" >
+                <input class="addModalInputDate" style="float:right" enddate type="text" ng-style="style.modalInputStyle()" ng-model="edit.repeatEndDate" ng-model-options="{ updateOn: 'blur', allowInvalid:true}" >
+            </minicalendars>
         </div>
         <div class="divSep" ng-style="style.errorStyle()" ng-show="editForm.editrepeatval.$error.endtimeval">* Repetition cannot end before event starts!</div>
     

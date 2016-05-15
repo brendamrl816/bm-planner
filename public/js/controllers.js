@@ -353,14 +353,9 @@ bmPlannerControllers.controller('listMenuCtrl', function(Lists, $scope){
         self.name = $scope.list.name;
         self.color = $scope.list.color;
     };
-});
 
 
-bmPlannerControllers.controller('tasksCtrl', function(Lists, $scope){
-    
     $scope.hideAddButton = true;
-    $scope.completed = false;
-    
     $scope.add_tasks= function(listIndex, taskName){
         
         var task={};
@@ -375,29 +370,35 @@ bmPlannerControllers.controller('tasksCtrl', function(Lists, $scope){
         
         $scope.taskName="";
     };
-        
-        
-    $scope.delete_task= function(listIndex, taskIndex, taskId){
+
+});
+
+
+bmPlannerControllers.controller('tasksCtrl', function(Lists, $scope){
+    
+    $scope.completed = false;
+
+     $scope.delete_task = function(listIndex, taskIndex, taskId){
         Lists.deleteTask(listIndex, taskIndex, taskId);
     };
-    
+
     $scope.updateCompleted=function(listIndex, taskIndex, task){
+        $scope.completed = !$scope.completed;
         var theTask={};
-        theTask.completed=!task.completed;
-        
+        theTask.completed=$scope.completed;
+
         Lists.updateCompleted(listIndex, taskIndex, task.id, theTask);
     };
     
-    $scope.toggleCompleted = function(){
-        $scope.completed= !$scope.completed;
-    };
-    
-    $scope.completedClass=function(completed){
-        if(completed==true){
+    $scope.completedClass=function(){
+        if($scope.task.completed==true){
+            $scope.completed = true;
             return "completedStyle";
         }
-        else
+        else{
+            $scope.completed = false;
             return "";
+        }
     };
 });
 
@@ -717,23 +718,24 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
         eventToSend.name = self.name;
         eventToSend.calendar_id = self.calendar_id.id;
         
-        self.startDate.hour(getHour(self.startHour, self.startMeridiem));
-        self.startDate.minutes(self.startMinutes);
-        self.endDate.hour(getHour(self.endHour, self.endMeridiem));
-        self.endDate.minutes(self.endMinutes);
         
         if(self.allDay == true)
         {
-            eventToSend.startDate = self.startDate.format('YYYY-MM-DD ') + '00:00:00';
-            eventToSend.endDate= self.endDate.format('YYYY-MM-DD ') + '23:59:00';
+            self.startDate.hour(0);
+            self.startDate.minutes(0);
+            self.endDate.hour(23);
+            self.endDate.minutes(59);
         }else{
+
+            self.startDate.hour(getHour(self.startHour, self.startMeridiem));
+            self.startDate.minutes(self.startMinutes);
+            self.endDate.hour(getHour(self.endHour, self.endMeridiem));
+            self.endDate.minutes(self.endMinutes);
+        }
             eventToSend.startDate = self.startDate.format('YYYY-MM-DD ')+ getTimeToSend(self.startHour, self.startMinutes, self.startMeridiem);
             eventToSend.endDate= self.endDate.format('YYYY-MM-DD ') + getTimeToSend(self.endHour, self.endMinutes, self.endMeridiem);
-        }
         
-        
-       
-        eventToSend.length_hours = Math.ceil(self.endDate.diff(self.startDate, 'hours', true));
+        eventToSend.length_hours =(self.endDate.diff(self.startDate, 'hours', true));
         if(self.endDate.format('MM-DD-YY') == self.startDate.format('MM-DD-YY') || ((self.endDate.diff(self.startDate, 'days') == 0) && (self.endDate.format('HH:mm a') == '00:00 am' || self.startDate.format('HH:mm a') == '00:00 am'))
             || ((self.endDate.diff(self.startDate, 'days') == 1) && (self.endDate.format('HH:mm a') == '00:00 am' && self.startDate.format('HH:mm a') == '00:00 am')))
         {
@@ -939,7 +941,7 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
         
         $scope.eventMenu = !$scope.eventMenu;
         $scope.startDateDisplay = moment($scope.event.eventStartsOn , 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
-        $scope.endDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').add($scope.event.length_hours, 'hours').format('MMM DD, YYYY');
+        $scope.endDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').add($scope.event.length_hours , 'hours').format('MMM DD, YYYY');
     };
     
     $scope.toggleVerifyDeletion = function(){
@@ -1180,7 +1182,7 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
             }
         }
     };
-    
+
     
     self.validateStartTime = getValidateTime(self.startDate, self.startHour, self.startMinutes, self.startMeridiem);
    
@@ -1189,10 +1191,6 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
         self.validateEndTime = getValidateTime(self.endDate, self.endHour, self.endMinutes, self.endMeridiem);
         self.validateRepeatDate = getValidateTime(self.repeatEndDate, self.startHour, self.startMinutes, self.startMeridiem);
     
-        if(self.validateStartTime > self.validateRepeatDate)
-        {
-            self.repeatEndDate = self.startDate.clone();
-        }
     });
     
     self.validateEndTime = getValidateTime(self.endDate, self.endHour, self.endMinutes, self.endMeridiem);
@@ -1245,12 +1243,14 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
             
             self.startDate = moment(event.startDate, 'YYYY-MM-DD HH:mm:ss');
             self.endDate = moment(event.endDate, 'YYYY-MM-DD HH:mm:ss');
-            self.repeatEndDate = moment(event.startDate).add(1, 'd');
+            self.repeatEndDate = self.endDate.clone().add(7, 'd');
+            
             if(event.allDay == true)
             {
                 self.allDay = true;
-                self.startDate.hour(moment().format('hh'));
-                self.endDate.hour(moment().format('hh'));
+                self.startDate.hour(moment().format('HH'));
+                self.endDate.hour(moment().format('HH'));
+                self.repeatEndDate = self.endDate.clone().add(7, 'd');
             }else{
                 self.allDay = false;
             }
@@ -1261,7 +1261,6 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
             self.endMinutes = self.endDate.format('mm');
             self.startMeridiem = self.startDate.format('a');
             self.endMeridiem = self.endDate.format('a');
-            self.repeats = event.repeats;
            
             self.repeatsWeeklyMenu = false;
             for( i=0; i<self.repeatWeeklyOptions.length; i++){
@@ -1270,6 +1269,7 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
             
             if(event.repeats == true)
             {
+                self.repeats = true;
                 if(event.neverEnds == false)
                 {
                     self.repeatEndDate = moment(event.repeatEndDate,  'YYYY-MM-DD HH:mm:ss');
@@ -1317,6 +1317,8 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
                         break;
                 }
                 
+            }else{
+                self.repeats = false;
             }
             
             switch (self.editionType) {
@@ -1370,15 +1372,15 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
             editData.endDate= self.endDate.format('YYYY-MM-DD ') + getTimeToSend(self.endHour, self.endMinutes, self.endMeridiem);
         }
        
-        editData.length_hours = Math.ceil(self.endDate.diff(self.startDate, 'hours', true));
+        editData.length_hours = (self.endDate.diff(self.startDate, 'hours', true));
         if(self.endDate.format('MM-DD-YY') == self.startDate.format('MM-DD-YY') || (self.endDate.diff(self.startDate, 'days') == 0 && self.endDate.format('HH:mm') == '00:00'))
         {
             editData.length_days = 0;
         }else{
             editData.length_days = Math.ceil(self.endDate.diff(self.startDate, 'days', true));
-            if(eventToSend.length_hours/eventToSend.length_days < 12)
+            if(editData.length_hours/editData.length_days < 12)
             {
-                eventToSend.length_days = eventToSend.length_days + 1;
+               editData.length_days = editData.length_days + 1;
             }
         }
         
