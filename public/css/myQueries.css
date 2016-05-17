@@ -1,13 +1,13 @@
 
 
 @media screen and (min-width: 300px) {
-    .createEventModal-style{
-      width:90%;
-    }
+    /*.createEventModal-style{*/
+    /*  width:90%;*/
+    /*}*/
     
-    .createEventModal-style-content{
-      font-size:78%;
-    }
+    /*.createEventModal-style-content{*/
+    /*  font-size:75%;*/
+    /*}*/
     
     .tableDiv{
         width:280px;
@@ -17,12 +17,12 @@
 
 @media screen and (min-width: 400px) {
     .createEventModal-style{
-      width:85%;
-      left:2%;
+      /*width:85%;*/
+      /*left:2%;*/
     }
     
     .createEventModal-style-content{
-      font-size:80%;
+      font-size:75%;
     }
     
  
@@ -71,11 +71,15 @@
     
     .createEventModal-style{
       width:75%;
-      left:5%;
+      left:8.5%;
     }
     
     .createEventModal-style-content{
       font-size:80%;
+    }
+    
+    .AddEditForm{
+        margin-left:25px
     }
     
     .navBarDiv{
@@ -107,7 +111,13 @@
       font-size:85%;
     }
     
-  
+    .AddEditForm{
+        margin-left:35px
+    }
+    
+    .addModalInputDate{
+        width:95px;
+    }
     
     .mainInput{
         width:300px;
@@ -132,6 +142,10 @@
     
     .createEventModal-style-content{
       font-size:90%;
+    }
+    
+    .AddEditForm{
+        margin-left:45px
     }
     
     .mainInput{
@@ -270,12 +284,17 @@
         width:350px;
     }
     
-    .createEventModal-style-content{
-      font-size:95%;
-    }
+    
     .createEventModal-style{
       width:55%;
       left:15%;
+    }
+    .createEventModal-style-content{
+      font-size:95%;
+    }
+    
+    .AddEditForm{
+        margin-left:50px
     }
     
     .eTime{
@@ -293,12 +312,17 @@
 
 @media screen and (min-width: 900px) {
     .createEventModal-style{
-      width:45%;
-      left:25%;
+      width:600px;
+      margin-left:auto;
+      margin-right:auto;
     }
     
     .createEventModal-style-content{
       font-size:100%;
+    }
+    
+    .AddEditForm{
+        margin-left:55px
     }
     
     
@@ -343,10 +367,7 @@
 }
 
 @media screen and (min-width: 1000px) {
-    .createEventModal-style{
-      width:40%;
-      left:20%;
-    }
+   
     
     .barDiv-logo{
         margin-right:450px;
@@ -358,9 +379,11 @@
 }
 
 
-@media screen and (min-heigt:500px){
-    .uSetInput{
-        height: 10%;
+@media screen and (min-height:500px ){
+    
+    
+    .AddEditForm{
+        margin-top: 50px;
     }
     
 }

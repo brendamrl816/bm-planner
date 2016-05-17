@@ -1,5 +1,5 @@
 
-<form name="editForm" novalidate style="margin-top:20px; margin-left:10px">
+<form name="editForm" novalidate class="AddEditForm">
     
     <div style="display:inline-block" class="divInput">
         <div ng-style="style.errorStyle()" style="float:left; font-size:150%; font-weight:bold; margin-right:5px" ng-show="addForm.name.$invalid">*</div>
@@ -40,7 +40,7 @@
                         <option value="11">11</option>
                 </select> 
            </div>
-           <div style="float:left; position:relative; margin-left:2%; height:100%; font-size:90%">
+           <div style="float:left; position:relative; margin-left:5px; height:100%; font-size:90%">
                <div>:</div>
            </div>
            <div class="modalTimeDiv">
@@ -122,7 +122,7 @@
     <div style="display:inline-block; width:95%; position:relative" class="divSep">
         <div style="float:left">
             <minicalendars selected="edit.endDate">
-                End:&nbsp <input ng-style="style.modalInputStyle()" class="addModalInputDate" enddate type="text" ng-model="edit.endDate" ng-model-options="{ updateOn: 'blur', allowInvalid:true}">
+                End: <input ng-style="style.modalInputStyle()" class="addModalInputDate" enddate type="text" ng-model="edit.endDate" ng-model-options="{ updateOn: 'blur', allowInvalid:true}">
             </minicalendars>
         </div>
             
@@ -144,7 +144,7 @@
                         <option value="11">11</option>
                 </select> 
            </div>
-           <div style="float:left; position:relative; width:2%; margin-left:2%; height:100%; font-size:90%">
+           <div style="float:left; position:relative; margin-left:5px; height:100%; font-size:90%">
                 <div>:</div>
             </div>
            
@@ -310,7 +310,7 @@
     </div>
     
     <div style=" margin-top:50px; margin-bottom:30px; margin-right:15%; text-align:center; position:relative">
-       <button ng-style="style.buttonStyle()" tyle="margin-right:2%" ng-disabled="editForm.$invalid" ng-click="edit.submitEdition()">Save Changes</button>
+       <button ng-style="style.buttonStyle()" tyle="margin-right:10px" ng-disabled="editForm.$invalid" ng-click="edit.submitEdition()">Save Changes</button>
        <button ng-style="style.buttonStyle()" ng-click="edit.cancelEdition()">Cancel</button>
     </div>
                 

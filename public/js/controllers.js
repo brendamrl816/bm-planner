@@ -1249,7 +1249,7 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
             {
                 self.allDay = true;
                 self.startDate.hour(moment().format('HH'));
-                self.endDate.hour(moment().format('HH'));
+                self.endDate.hour(moment().add(1, 'hour').format('HH'));
                 self.repeatEndDate = self.endDate.clone().add(7, 'd');
             }else{
                 self.allDay = false;
