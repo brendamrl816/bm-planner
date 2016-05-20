@@ -1,22 +1,22 @@
+        <div style=" display:inline-block; width:5%; height:30%"></div>
+        
         <div class="userSettingsDiv">
             
-            <form name="deleteForm" style="margin-top:10%">
+            <form name="deleteForm" style="margin-top:5%">
                 
-                 <div ng-show="u.deletionError">Password is incorrect</div>
-                  
                   <div  style="margin-top:20px; width:100%; text-align:center">
                        <div>Account Email: {{u.user.info.email}}</div>
                   </div>
                     
     
                     <div  style="margin-top:25px; width:100%; text-align:center">
-                        <div ng-style="style.errorStyle()" ng-show="u.wrongPass">The input password is incorrect!</div>
-                        <div ng-show="deleteForm.password.$invalid" style="color:gray; font-size:90%; margin-bottom:5px">*required</div>
+                        <div ng-style="style.errorStyle()" ng-show="u.deletionError">The input password is incorrect!</div>
+                        <div ng-show="deleteForm.password.$invalid" style="color:brown; font-size:90%; margin-bottom:5px">*required</div>
                         <input class="uSetInput" ng-style="style.modalInputStyle()"  type="password" placeholder="Enter your password" name="password" required ng-model="u.emailpassword">
                     </div>
                     
                     
-                    <div  style="margin-top:30px; color:red; width:100%; text-align:center">*Once deleted, all account information will be lost forever</div>
+                    <div  style="margin-top:30px; font-weight:bold; color:brown; width:100%; font-size:110%; text-align:center">*Once deleted, all account information will be lost forever</div>
                     
                     <div  style="width:100%; margin-top:25px; text-align:center">
                         <button ng-style="style.buttonStyle()" ng-disabled="deleteForm.$invalid" ng-click="u.delete()"><i class="fa fa-trash fa-lg"></i> Delete Account</button>

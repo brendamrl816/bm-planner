@@ -146,27 +146,21 @@ bmPlannerControllers.controller('styleCtrl', function(Style, $scope, $rootScope)
     
   
     self.statusStyle = function(){
-        return {'background-color':self.theStyle.css.buttons_backgroundColor, 'color':self.theStyle.css.body_color, 'border':'1px solid', 'border-color':self.theStyle.css.buttons_borderColor,
-            'font-weight':'bold', 'font-style':'italic'};
+        return {'color':'rgba(' + self.theStyle.css.buttons_borderColor + ', 1)', 'font-weight':'bold', 'font-size':'110%', 'text-shadow':' 1px 1px 0px brown'};
     };
     
     self.errorStyle = function(){
-        return {'color':'rgba(' + self.theStyle.css.buttons_backgroundColor + ', 1)', 'font-style':'oblique', 'font-weight':'bolder',  'text-shadow':' 1px 1px 1px #000000', 'font-size':'150%'};
+        return {'color':'rgba(' + self.theStyle.css.buttons_backgroundColor + ', 1)', 'font-style':'oblique', 'font-weight':'bolder',  'text-shadow':' 1px 2px 0px #000000', 'font-size':'120%', 'margin-right':'5px'};
     };
     
     self.navbarStyle = function(){
-        return {'color':self.theStyle.css.body_backgroundColor, 'background-color': 'rgb(' + self.theStyle.css.navBar_backgroundColor + ')',
+        return {'background-color': 'rgb(' + self.theStyle.css.navBar_backgroundColor + ')',
         'text-shadow':' 1px 1px 1px #000000', 'font-weight':'bold'}; 
     };
     
     self.navMenu= function(){
         return { 'background-color': 'rgba(' + self.theStyle.css.buttons_backgroundColor + ', 0.9)', 'box-shadow':' 1px 1px 2px 1px #D9D9D9'};
     };
-    
-    
-    // self.navBar = function(){
-    //     return { 'color': self.theStyle.css.navBar_backgroundColor, 'text-shadow':' 1px 1px 1px #000000', 'font-weight':'bold'};  
-    // };
     
 });
 
@@ -876,7 +870,7 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
     };
    
    
-    $scope.getDisplayColor = function(day)
+    $scope.getDisplayColor = function()
     {
         var color;
         for(var i=0; i<Calendars.calendars.length; i++)
@@ -886,15 +880,9 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
                 color = Calendars.calendars[i].color;
             }
         }
+     
         
-        if(day < moment().subtract(1, 'd'))
-        {
-            return 'rgba(' + color +  ', 0.5)';//'#737373'; 
-        }
-        else{
-           
-            return 'rgba(' + color +  ', 0.8)';
-        }
+         return color;
  
     };
     
@@ -909,16 +897,25 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
     };
     
     $scope.getWidthBorder = function(){
+        var border;
+        
+        if($scope.event.allDay == true && $scope.event.length_days ==0)
+        {
+            border = 'none';
+        }else{
+            border = '1px solid #e6e6e6'
+        }
+       
         if($scope.event.length_days  > (6 - $scope.day.itsDate.day()))
         {
-            return {'width': ((100 * ( 6 - $scope.day.itsDate.day() + 1) ) ) + '%', 'border':'1px solid #e6e6e6', 'border-right':'none'};
+            return {'width': ((100 * ( 6 - $scope.day.itsDate.day() + 1) ) ) + '%', 'border':border, 'border-right':'none'};
         }
         else if($scope.day.itsDate.day() == 0 && $scope.day.itsDate.format('YYYY-MM-DD') != $scope.event.eventStartsOnFormatted)
         {
-            return {'width': ((100 * ( $scope.event.length_days - (6 - moment($scope.event.eventStartsOn, 'YYY-MM-DD HH:mm:ss').day() + 1)) ) ) + '%',  'border':'1px solid #e6e6e6', 'border-left':'none'};
+            return {'width': ((100 * ( $scope.event.length_days - (6 - moment($scope.event.eventStartsOn, 'YYY-MM-DD HH:mm:ss').day() + 1)) ) ) + '%',  'border':border, 'border-left':'none'};
         }
         else{
-            return {'width':(100 * ($scope.event.length_days ) ) + '%', 'border':'1px solid #e6e6e6'};
+            return {'width':(100 * ($scope.event.length_days ) ) + '%', 'border':border};
         }
     };
     
@@ -1756,7 +1753,8 @@ bmPlannerControllers.controller('mainCalViewCtrl', function($scope, $rootScope, 
         
     // });
     
-  
+    $scope.todays = moment().format('YYYY-MM-DD');
+    
     $scope.today = function(){
         EventsCalendar.goToToday();
     };
@@ -1765,7 +1763,7 @@ bmPlannerControllers.controller('mainCalViewCtrl', function($scope, $rootScope, 
     {
         if(day < moment().subtract(1, 'd'))
         {
-            return {'color':'#737373'};
+            return {'color':'#333333', 'opacity':'0.7'};
         }else{
             return {'color':'black'};
         }
@@ -1775,6 +1773,7 @@ bmPlannerControllers.controller('mainCalViewCtrl', function($scope, $rootScope, 
 
 
 bmPlannerControllers.controller("monthlyViewCtrl", function($scope, EventsCalendar){
+    
     var self= this;
     self.calendar = EventsCalendar;
     
@@ -1793,6 +1792,7 @@ bmPlannerControllers.controller("monthlyViewCtrl", function($scope, EventsCalend
 bmPlannerControllers.controller("weekViewCtrl", function($scope, EventsCalendar, Calendars, $location, $anchorScroll){
     
     $scope.calendar = EventsCalendar;
+    
 
     var time_now = moment().format('H') * 60 + parseInt(moment().format('mm'));
     var time_minutes=0;

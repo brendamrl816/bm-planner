@@ -24,13 +24,18 @@
        
        <div id="bigCalTable" ng-repeat="week in monthctrl.calendar.currentDisplayMonth.weeks">
             <div style="display:table-cell; width:14%; border:1px solid #cccccc; border-top:none" ng-style="getStyle(day.itsDate)" ng-repeat="day in week.days" ng-click='add.toggleCreateEvent(day.itsDate, "na", $event)'>
-                <div class="bigCalDates">{{day.dateOfMonth}}</div>
+                <div class="bigCalDates">
+                    <div style="display:inline-block; margin-top:5px">{{day.itsDate.format('D')}}</div>
+                    <div style="display:inline-block; margin-left:5px; position:relative; width:25px" ng-if="day.itsDate.format('YYYY-MM-DD') == todays"><img  style="width:100%; transform: rotate(45deg);" src="/pictures/pintag.png"> </div> 
+                </div>
+                
+                
                 
                 <div ng-style="{'position':'relative', 'height':((day.longEventsHeight *17) + day.longEventsHeight + 1), 'width':'100%'}">
                   
                     <div style="position:absolute; height:17px; display:table-row; width:100%" ng-style="{'top':event.top}" ng-repeat="event in day.longEvents" ng-controller="eventCtrl" ng-click="toggleEventMenu()">
-                        <div ng-if="event.eventStartsOnFormatted == day.itsDate.format('YYYY-MM-DD')|| day.itsDate.day() == 0" ng-style="getWidthBorder()" style="display:table-row; position:absolute; height:15px; background-color:rgba(255, 255, 255, 0.9)" >
-                            <div class="eNameTimeHolder ng-scope"  ng-style="{'background-color':getDisplayColor(day.itsDate), 'width':'100%', 'cursor':'hand'}" style="position:absolute; height:15px; z-index:20; overflow:hidden; text-align:center">
+                        <div ng-if="event.eventStartsOnFormatted == day.itsDate.format('YYYY-MM-DD')|| day.itsDate.day() == 0" ng-style="getWidthBorder()" style="display:table-row; position:absolute; height:15px; background-color:rgba(255, 255, 255, 1)" >
+                            <div class="eNameTimeHolder ng-scope"  ng-style="{'background-color':'rgba(' + getDisplayColor() +  ', 0.6)', 'width':'100%', 'cursor':'hand'}" style="position:absolute; height:15px; z-index:20; overflow:hidden; text-align:center">
                                 <span class="eName">{{event.name}}</span>
                             </div>
                             
@@ -126,12 +131,12 @@
                    
                 <div style="margin-top:2px; display:inline-block; width:100%">
                     <div style="position:relative; width:100%" ng-controller="eventCtrl" ng-repeat="event in day.events">
-                        <div class="eNameTimeHolder" ng-if="event.allDay != true" ng-style="{'color':getDisplayColor(day.itsDate),  'cursor':'hand'}"  ng-click="toggleEventMenu()">
+                        <div class="eNameTimeHolder" ng-if="event.allDay != true" ng-style="{'color':'rgba(' + getDisplayColor() +  ', 1)',  'cursor':'hand'}"  ng-click="toggleEventMenu()">
                                 <span class="eTime">{{event.startTimeDisplay}}-{{event.endTimeDisplay}}</span>
                                 <span class="eName">{{event.name}}</span>
                         </div>
                         
-                        <div class="eNameTimeHolder" ng-if="event.allDay == true" ng-style="{'background-color':getDisplayColor(day.itsDate), 'border-radius':'30px',  'cursor':'hand', 'text-align':'center', 'width':'100%'}" ng-click="toggleEventMenu()">
+                        <div class="eNameTimeHolder" ng-if="event.allDay == true" ng-style="{'background-color':'rgba(' + getDisplayColor() +  ', 0.6)', 'border-radius':'30px',  'cursor':'hand', 'text-align':'center', 'width':'100%'}" ng-click="toggleEventMenu()">
                                 <span class="eName">{{event.name}}</span>
                         </div>
         

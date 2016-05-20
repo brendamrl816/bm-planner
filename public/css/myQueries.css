@@ -1,16 +1,12 @@
 
 
 @media screen and (min-width: 300px) {
-    /*.createEventModal-style{*/
-    /*  width:90%;*/
-    /*}*/
-    
-    /*.createEventModal-style-content{*/
-    /*  font-size:75%;*/
-    /*}*/
-    
     .tableDiv{
         width:280px;
+    }
+    
+    .uSetInput{
+        width:170px;
     }
     
 }
@@ -25,9 +21,9 @@
       font-size:75%;
     }
     
- 
-    .themeHolder{
-        width:90%;
+    .uSetInput{
+        width:200px;
+        height:30px;
     }
     
     .secondBody{
@@ -82,14 +78,30 @@
         margin-left:25px
     }
     
-    .navBarDiv{
-        font-size:85%;
+    .barMenu{
+        width:150px;
+        padding:15px;
     }
     
+    
+    .userSettingsDivLeft{
+        font-size:95%;
+    }
+    
+    .userSettingsDivRight{
+        font-size:95%;
+    }
     
     .themeHolder{
-        width:70%;
+        width:80%;
+        margin-left:10%;
     }
+    
+    .uSetInput{
+        width:250px;
+        height:35px;
+    }
+    
     
     .barDiv-logo{
         margin-right:50px;
@@ -132,6 +144,20 @@
     }
     
     
+    .uSetInput{
+        width:300px;
+        height:40px;
+    }
+    
+    .themePics{
+        height:80px;
+    }
+    
+     .userSettingsDiv{
+       margin-top:0;
+       font-size:95%;
+    }
+    
 }
 
 @media screen and (min-width: 700px) {
@@ -159,49 +185,17 @@
     .tableDiv{
         width:680px;
     }
+    
+    
 }
 
 @media screen and (min-width: 800px) {
   
-    .themePics{
-       float:left;
-       margin-top:50px;
-    }
-    
-   .navBarInclude{
-    width:100%; 
-    display:inline-block;
-    margin-top:0;
-    }
-    
-    .navBarDiv:hover:before{
-    border-radius:10px 10px 0 0;
-}
-    
-    .navBarDiv{
-        width:21%;
-        height:30px;
-        margin-bottom: 0px;
-        border-radius:10px 10px 0px 0px;
-        margin-left:1.5%;
-        font-size:90%;
-    }
-    
-    .spanLinks{
-    text-align: center;
-    white-space: normal;
-    -webkit-transform:rotate(0deg);
-    -moz-transform:rotate(0deg);
-    -o-transform: rotate(0deg);
-    -ms-transform:rotate(0deg);
-    transform: rotate(0deg);
-    top:12px;
-    }
-    
+
     .theMainDiv{
         width:100%;
         display:inline-block;
-        min-height:500px;
+        /*min-height:500px;*/
         /*padding-left:2%;*/
         /*padding-right:2%;*/
         /*padding-top:0;*/
@@ -209,11 +203,9 @@
     }
     
     .userName{
-        position:absolute;
-        font-size:100%;
-        top:5px;
-        left:5%;
+        font-size:120%;
     }
+    
     
     #listCalToolsDiv{
         position:relative;
@@ -230,38 +222,50 @@
        width:70%;
        margin-top:20px;
        margin-bottom:20px;
-       margin-right:2%;
        margin-left:2%;
+       margin-right:2%;
        font-size:95%;
     }
     
-    .userSettingsDivRight{
-        width:45%;
-        height:75%;
-        min-height: 450px;
-        padding:2%;
-        margin-top:0;
-        font-size:95%;
-    }
-    
+   
     .userSettingsDivLeft{
        margin-right:2%;
+       margin-top:20px;
+       margin-bottom:20px;
        width:45%;
-       height:75%;
-       min-height:450px;
-       padding:2%;
-       margin-top:0;
-       font-size:95%;
+       /*height:75%;*/
+       /*min-height:450px;*/
+       /*padding:2%;*/
+       /*margin-top:0;*/
+       font-size:100%;
+        border-bottom:none;
+        vertical-align:top;
+    }
+    
+     .userSettingsDivRight{
+        width:45%;
+        margin-top:20px;
+        /*height:75%;*/
+        /*min-height: 450px;*/
+        /*padding:2%;*/
+        /*margin-top:0;*/
+        font-size:100%;
+        border-left:2px solid #f2f2f2;
+    }
+    
+    .themeHolder{
+        width:90%;
+        margin:0;
+        margin-left:5%;
+    }
+    
+    .themePics{
+        height:100px;
     }
     
      .userSettingsDiv{
-       margin-right:5%;
-       width:90%;
-       height:75%;
-       min-height:400px;
-       padding:2%;
        margin-top:0;
-       font-size:95%;
+       font-size:105%;
     }
     
    
@@ -344,23 +348,12 @@
 
 @media screen and (min-width: 950px) {
 
-    #listCalToolsDiv{
-        width:18%;
-    }
-    
-    #calendarDiv{
-       width:73%;
-    }
-    
     .addForm{
         width:150px; 
         margin:auto;
     }
     
-    .navBarDiv{
-        width:19%;
-    }
-    
+   
     .barDiv-logo{
         margin-right:350px;
     }
@@ -368,6 +361,15 @@
 
 @media screen and (min-width: 1000px) {
    
+   .barMenu{
+        width:180px;
+        padding:20px;
+        font-size:105%;
+    }
+    
+    .navBarDiv{
+        height:25px;
+    }
     
     .barDiv-logo{
         margin-right:450px;
@@ -375,6 +377,10 @@
     
     .tableDiv{
         width:980px;
+    }
+    
+     .userSettingsDiv{
+       font-size:110%;
     }
 }
 

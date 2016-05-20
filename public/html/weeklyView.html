@@ -12,9 +12,11 @@
                 <td style="text-align:center">
                     <div style="font-weight:bold; font-size:90%">Time</div>
                </td>
-                <td style="text-align:center" ng-repeat="day in calendar.currentDisplayWeek.days">
+                <td style="text-align:center; width:13%" ng-repeat="day in calendar.currentDisplayWeek.days">
+                    <div style="float:left; margin-left:5px; position:relative; width:100%" ng-if="day.itsDate.format('YYYY-MM-DD') == todays"><img  style="width:25px; transform: rotate(45deg);" src="/pictures/pintag.png"> </div> 
                     <div style="float:left; margin-left:5px; font-size:90%; font-weight:bold">{{day.itsDate.format('ddd')}}</div>
                     <div style="float:left; margin-left:5px; font-size:90%; font-weight:bold"> {{day.itsDate.format('MM-DD')}}</div>
+                    
                 </td>
             </tr>
         </table>
@@ -32,12 +34,12 @@
                       
                        <div style="position:absolute; height:17px; display:table-row; width:100%" ng-style="{'top':event.top}" ng-repeat="event in day.longEvents" ng-controller="eventCtrl" ng-click="toggleEventMenu()"> 
                        
-                             <div ng-if="(event.eventStartsOnFormatted == day.itsDate.format('YYYY-MM-DD')|| day.itsDate.day() == 0)" ng-style="getWidthBorder()" style="position:absolute; height:15px; background-color:rgba(255, 255, 255, 0.9)">
-                                <div class="eNameTimeHolder ng-scope"  ng-style="{'background-color':getDisplayColor(day.itsDate), 'width':'100%', 'cursor':'hand'}" style="position:absolute; height:15px; z-index:100; overflow:hidden; text-align:center" >
+                             <div ng-if="(event.eventStartsOnFormatted == day.itsDate.format('YYYY-MM-DD')|| day.itsDate.day() == 0)" ng-style="getWidthBorder()" style="position:absolute; height:15px; background-color:rgba(255, 255, 255, 1)">
+                                <div class="eNameTimeHolder ng-scope"  ng-style="{'background-color':'rgba(' + getDisplayColor() +  ', 0.6)', 'width':'100%', 'cursor':'hand'}" style="position:absolute; height:15px; z-index:100; overflow:hidden; text-align:center" >
                                     <span class="eName">{{event.name}}</span>
                                 </div>
                             </div>
-                             <div class="eNameTimeHolder" ng-if="event.allDay == true && event.length_days == 0"  ng-style="{'background-color':getDisplayColor(day.itsDate), 'cursor':'hand'}"  style="position:absolute; border-radius:20px; height:15px; width:100%; z-index:100; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" >
+                             <div class="eNameTimeHolder" ng-if="event.allDay == true && event.length_days == 0"  ng-style="{'background-color':'rgba(' + getDisplayColor() +  ', 0.6)', 'cursor':'hand'}"  style="position:absolute; border-radius:20px; height:15px; width:100%; z-index:100; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" >
                                 <span class="eName">{{event.name}}</span>
                             </div>
                             

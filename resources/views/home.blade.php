@@ -22,7 +22,6 @@
                     
                     </div>
                 </div>
-                    
                 <div class="userName" ng-model="u.user.displayName"><span ng-bind="u.user.displayName"></span></div>
             </div>
             
