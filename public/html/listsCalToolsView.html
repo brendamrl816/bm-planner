@@ -13,20 +13,20 @@
                 <span style="display:inline-block" ng-style="{'color':'rgb(' +list.color+ ')', 'font-size':'110%', 'font-weight':'bolder'}">{{list.name}}</span>
                 <menumodal question="showMenu">
                     <form class="menuForm" ng-style="style.modalStyle()">
-                        <div style="margin:5%">
+                        <div style="margin-top:40px; margin-left:5%; margin-right:5%">
                             <div class="divInput">
                                 <input ng-style="style.inputStyle()" class="textInput" type="text" placeholder="{{listMenu.name}}" ng-model="listMenu.name">
+                                <button  class="textInput" style="float:left; width:20%; margin-left:5%" ng-style="style.buttonStyle()" ng-click="delete_list($index)">
+                                    <i class="fa fa-trash fa-lg"></i>
+                                </button>
                             </div>
-                            
-                            <div class="editColor">
-                                <div style="margin-left:15%">
+                            <div class="editColor"; style="margin-left:20%">
                                     <div style="float:left">
                                         Edit Color:
                                         <button style="height:15px; cursor: context-menu; width:15px; margin-right:5px" ng-style="{'background-color':'rgb(' +listMenu.color+ ')', 'margin-right':'5px'}"></button>
                                     </div>
                                     
                                     <colorpicker selected="listMenu.color"></colorpicker>
-                                </div>
                             </div>
                             
                             
@@ -38,13 +38,6 @@
                                     <button ng-style="style.buttonStyle()" class="all" ng-click="cancel()">cancel</button> 
                                 </div>
                             </div>
-                           
-                            <button class="div70" ng-style="style.buttonStyle()" ng-click="delete_list($index)">
-                                <div style="width:100%; height:15px;  text-align:center">
-                                    <div style="display:inline-block; height:100%; vertical-align:middle"><i class="fa fa-trash fa-lg"></i></div>
-                                    <div style="display:inline-block">Delete List</div>
-                                </div>
-                            </button>
                         </div>
                     </form>
                 </menumodal>
@@ -52,7 +45,7 @@
             
             <div style="display:block">
                 
-                <div ng-style="style.textInputStyle()" style="width:100%; height:40px; margin-top:5px; display:inline-block; color:#f2f2f2" ng-repeat="task in list.tasks" ng-controller="tasksCtrl">
+                <div ng-style="style.textInputStyle()" style="width:100%; margin-top:5px; display:inline-block; color:#f2f2f2" ng-repeat="task in list.tasks" ng-controller="tasksCtrl">
                         <div style="width:90%; position:relative; display:inline-block">
                             <div style="display:inline-block; vertical-align:middle; height:90%">
                                 <input  style="height:100%" type="checkbox"  ng-checked="completed" ng-click="updateCompleted($parent.$parent.$index, $parent.$index, task)">
@@ -92,11 +85,14 @@
                     <div>
                         <br>
                         <div class="divInput">
-                            <input ng-style="style.inputStyle()" type="text" placeholder="List Name" class="textInput" ng-model="todolist.listName">
+                            <input ng-style="style.inputStyle()" type="text" placeholder="List Name" class="addModalTextInput" ng-model="todolist.listName">
                         </div>
                         <div class="editColor">
                             <div style="margin-left:15%; font-size:90%">
+                            <div style="float:left">
                                 List Color: <button ng-style="{'background-color':'rgb(' +todolist.color+ ')'}" style="height:15px;width:15px; cursor: context-menu; margin-right:5px"></button>
+                            </div>
+                           
                                 <colorpicker selected="todolist.color"></colorpicker>
                             </div>
                         </div>
@@ -128,32 +124,23 @@
                 
                 <menumodal question="calmenu.showCalendarMenu">
                     <form ng-style="style.modalStyle()" class="menuForm">
-                        <div style="margin-top:15px">
+                        <div style="margin-top:40px">
                             <div class="divInput" ng-if="calendar.id != theCalendars.mainCalendar.id">
                                 <input ng-style="style.inputStyle()" class="textInput" type="text" placeholder="calmenu.nameToUpdate" ng-model="calmenu.nameToUpdate">
+                                <button ng-if="calendar.id != theCalendars.mainCalendar.id" class="textInput" style="float:left; width:20%; margin-left:5%" ng-style="style.buttonStyle()" ng-click="calmenu.delete()">
+                                    <i class="fa fa-trash fa-lg"></i>
+                                </button>
                             </div>
-                            <div ng-if="calendar.id == theCalendars.mainCalendar.id" class="divInput" style="height:30px; margin-bottom:10px; margin-top:12px; text-align:center; font-weight:bold" >
+                            <div ng-if="calendar.id == theCalendars.mainCalendar.id" class="divInput" style="height:20px; text-align:center; font-weight:bold" >
                                 <div>{{calendar.name}}'s Calendar</div>
                             </div>
         
-                            <div class="editColor">
-                                <div style=" margin-left:15%">
+                            <div class="editColor" style="margin-left:20%">
                                     <div style="width:100%; text-align:left">
-                                       Edit color:<button style="height:15px; cursor: context-menu; margin-right:5px" ng-style="{'background-color':'rgb(' + calmenu.colorToUpdate + ')'}"></button>
+                                       Edit color: <button style="height:15px; width:15px; cursor: context-menu; margin-right:5px" ng-style="{'background-color':'rgb(' + calmenu.colorToUpdate + ')'}"></button>
                                     </div>
-                                    <colorpicker selected="calmenu.colorToUpdate"></colorpicker>  
-                                </div>
-                                    
+                                    <colorpicker selected="calmenu.colorToUpdate"></colorpicker>
                             </div>
-        
-                            <button ng-if="calendar.id != theCalendars.mainCalendar.id" class="div70" ng-style="style.buttonStyle()" ng-click="calmenu.delete()">
-                                <div style="height:15px; text-align:center">
-                                    <div style="display:inline-block; height:100%; vertical-align:middle"><i class="fa fa-trash fa-lg"></i></div>
-                                    <div style="display:inline-block">Delete Calendar</div>
-                                </div>
-                            </button>
-                            
-                            <br ng-if="calendar.id == theCalendars.mainCalendar.id">
                             
                             <div class="divInput" style="display:inlilne-block">
                                 <div class="split">
@@ -202,12 +189,15 @@
             <br>
             <div>
                 <div class="divInput">
-                   <input ng-style="style.inputStyle()" class="textInput" placeholder="Calendar Name" type="text" ng-model="calie.name">
+                   <input ng-style="style.inputStyle()" class="addModalTextInput" placeholder="Calendar Name" type="text" ng-model="calie.name">
                 </div>
                 
                 <div class="editColor">
                     <div style="margin-left:15%; font-size:90%">
-                        Color: <button style="height:15px; width:15px; cursor: context-menu; margin-right:5px" ng-style="{'background-color':'rgb(' +calie.color+ ')', 'margin-right':'5px'}"></button>
+                        <div style="float:left">
+                            Color: <button style="height:15px; width:15px; cursor: context-menu; margin-right:5px" ng-style="{'background-color':'rgb(' +calie.color+ ')', 'margin-right':'5px'}"></button>
+                        </div>
+
                         <div>
                             <colorpicker selected="calie.color"></colorpicker>
                         </div> 

@@ -376,25 +376,40 @@ bmPlannerDirectives.directive('addeventmodal', function(Style) {
             
         
             scope.$watch('showmodal', function(){
+
                 if(scope.showmodal == true )
                 {
-                    var top =  event.pageY;
-                    
-                    var windowHeight = window.innerHeight + window.scrollY;
-                    var height = windowHeight * .40;
-                     if(top + height > windowHeight)
-                     {
-                        top =  window.scrollY + (window.innerHeight * .15);
-                     }
-                     else{
-                         top = attrs.top;
-                     }
-
-                    scope.style.top = top;
+                    var top ;
                    
+                    if(window.innerHeight == element.parent().prop('scrollHeight'))
+                    {
+                        top = '20%';
+                        scope.style.top = top;
+
+                    }else{
+                        scope.style.top = '10%';
+                            window.scrollTo(0, window.innerHeight * .10);
+                    }
+
+                    
+                  
+                    $(window).resize(function(){
+                        if(window.innerWidth < 800)
+                        {
+                            scope.$apply(function(){
+                                scope.style.top = '10%';
+                            });
+                            window.scrollTo(0, window.innerHeight * .10);
+                        }
+                        
+                    });
+                 
                 }
             });
             
+
+
+
             if(attrs.width){
                scope.style.width = attrs.width;
             }
@@ -666,7 +681,7 @@ bmPlannerDirectives.directive('continuemodal', function(Style) {
 });
 
 
-bmPlannerDirectives.directive('menumodal', function() {
+bmPlannerDirectives.directive('menumodal', function(Style) {
    
    return {
        
@@ -753,13 +768,19 @@ bmPlannerDirectives.directive('menumodal', function() {
                     }
                     
                 });
+
+            scope.hfStyle = function(){
+                return {'font-weight':'bold', 'background-color':'rgba(' + Style.css.buttons_borderColor + ', 0.8)'};
+            };
                 
           
        },
        
        template: '<div class="createQuestionModal" ng-show="question">\
                     <div  class="createQuestionModal-style" ng-style="style">\
+                    <div class="createQuestionModal-header" ng-style="hfStyle()">&nbsp</div>\
                         <div class="createQuestionModal-style-content" ng-transclude></div>\
+                        <div class="createQuestionModal-footer" ng-style="hfStyle()">&nbsp</div>\
                     </div>\
                   </div>'
    }; 

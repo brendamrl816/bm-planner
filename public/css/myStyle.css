@@ -414,6 +414,7 @@ input:-webkit-autofill:focus {
     font-size:85%;
 }
 #listCalToolsDiv{
+    display:inline-block;
     border-radius: 5px;
     float:left;
     margin:5%;
@@ -470,19 +471,25 @@ input:-webkit-autofill:focus {
 
 .editColor {
     color:black;
-    margin:auto;
+    margin-top:10px;
     margin-bottom:5%;
 }
 
 .textInput{
+    float:left;
+    height:20px;
+    width:70%;
+}
+
+.addModalTextInput{
     height:30px;
-    width:100%;
+    width:90%;
 }
 
 .divInput{
+    display:inline-block;
     width:80%;
     margin:auto;
-    margin-bottom:5%;
     padding:2px;
 }
 
@@ -618,18 +625,16 @@ input:-webkit-autofill:focus {
     z-index: 10000;
     position: absolute;
     
-    width:80%;
-    min-height:420px;
-   
+    width:90%;
+    height:450px;
+
      /*to center the content */
-    top: 2%;
     left: 5%;
    
     border-radius:5px;
     background-color: #fff;
     box-shadow: inset 0px -1px 25px gray;
     /*overflow: auto;*/
-    padding:5%;
 }
 
 .createEventModal-style-content{
@@ -711,6 +716,7 @@ input:-webkit-autofill:focus {
     width:150px; 
     height:220px;
     margin:auto;
+    text-align: center;
 }
 
 .addListCalButton{

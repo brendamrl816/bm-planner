@@ -17,7 +17,7 @@
 
 @media screen and (min-width: 400px) {
     .createEventModal-style{
-      /*width:85%;*/
+        height:475px;
       /*left:2%;*/
     }
     
@@ -71,7 +71,7 @@
     
     .createEventModal-style{
       width:75%;
-      left:8.5%;
+      margin-left:12%;
     }
     
     .createEventModal-style-content{
@@ -104,7 +104,8 @@
 @media screen and (min-width: 600px) {
     .createEventModal-style{
       width:70%;
-      left:10%;
+      margin-left:14.5%;
+      height:500px;
     }
     
     .createEventModal-style-content{
@@ -137,7 +138,8 @@
 @media screen and (min-width: 700px) {
     .createEventModal-style{
       width:65%;
-      left:12%;
+      margin-left:17%;
+      height:530px;
     }
     
     .createEventModal-style-content{
@@ -286,8 +288,9 @@
     
     
     .createEventModal-style{
-      width:55%;
-      left:15%;
+      width:560px;
+      margin-left:120px;
+      height:550px;
     }
     .createEventModal-style-content{
       font-size:95%;
@@ -313,14 +316,13 @@
 @media screen and (min-width: 900px) {
     .createEventModal-style{
       width:600px;
-      margin-left:auto;
-      margin-right:auto;
     }
-    
+
     .createEventModal-style-content{
       font-size:100%;
     }
-    
+
+
     .AddEditForm{
         margin-left:55px
     }
@@ -375,6 +377,10 @@
     
     .tableDiv{
         width:980px;
+    }
+
+    .createEventModal-style{
+      margin-left:25%;
     }
 }
 
