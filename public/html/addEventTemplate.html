@@ -304,7 +304,7 @@
                         </div>
                         <input type="radio" style="margin-top:4px; float:left"  ng-model="add.repeatEndValue" value="date"> 
                         <div style="margin-left:0; float:left">date</div>
-                        <div class="addModalInputDate" style="float:left; margin-left:4px" ng-style="style.modalInputStyle()" ng-if="add.repeatEndValue != 'date'" ng-click="add.repeatEndValue = 'date'">&nbsp</div>
+                        <input class="addModalInputDate" style="float:left; margin-left:4px" ng-style="style.modalInputStyle()" placeholder="not selected" ng-if="add.repeatEndValue != 'date'" ng-click="add.repeatEndValue = 'date'">
                         <minicalendars style="display:inline-block" selected="add.repeatEndDate" ng-if="add.repeatEndValue == 'date'" >
                             <input class="addModalInputDate" style="float:right" enddate type="text"  ng-style="style.modalInputStyle()"  ng-model="add.repeatEndDate" ng-model-options="{ updateOn: 'blur', allowInvalid:true}">
                         </minicalendars>
