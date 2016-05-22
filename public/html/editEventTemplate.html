@@ -1,7 +1,7 @@
 
 <form name="editForm" novalidate class="AddEditForm">
     
-    <div style="display:inline-block" class="divInput">
+    <div style="margin-bottom:10px" class="divInput">
         <div ng-style="style.errorStyle()" style="float:left; font-size:150%; font-weight:bold; margin-right:5px" ng-show="addForm.name.$invalid">*</div>
         <input class="addModalInput" ng-style="style.modalInputStyle()" type="text" placeholder="Event Name" name="name" ng-model="edit.name" required>
     </div>
@@ -309,7 +309,7 @@
     
     </div>
     
-    <div style="margin-top:50px; margin-bottom:30px; margin-right:15%; text-align:center; position:relative">
+    <div style="margin-top:40px; margin-bottom:30px; margin-right:15%; text-align:center; position:relative">
        <button ng-style="style.buttonStyle()" style="margin-right:10px" ng-disabled="editForm.$invalid" ng-click="edit.submitEdition()">Save</button>
        <button ng-style="style.buttonStyle()" ng-click="edit.cancelEdition()">Cancel</button>
     </div>

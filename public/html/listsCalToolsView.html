@@ -9,7 +9,7 @@
             
             <div style="display:inline-block">
                 
-                <div style="display:inline-block; margin-left:5px; font-size:70%" class="menuButtons frontFont" ng-click="toggleMenu()"><i class="fa fa-pencil fa-lg"></i></div>
+                <div style="display:inline-block; margin-left:5px; font-size:70%" class="menuButtons frontFont" ng-click="toggleMenu($event)"><i class="fa fa-pencil fa-lg"></i></div>
                 <span style="display:inline-block" ng-style="{'color':'rgb(' +list.color+ ')', 'font-size':'110%', 'font-weight':'bolder'}">{{list.name}}</span>
                 <menumodal question="showMenu">
                     <form class="menuForm" ng-style="style.modalStyle()">
@@ -43,21 +43,18 @@
                 </menumodal>
             </div>
             
-            <div style="display:block">
-                
-                <div ng-style="style.textInputStyle()" style="width:100%; margin-top:5px; display:inline-block; color:#f2f2f2" ng-repeat="task in list.tasks" ng-controller="tasksCtrl">
+            
+                <div ng-style="style.textInputStyle()" style="width:100%; padding-top:5px; padding-bottom:5px; margin-top:5px; color:#f2f2f2" ng-repeat="task in list.tasks" ng-controller="tasksCtrl">
                         <div style="width:90%; position:relative; display:inline-block">
-                            <div style="display:inline-block; vertical-align:middle; height:90%">
-                                <input  style="height:100%" type="checkbox"  ng-checked="completed" ng-click="updateCompleted($parent.$parent.$index, $parent.$index, task)">
+                            <div style="display:inline-block; vertical-align:top">
+                                <input  type="checkbox"  ng-checked="completed" ng-click="updateCompleted($parent.$parent.$index, $parent.$index, task)">
                             </div>
                             
-                            <div style="display:inline-block; max-width:85%; overflow-wrap:break-word">
+                            <div class="breakText" style="display:inline-block; max-width:85%; overflow-wrap:break-word">
                                 <span ng-class="completedClass()" style="max-width:85%">{{task.name}}</span>
                             </div>
-                            
-                        
                         </div>
-                        <div  style="display:inline-block; color:black; text-shadow:1px 1px 2px #fff; cursor:hand; font-size:80%">
+                        <div  style="display:inline-block; vertical-align:top; margin-top:3px; color:black; text-shadow:1px 1px 2px #fff; cursor:pointer; font-size:80%">
                             <div ng-click="delete_task($parent.$parent.$index, $parent.$index, task.id)">
                                 <i class="fa fa-trash fa-lg"></i>
                             </div>
@@ -72,8 +69,7 @@
                         </div>
                     </form>
                 </div>
-                
-            </div>
+           
         </div>
   
         <div style="width:100%; text-align:center">
@@ -119,7 +115,7 @@
     
         <div ng-controller="calendarMenuCtrl as calmenu" ng-repeat="calendar in theCalendars.calendars">
             <div ng-style="style.textInputStyle()" class="frontFont" style="display:inline-block; width:100%; height:40px; margin-top:5px">
-                <div style="float:left; margin-top:5px; margin-left:5px; text-align:center; position:relative" class="menuButtons" ng-click="calmenu.ToggleshowCalendarMenu()" ng-style="{'background-color':'rgb(' +calendar.color+ ')'}"><div style="margin-top:25%; font-size:60%"><i class="fa fa-pencil fa-lg"></i></div></div>
+                <div style="float:left; margin-top:5px; margin-left:5px; text-align:center; position:relative" class="menuButtons" ng-click="calmenu.ToggleshowCalendarMenu($event)" ng-style="{'background-color':'rgb(' +calendar.color+ ')'}"><div style="margin-top:25%; font-size:60%"><i class="fa fa-pencil fa-lg"></i></div></div>
                 <span style="float:left; margin-top:5px; margin-left:5px">{{calendar.name}}</span> 
                 
                 <menumodal question="calmenu.showCalendarMenu">
@@ -127,7 +123,7 @@
                         <div style="margin-top:40px">
                             <div class="divInput" ng-if="calendar.id != theCalendars.mainCalendar.id">
                                 <input ng-style="style.inputStyle()" class="textInput" type="text" placeholder="calmenu.nameToUpdate" ng-model="calmenu.nameToUpdate">
-                                <button ng-if="calendar.id != theCalendars.mainCalendar.id" class="textInput" style="float:left; width:20%; margin-left:5%" ng-style="style.buttonStyle()" ng-click="calmenu.delete()">
+                                <button ng-if="calendar.id != theCalendars.mainCalendar.id" class="textInput" style="float:left; width:20%; margin-left:5%" ng-style="style.buttonStyle()" ng-click="calmenu.delete($event)">
                                     <i class="fa fa-trash fa-lg"></i>
                                 </button>
                             </div>
@@ -153,7 +149,6 @@
                             </div>
                         </div>
                     </form>
-                        
                 </menumodal>
                 
                 <continuemodal question='calmenu.verifyDeletion' ng-click="$event.stopPropagation()">

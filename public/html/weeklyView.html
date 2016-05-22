@@ -21,7 +21,7 @@
             </tr>
         </table>
         
-        <div style="float:left; width:100%; margin-left:10px" ng-controller="editEventCtrl as edit">
+        <div style="float:left; width:100%; margin-left:10px" >
             <div style="width:100%; float:left; height:100px; display:table; border-collapse: collapse" >
                 <div style="display:table-cell; position:relative; width:5%; border:1px solid #cccccc">
                     <div style="position:absolute; font-size:80%; font-weight:bold; left:5px; top:30%">All Day</div>
@@ -32,109 +32,23 @@
                     <div ng-style="{'position':'relative', 'margin-bottom':'20px', 'height':day.longEventsHeight * 20, 'width':'100%'}">&nbsp
                        
                       
-                       <div style="position:absolute; height:17px; display:table-row; width:100%" ng-style="{'top':event.top}" ng-repeat="event in day.longEvents" ng-controller="eventCtrl" ng-click="toggleEventMenu()"> 
+                       <div class="eNameTimeHolder" style="position:absolute; height:17px; display:table-row; width:100%; cursor:pointer" ng-style="{'top':event.top}" ng-repeat="event in day.longEvents" ng-controller="eventCtrl" ng-click="toggleEventMenu(event, day, $event)"> 
                        
                              <div ng-if="(event.eventStartsOnFormatted == day.itsDate.format('YYYY-MM-DD')|| day.itsDate.day() == 0)" ng-style="getWidthBorder()" style="position:absolute; height:15px; background-color:rgba(255, 255, 255, 1)">
-                                <div class="eNameTimeHolder ng-scope"  ng-style="{'background-color':'rgba(' + getDisplayColor() +  ', 0.6)', 'width':'100%', 'cursor':'hand'}" style="position:absolute; height:15px; z-index:100; overflow:hidden; text-align:center" >
+                                <div class="eNameTimeHolder ng-scope"  ng-style="{'background-color':'rgba(' + getDisplayColor() +  ', 0.6)', 'width':'100%', 'cursor':'pointer'}" style="position:absolute; height:15px; z-index:100; overflow:hidden; text-align:center" >
                                     <span class="eName">{{event.name}}</span>
                                 </div>
                             </div>
-                             <div class="eNameTimeHolder" ng-if="event.allDay == true && event.length_days == 0"  ng-style="{'background-color':'rgba(' + getDisplayColor() +  ', 0.6)', 'cursor':'hand'}"  style="position:absolute; border-radius:20px; height:15px; width:100%; z-index:100; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" >
+                             <div class="eNameTimeHolder" ng-if="event.allDay == true && event.length_days == 0"  ng-style="{'background-color':'rgba(' + getDisplayColor() +  ', 0.6)', 'cursor':'pointer'}"  style="position:absolute; border-radius:20px; height:15px; width:100%; z-index:100; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" >
                                 <span class="eName">{{event.name}}</span>
                             </div>
                             
-                                <questionmodal question='eventMenu'>
-                                    <div class="questionModal">
-                                        <div class="upperqDiv">
-                                            <div class="upperqDiv-content">
-                                                <div style="font-weight:bold; font-size:120%; margin-bottom:5px " ng-style="{'color':'rgb(' +getColor()+ ')'}">{{event.name}}</div>
-                                                <div ng-if="event.allDay == true">{{startDateDisplay}} - {{endDateDisplay}}</div>
-                                                <div ng-if="event.allDay == false">{{startDateDisplay}} at {{event.startTimeDisplay}} - {{endDateDisplay}} at {{event.endTimeDisplay}}</div> 
-                                            </div>
-                                        </div>
-                                        <div class="lowerqDiv">   
-                                            <div class="lowerqDiv-content">
-                                                <div>What would you like to do with this event?</div>
-                                                <div style="width:50%; margin:auto; margin-top:25px">
-                                                    <div class="split">
-                                                        <button  ng-style="style.buttonStyle()" class="all" ng-click="editEvent(event)">Edit</button>
-                                                    </div>
-                                                    <div class="split">
-                                                        <button  ng-style="style.buttonStyle()" class="all" ng-click="deleteEvent()">Delete</button>
-                                                    </div>
-                                                </div> 
-                                            </div>
-                                        </div>  
-                                    </div>
-                                </questionmodal>
-                                
-                                <continuemodal question='kindOfEdition'>
-                                    <div class="questionModal">
-                                        <div class="upperqDiv">
-                                            <div class="upperqDiv-content">
-                                                <div style="font-weight:bold; font-size:120%; margin-bottom:5px" ng-style="{'color':'rgb(' +getColor()+ ')'}">{{event.name}}</div>
-                                                <div ng-if="event.allDay == true">{{startDateDisplay}} - {{endDateDisplay}}</div>
-                                                <div ng-if="event.allDay == false">{{startDateDisplay}} at {{event.startTimeDisplay}} - {{endDateDisplay}} at {{event.endTimeDisplay}}</div> 
-                                            </div>
-                                        </div>
-                                           
-                                        <div class="lowerqDiv">
-                                            <div class="lowerqDiv-content"><button ng-style="style.buttonStyle()" ng-click="editThisEvent(event)">This Event Only</button></div>
-                                            <div class="lowerqDiv-content"><button ng-style="style.buttonStyle()" ng-click="editFutureEvents(event)">All Events Going Forward</button></div>
-                                            <div class="lowerqDiv-content"><button ng-style="style.buttonStyle()" ng-click="editAllEvents(event)">All Event Repetitions</button></div>
-                                        </div>
-                                    </div>
-                                </continuemodal>
-                                
-                                <continuemodal question="eventsRepQuestion">
-                                    <div class="questionModal">
-                                        <div class="upperqDiv">
-                                            <div class="upperqDiv-content">
-                                                <div style="font-weight:bold; font-size:120%; margin-bottom:5px" ng-style="{'color':'rgb(' +getColor()+ ')'}">{{event.name}}</div>
-                                                <div ng-if="event.allDay == true">{{startDateDisplay}} - {{endDateDisplay}}</div>
-                                                <div ng-if="event.allDay == false">{{startDateDisplay}} at {{event.startTimeDisplay}} - {{endDateDisplay}} at {{event.endTimeDisplay}}</div> 
-                                            </div>
-                                        </div>
-                                        <div class="lowerqDiv">
-                                            <div class="lowerqDiv-content"><button ng-style="style.buttonStyle()" style="margin-top:10px" ng-click="deleteAllOcurrences()">Delete All Event Occurrences</button></div>
-                                            <div class="lowerqDiv-content"><button ng-style="style.buttonStyle()" style="margin-top:10px; margin-left:5px" ng-click="deleteOnlyThisOcurrance()">Delete Only This Ocurrence</button></div>
-                                        </div>
-                                    </div>
-                                </continuemodal>
-                                
-                                <continuemodal  question='verifyDeletion'>
-                                    <div class="questionModal">
-                                        <div class="upperqDiv">
-                                            <div class="upperqDiv-content">
-                                                <div style="font-size:120%; font-weight:bold; margin-bottom:5px" ng-style="{'color': 'rgb(' +getColor()+ ')'}">{{event.name}}</div>
-                                                <div ng-if="event.allDay == true">{{startDateDisplay}} - {{endDateDisplay}}</div>
-                                                <div ng-if="event.allDay == false">{{startDateDisplay}} at {{event.startTimeDisplay}} - {{endDateDisplay}} at {{event.endTimeDisplay}}</div>
-                                                <div ng-if="verificationAnswer == 'all'">Repeats until: {{repeatEndDateDisplay}}</div>
-                                            </div>
-                                        </div>
-                                        <div class="lowerqDiv">
-                                            <div class="lowerqDiv-content">{{verificationQuestion}}</div>
-                                            <div class="lowerqDiv-content">
-                                                <div style=" width:50%; margin:auto">
-                                                    <div class="split">
-                                                        <button ng-style="style.buttonStyle()" class="all" ng-click="yesDeleteEvent()">YES</button> 
-                                                    </div>
-                                                    <div class="split">
-                                                        <button ng-style="style.buttonStyle()" class="all" ng-click="noDeleteEvent()">NO</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </continuemodal>
-                        
+                              
                         </div>
                     </div>
                 </div>
             </div>
-            <addeventmodal showmodal="edit.editModal">
-                <div ng-include="urlTemplate"></div>
-            </addeventmodal>
+         
         </div>  
         
         <br>
@@ -145,7 +59,7 @@
         
         <div id="scrollDiv" style="float:left; width:101%; height:600px; margin-left:10px; overflow-y:scroll; overflow-x:hidden; border:1.5px solid #cccccc">
                 
-            <div style="display:table; width:100%; height:100%; border-collapse: collapse" ng-controller="editEventCtrl as edit">
+            <div style="display:table; width:100%; height:100%; border-collapse: collapse" >
                 
                     <div style="display:table-cell; position:relative; width:5%; border:1px solid #cccccc">
                         <div id="anchor{{hour.id}}" ng-style="{'top':($index * 60)}" style="display:table-row; position:absolute; width:100%; height:30px; border:none; border-top: 1px solid  #cccccc; text-align:center" ng-repeat-start="hour in hours"><span class="eTime">{{hour.name}}</span></div>
@@ -161,103 +75,16 @@
                                 
                                  <div ng-style="{'background-color':'rgba(' +weekEvents.getColor(event.calendar_id)+ ', 0.7)', 'width':'100%',  'height':event.totalHeight, 'top':0, 'border':'1px solid',  'border-color': 'rgb(' +weekEvents.getColor(event.calendar_id)+ ')', 'position':'absolute'}" ng-if="event.first == true"  ng-controller="eventCtrl">
                                          
-                                         <div style="background-color:transparent; height:100%; width:100%; position:absolute; z-index:3; text-align:center; overflow:hidden; font-weight:bold; cursor:hand" ng-click="toggleEventMenu()">
+                                         <div style="background-color:transparent; height:100%; width:100%; position:absolute; z-index:3; text-align:center; overflow:hidden; font-weight:bold; cursor:pointer" ng-click="toggleEventMenu(event, day, $event)">
                                              <div style="width:90%; margin-top:5%; margin-left:5%; margin-right:5%; overflow:hidden; font-size:65%">{{event.startTimeDisplay}}-{{event.endTimeDisplay}}</div>
                                              <div style="width:90%; margin-left:5%; margin-right:5%; height:90%; font-size:75%; overflow:hidden">{{event.name}}</div>
                                          </div>
-                                        
-                                        <questionmodal question='eventMenu'>
-                                            <div class="questionModal">
-                                                <div class="upperqDiv">
-                                                    <div class="upperqDiv-content">
-                                                        <div style="font-weight:bold; font-size:120%; margin-bottom:5px" ng-style="{'color':'rgb(' +getColor()+ ')'}">{{event.name}}</div>
-                                                        <div ng-if="event.allDay == true">{{startDateDisplay}} - {{endDateDisplay}}</div>
-                                                        <div ng-if="event.allDay == false">{{startDateDisplay}} at {{event.startTimeDisplay}} - {{endDateDisplay}} at {{event.endTimeDisplay}}</div> 
-                                                    </div>
-                                                </div>
-                                                <div class="lowerqDiv">   
-                                                    <div class="lowerqDiv-content">
-                                                        <div>What would you like to do with this event?</div>
-                                                        <div style="width:50%; margin:auto; margin-top:25px">
-                                                            <div class="split">
-                                                                <button  ng-style="style.buttonStyle()" class="all" ng-click="editEvent(event)">Edit</button>
-                                                            </div>
-                                                            <div class="split">
-                                                                <button  ng-style="style.buttonStyle()" class="all" ng-click="deleteEvent()">Delete</button>
-                                                            </div>
-                                                        </div> 
-                                                    </div>
-                                                </div>  
-                                            </div>
-                                        </questionmodal>
-                                        
-                                        <continuemodal question='kindOfEdition'>
-                                            <div class="questionModal">
-                                                <div class="upperqDiv">
-                                                    <div class="upperqDiv-content">
-                                                        <div style="font-weight:bold; font-size:120%; margin-bottom:5px" ng-style="{'color':'rgb(' +getColor()+ ')'}">{{event.name}}</div>
-                                                        <div ng-if="event.allDay == true">{{startDateDisplay}} - {{endDateDisplay}}</div>
-                                                        <div ng-if="event.allDay == false">{{startDateDisplay}} at {{event.startTimeDisplay}} - {{endDateDisplay}} at {{event.endTimeDisplay}}</div> 
-                                                    </div>
-                                                </div>
-                                                   
-                                                <div class="lowerqDiv">
-                                                    <div class="lowerqDiv-content"><button ng-style="style.buttonStyle()" ng-click="editThisEvent(event)">This Event Only</button></div>
-                                                    <div class="lowerqDiv-content"><button ng-style="style.buttonStyle()" ng-click="editFutureEvents(event)">All Events Going Forward</button></div>
-                                                    <div class="lowerqDiv-content"><button ng-style="style.buttonStyle()" ng-click="editAllEvents(event)">All Event Repetitions</button></div>
-                                                </div>
-                                            </div>
-                                        </continuemodal>
-                                        
-                                        <continuemodal question="eventsRepQuestion">
-                                            <div class="questionModal">
-                                                <div class="upperqDiv">
-                                                    <div class="upperqDiv-content">
-                                                        <div style="font-weight:bold; font-size:120%; margin-bottom:5px" ng-style="{'color':'rgb(' +getColor()+ ')'}">{{event.name}}</div>
-                                                        <div ng-if="event.allDay == true">{{startDateDisplay}} - {{endDateDisplay}}</div>
-                                                        <div ng-if="event.allDay == false">{{startDateDisplay}} at {{event.startTimeDisplay}} - {{endDateDisplay}} at {{event.endTimeDisplay}}</div> 
-                                                    </div>
-                                                </div>
-                                                <div class="lowerqDiv">
-                                                    <div class="lowerqDiv-content"><button ng-style="style.buttonStyle()" style="margin-top:10px" ng-click="deleteAllOcurrences()">Delete All Event Occurrences</button></div>
-                                                    <div class="lowerqDiv-content"><button ng-style="style.buttonStyle()" style="margin-top:10px; margin-left:5px" ng-click="deleteOnlyThisOcurrance()">Delete Only This Ocurrence</button></div>
-                                                </div>
-                                            </div>
-                                        </continuemodal>
-                                        
-                                        <continuemodal  question='verifyDeletion'>
-                                            <div class="questionModal">
-                                                <div class="upperqDiv">
-                                                    <div class="upperqDiv-content">
-                                                        <div style="font-size:120%; font-weight:bold; margin-bottom:5px" ng-style="{'color': 'rgb(' +getColor()+ ')'}">{{event.name}}</div>
-                                                        <div ng-if="event.allDay == true">{{startDateDisplay}} - {{endDateDisplay}}</div>
-                                                        <div ng-if="event.allDay == false">{{startDateDisplay}} at {{event.startTimeDisplay}} - {{endDateDisplay}} at {{event.endTimeDisplay}}</div>
-                                                        <div ng-if="verificationAnswer == 'all'">Repeats until: {{repeatEndDateDisplay}}</div>
-                                                    </div>
-                                                </div>
-                                                <div class="lowerqDiv">
-                                                    <div class="lowerqDiv-content">{{verificationQuestion}}</div>
-                                                    <div class="lowerqDiv-content">
-                                                        <div style=" width:50%; margin:auto">
-                                                            <div class="split">
-                                                                <button ng-style="style.buttonStyle()" class="all" ng-click="yesDeleteEvent()">YES</button> 
-                                                            </div>
-                                                            <div class="split">
-                                                                <button ng-style="style.buttonStyle()" class="all" ng-click="noDeleteEvent()">NO</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </continuemodal> 
+                                      
                                     </div> 
                             </div>
                         </div>
                     </div>
 
-                <addeventmodal showmodal="edit.editModal">
-                    <div ng-include="urlTemplate"></div>
-                </addeventmodal>
             </div>
         </div>
 

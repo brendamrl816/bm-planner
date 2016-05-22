@@ -56,42 +56,47 @@
                     <div ng-style="style.errorStyle()" ng-repeat="error in u.errors">{{error}}</div>
                     
                     <div style="margin:10px">
-                        <span ng-show="userEditForm.first_name.$error.required" style="color:gray; font-size:90%; margin-bottom:5px">*required</span>
+                        <span ng-show="userEditForm.first_name.$error.required" style="color:red; font-size:90%; margin-bottom:5px">*required</span>
                         <input class="uSetInput" ng-style="style.modalInputStyle()" type="text"   name="first_name" ng-model="u.user.info.first_name" required>
                     </div>
                     
                    
                     <div style="margin:10px">
-                        <span ng-show="userEditForm.last_name.$error.required" style="color:gray; font-size:90%; margin-bottom:5px">*required</span>
+                        <span ng-show="userEditForm.last_name.$error.required" style="color:red; font-size:90%; margin-bottom:5px">*required</span>
                         <input class="uSetInput" ng-style="style.modalInputStyle()" type="text"  placeholder="Last Name" id="name"  name="last_name" ng-model="u.user.info.last_name" required>
                         
                     </div>
                     
-                    <div style="margin:10px; display:inline-block">
+                   <div style="margin:10px; display:inline-block">
                         <div class="uSetInput" style="background-color:inherit; height:20px"><div style="float:left">Date of Birth:</div></div>
-                        <span ng-show="userEditForm.dob.$error.required" style="color:gray; font-size:90%; margin-bottom:5px">*required</span>
-                        <input class="uSetInput" ng-style="style.modalInputStyle()" type="date"  id="name"  name="dob"
-                                 ng-model="u.user.info.dob" required>
-                        
+                        <span ng-show="userEditForm.dob.$error.required" style="color:red; font-size:90%; margin-bottom:5px">*required</span>
+                        <div class="uSetInput">
+                            <minicalendars selected="u.user.info.dob">
+                               <input startdate type="text" class="usetInputFollow" ng-style="style.modalInputStyle()" ng-model="u.user.info.dob" ng-model-options="{ updateOn: 'blur'}">
+                            </minicalendars>
+                        </div>
                     </div>
 
+
                     <div style="margin:10px">
-                        <span ng-show="userEditForm.email.$error.email" style="display:inline-block; color:gray; font-size:90%; margin-bottom:5px">*Email form is invalid</span>
-                        <span ng-show="userEditForm.email.$error.required" style="display:inline-block; color:gray; font-size:90%; margin-bottom:5px">*required</span>
+                        <span ng-show="userEditForm.email.$error.email" style="display:inline-block; color:red; font-size:90%; margin-bottom:5px">*Email form is invalid</span>
+                        <span ng-show="userEditForm.email.$error.required" style="display:inline-block; color:red; font-size:90%; margin-bottom:5px">*required</span>
                         <input class="uSetInput" ng-style="style.modalInputStyle()" type="email" placeholder="Email" id="email" placeholder="Email" name="email"
                                 ng-model="u.user.info.email" required>
                                
                     </div>      
 
                     <div style="margin:10px">
-                        <input class="uSetInput" ng-style="style.modalInputStyle()" type="password" placeholder="New Password" name="password" ng-model="u.newpass">
+                        <input password class="uSetInput" ng-style="style.modalInputStyle()" type="text" placeholder="New Password" name="password" ng-model="u.newpass">
                     </div>
 
                     <div style="margin:10px">
-                        <input class="uSetInput" ng-style="style.modalInputStyle()" type="password" placeholder="Confirm New Password" name="password_confirmation" ng-model="u.newpassconfirm">
+                        <input password class="uSetInput" ng-style="style.modalInputStyle()" type="text" autocomplete="off" placeholder="Confirm New Password" name="password_confirmation" ng-model="u.newpassconfirm">
                     </div>
                     
+
                    
+                    
                    
                     <div style="margin:10px; margin-top:15px; display:inline-block">
                         <div ng-style="style.errorStyle()" ng-show="u.wrongPass">The input password is incorrect!</div>
@@ -99,7 +104,7 @@
                             <div style="float:left"><span ng-show="userEditForm.old_pass.$invalid" ng-style="style.errorStyle()">*</span> Enter your current password:</div>
                         </div>
                         
-                        <input class="uSetInput" ng-style="style.modalInputStyle()" type="password" placeholder="Current Password" name="old_pass" ng-model="u.oldpass" required>
+                        <input password class="uSetInput" ng-style="style.modalInputStyle()" type="text" autocomplete="off" placeholder="Current Password" name="old_pass" ng-model="u.oldpass" required>
                         
                     </div>
                     

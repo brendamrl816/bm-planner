@@ -12,6 +12,7 @@ bmPlannerControllers.controller('userCtrl', function(User, $window,  $http, Cale
     self.wrongPass = false;
     self.newpassconfirm = undefined;
     self.oldpass = undefined;
+    self.newpass = undefined;
     self.errors=[];
     self.errorsArrays=[];
     
@@ -22,7 +23,7 @@ bmPlannerControllers.controller('userCtrl', function(User, $window,  $http, Cale
         var data = {};
         data.first_name = self.user.info.first_name;
         data.last_name = self.user.info.last_name;
-        data.dob = self.user.info.dob;
+        data.dob = self.user.info.dob.format('YYYY-MM-DD');
         data.email= self.user.info.email;
         data.old_password = self.oldpass;
         data.password = self.newpass;
@@ -46,11 +47,13 @@ bmPlannerControllers.controller('userCtrl', function(User, $window,  $http, Cale
                         User.get();
                         self.newpass = undefined;
                         self.newpassconfirm = undefined;
+                        self.oldpass= undefined;
                         self.wrongPass = true;
                     }
                     
                 }).error(function(data, status){
                     User.get();
+                    self.oldpass=undefined;
                     self.newpass = undefined;
                     self.newpassconfirm = undefined;
                     self.wrongPass = true;
@@ -122,7 +125,7 @@ bmPlannerControllers.controller('styleCtrl', function(Style, $scope, $rootScope)
     
     self.buttonStyle = function(){
         return {'background-color':'rgba(' + self.theStyle.css.buttons_backgroundColor + ', 1)', 'color':'white', 'text-shadow':' 1px 1px 1px #000000', 
-                'border-radius':'2px', 'padding':'4px', 'box-shadow':'1px 1px 1px rgba(' + self.theStyle.css.buttons_borderColor + ', 1)' };
+                'border-radius':'2px', 'padding':'2px', 'box-shadow':'1px 1px 1px rgba(' + self.theStyle.css.buttons_borderColor + ', 1)' };
     };
     
     self.textInputStyle = function(){
@@ -132,12 +135,12 @@ bmPlannerControllers.controller('styleCtrl', function(Style, $scope, $rootScope)
     
     self.inputStyle = function(){
         return { 'background-color':'transparent', 'box-shadow':'1px 1px 1px 1px rgba(' + self.theStyle.css.buttons_borderColor + ', 1)', 
-                'border-radius':'2px', 'padding':'5px'};
+                'border-radius':'2px', 'padding':'2px'};
     };
     
     self.modalInputStyle = function(){
         return { 'background-color':'rgba(' + self.theStyle.css.body_backgroundColor + ', 1)', 'box-shadow':'1px 1px 1px 1px rgba(' + self.theStyle.css.buttons_borderColor + ', 1)', 
-                'border-radius':'2px', 'padding':'2px'};
+                'border-radius':'2px', 'padding':'1px'};
     };
    
     self.modalStyle = function(){
@@ -312,7 +315,7 @@ bmPlannerControllers.controller('listsCtrl', function(Lists, $scope){
 });
 
 
-bmPlannerControllers.controller('listMenuCtrl', function(Lists, $scope){
+bmPlannerControllers.controller('listMenuCtrl', function(Lists, $scope, $rootScope){
     
     $scope.showMenu = false;
     var self = this;
@@ -321,7 +324,8 @@ bmPlannerControllers.controller('listMenuCtrl', function(Lists, $scope){
     self.color = $scope.list.color;
    
    
-    $scope.toggleMenu = function(){
+    $scope.toggleMenu = function(event){
+      $rootScope.e = event;
       $scope.showMenu = !$scope.showMenu;
     };
     
@@ -444,13 +448,14 @@ bmPlannerControllers.controller('calendarsCtrl', function(Calendars, $scope){
 });
 
 
-bmPlannerControllers.controller("calendarMenuCtrl", function(Calendars, EventsCalendar, Events, $scope){
+bmPlannerControllers.controller("calendarMenuCtrl", function(Calendars, EventsCalendar, Events, $scope, $rootScope){
     
     var self=this;
     self.showVerifyDeletion = false;
     self.showCalendarMenu = false;
   
-    self.ToggleshowCalendarMenu = function(){
+    self.ToggleshowCalendarMenu = function(event){
+        $rootScope.e = event;
         self.nameToUpdate = $scope.calendar.name;
         self.colorToUpdate = $scope.calendar.color;
         self.showCalendarMenu = !self.showCalendarMenu;
@@ -474,9 +479,10 @@ bmPlannerControllers.controller("calendarMenuCtrl", function(Calendars, EventsCa
         self.colorToUpdate = $scope.calendar.color;
     };   
         
-    self.delete = function(){
+    self.delete = function(event){
             self.showCalendarMenu= false;
             self.verifyDeletion = true;
+            $rootScope.e = event;
     };
         
     self.yesDelete = function(id, index){
@@ -554,7 +560,6 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
     
     
     self.toggleCreateEvent = function(day, time_minutes, event){
-    //   console.log(event.target.className);
       if(event.target.className == 'eNameTimeHolder ng-scope' || event.target.className == 'eTime ng-binding' || event.target.className == 'eName ng-binding' || event.target.className == 'ng-binding' )
       {
           self.createEvent = false;
@@ -853,10 +858,9 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
 
 bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Calendars, Events, Repeats,  RepetitionUpdates){
 
-    $scope.todaysDate = $scope.day.itsDate;
     //***************************************** EVENT STYLE**********************************************************************
     
-    $scope.getColor = function()
+    $scope.getDisplayColor = function()
     {
         var color;
         for(var i=0; i<Calendars.calendars.length; i++)
@@ -870,21 +874,7 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
     };
    
    
-    $scope.getDisplayColor = function()
-    {
-        var color;
-        for(var i=0; i<Calendars.calendars.length; i++)
-        {
-            if($scope.event.calendar_id == Calendars.calendars[i].id)
-            {
-                color = Calendars.calendars[i].color;
-            }
-        }
-     
-        
-         return color;
- 
-    };
+   
     
     $scope.getBorderRad = function()
     {
@@ -918,50 +908,86 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
             return {'width':(100 * ($scope.event.length_days ) ) + '%', 'border':border};
         }
     };
-    
+
+});
+
+
+
+
+bmPlannerControllers.controller('mainEventCtrl', function($scope, $rootScope, EventsCalendar, Calendars, Events, Repeats,  RepetitionUpdates, $timeout){
+        
    
-    $scope.startDateDisplay = moment($scope.event.eventStartsOn , 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
-    $scope.endDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').add($scope.event.length_hours, 'hours').format('MMM DD, YYYY');
-    
-    
-    //****************************************** MODAL VARIABLES ***************************************************************
+    // MODAL VARIABLES
+    $scope.color = '0, 0, 0';
+    $scope.name = 'event';
     $scope.eventMenu = false; //Ask user if it wants to edit or delete
 
+    $scope.todaysDate = moment();
+    $scope.startDateDisplay = moment().format('MMM DD, YYYY');
+    $scope.endDateDisplay = moment().add(1, 'hours').format('MMM DD, YYYY');
+    $scope.repeatEndDateDisplay =  moment().format('MMM DD, YYYY');
+    $scope.allDay = true;
+    $scope.startTimeDisplay = '12am';
+    $scope.endTimeDisplay = '12am';
     
     $scope.verifyDeletion = false; //Ask user if they really want to delete event
-    $scope.verificationQuestion;
-    $scope.verificationAnswer;
+    $scope.verificationQuestion = "question";
+    $scope.verificationAnswer = "answer" ;
     $scope.eventsRepQuestion = false; //If event repeats, ask user if they want to delete only this ocurrence or all repetitions
     $scope.kindOfEdition = false;//If event repeats, ask user if they want to edit all event occurrances or just this one
+
+
+
+    $scope.toggleEventMenu = function(the_event, day, clickE){
+        $scope.eventMenu = false;
    
-    $scope.toggleEventMenu = function(){
-        
-        $scope.eventMenu = !$scope.eventMenu;
-        $scope.startDateDisplay = moment($scope.event.eventStartsOn , 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
-        $scope.endDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').add($scope.event.length_hours , 'hours').format('MMM DD, YYYY');
+       $timeout(function () { $scope.eventMenu = true; }, 100);
+        $rootScope.e = clickE;
+        $scope.the_event = the_event;
+                $scope.name = the_event.name;
+                $scope.allDay = the_event.allDay;
+                $scope.startTimeDisplay = the_event.startTimeDisplay;
+                $scope.endTimeDisplay = the_event.endTimeDisplay;
+
+                for(var i=0; i<Calendars.calendars.length; i++)
+                {
+                    if($scope.the_event.calendar_id == Calendars.calendars[i].id)
+                    {
+                        $scope.color = Calendars.calendars[i].color;
+                    }
+                }
+            $scope.todaysDate = day.itsDate;
+            $scope.startDateDisplay = moment($scope.the_event.eventStartsOn , 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
+            $scope.endDateDisplay = moment($scope.the_event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').add($scope.the_event.length_hours , 'hours').format('MMM DD, YYYY');
     };
+
     
-    $scope.toggleVerifyDeletion = function(){
+    $scope.toggleVerifyDeletion = function(clickE){
+        $rootScope.e = clickE;
         $scope.verifyDeletion = !$scope.Deletion;
     };
-    $scope.toggleEventsRepQuestion = function(){
+    $scope.toggleEventsRepQuestion = function(clickE){
+        $rootScope.e = clickE;
         $scope.eventsRepQuestion = !$scope.eventsRepQuestion;
         
     };
-    $scope.toggleKindOfEdition = function(){
+    $scope.toggleKindOfEdition = function(clickE){
+        $rootScope.e = clickE;
         $scope.kindOfEdition = !$scope.kindOfEdition;
         
     };
-   
-    
-    //************************************************* DELETE EVENT*******************************************************************
-    $scope.deleteEvent = function(){
+
+
+
+    //DELETE EVENT
+    $scope.deleteEvent = function(clickE){
+        $rootScope.e = clickE;
         $scope.eventMenu = false;
-        if($scope.event.repeats == true)
+        if($scope.the_event.repeats == true)
         {
             $scope.eventsRepQuestion = true;
         }else{
-            $scope.verificationQuestion = "Are you sure you would like to delete this event";
+            $scope.verificationQuestion = "Are you sure you would like to delete this event?";
             $scope.verifyDeletion = true;
             $scope.verificationAnswer = "only";
         }
@@ -977,7 +1003,7 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
         
         switch($scope.verificationAnswer){
             case 'only':
-                        Events.deleteEvent($scope.event.id).success(function(response){
+                        Events.deleteEvent($scope.the_event.id).success(function(response){
                             EventsCalendar.refreshCalendar();
                             
                         });
@@ -985,25 +1011,25 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
                 
             case 'this':
                         var data={};
-                        data.event_id = $scope.event.id;
+                        data.event_id = $scope.the_event.id;
                         var day = $scope.todaysDate.clone();
-                        var startDate = moment($scope.event.startDate, 'YYYY-MM-DD HH:mm:ss');
+                        var startDate = moment($scope.the_event.startDate, 'YYYY-MM-DD HH:mm:ss');
 
                         
                         if(startDate.format('YY-MM-DD') == $scope.todaysDate.format('YY-MM-DD'))
                         {
                             var update={};
-                            update.id = $scope.event.id;
-                            update.date = startDate.clone().add($scope.event.length_hours , 'hours').format('YYYY-MM-DD HH:mm:ss');
+                            update.id = $scope.the_event.id;
+                            update.date = startDate.clone().add($scope.the_event.length_hours , 'hours').format('YYYY-MM-DD HH:mm:ss');
                             Events.updateStartDate(update).sucess(function(response){
                                 EventsCalendar.refreshCalendar();
                             });
                         }
                         else{
-                            if($scope.event.length_days > 0)
+                            if($scope.the_event.length_days > 0)
                             {
                                 var month = day.month();
-                                var eventStartsOn = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss');
+                                var eventStartsOn = moment($scope.the_event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss');
                                 var dateUpdate = eventStartsOn.month(month);
                                 data.dateOfChange = dateUpdate.format('YYYY-MM-DD HH:mm:ss');
                                 
@@ -1020,7 +1046,7 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
                         break;
                 
             case 'all':
-                        Events.deleteEvent($scope.event.id).success(function(response){
+                        Events.deleteEvent($scope.the_event.id).success(function(response){
                             EventsCalendar.refreshCalendar();
                             
                         });
@@ -1029,15 +1055,16 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
         
     };
     
-    $scope.deleteAllOcurrences = function(){
+    $scope.deleteAllOcurrences = function(clickE){
+        $rootScope.e = clickE;
         $scope.eventsRepQuestion = false;
         
         $scope.verificationQuestion = "Are you sure you would like to delete all events in this series?";
-        $scope.startDateDisplay = moment($scope.event.startDate, 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
-        $scope.endDateDisplay = moment($scope.event.endDate, 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
-        if($scope.event.neverEnds == false)
+        $scope.startDateDisplay = moment($scope.the_event.startDate, 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
+        $scope.endDateDisplay = moment($scope.the_event.endDate, 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
+        if($scope.the_event.neverEnds == false)
         {
-            $scope.repeatEndDateDisplay =  moment($scope.event.repeatEndDate, 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
+            $scope.repeatEndDateDisplay =  moment($scope.the_event.repeatEndDate, 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
         }
         else{
             $scope.repeatEndDateDisplay = "never";
@@ -1047,51 +1074,58 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
         $scope.verificationAnswer = "all";
     };
     
-    $scope.deleteOnlyThisOcurrance = function(){
+    $scope.deleteOnlyThisOcurrance = function(clickE){
+        $rootScope.e = clickE;
         $scope.eventsRepQuestion = false;
         $scope.verificationQuestion = "Are you sure you would like to delete this event in the series?";
         $scope.verifyDeletion = true;
         $scope.verificationAnswer = 'this';
-        $scope.startDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
-        $scope.endDateDisplay = moment($scope.event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').add($scope.event.length_hours, 'hours').format('MMM DD, YYYY');
+        $scope.startDateDisplay = moment($scope.the_event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').format('MMM DD, YYYY');
+        $scope.endDateDisplay = moment($scope.the_event.eventStartsOn, 'YYYY-MM-DD HH:mm:ss').add($scope.the_event.length_hours, 'hours').format('MMM DD, YYYY');
     };
     
     
     
-//*****************************************************EDIT EVENT****************************************************************
+//EDIT EVENT
 
-    $scope.editEvent = function(event){
+    $scope.editEvent = function(clickE){
+        $rootScope.e = clickE;
         $scope.eventMenu = false;
-        if($scope.event.repeats == true)
+        if($scope.the_event.repeats == true)
         {
             $scope.kindOfEdition = true;
         }
         else{
             $scope.editionType = 'one';
-            $scope.toggleEditModal(event, $scope.todaysDate, $scope.editionType);
+            $scope.toggleEditModal($scope.the_event, $scope.todaysDate, $scope.editionType);
         }
     };
     
-    $scope.editThisEvent = function(event){
+    $scope.editThisEvent = function(clickE){
+        $rootScope.e = clickE;
         $scope.kindOfEdition = false;
         $scope.editionType = 'only_this';
-        $scope.toggleEditModal(event, $scope.todaysDate, $scope.editionType);
+        $scope.toggleEditModal($scope.the_event, $scope.todaysDate, $scope.editionType);
     };
-    $scope.editAllEvents = function(event){
+    $scope.editAllEvents = function(clickE){
+        $rootScope.e = clickE;
         $scope.kindOfEdition = false;
         $scope.editionType = 'all';
-        $scope.toggleEditModal(event, $scope.todaysDate, $scope.editionType);
+        $scope.toggleEditModal($scope.the_event, $scope.todaysDate, $scope.editionType);
     };
     
-    $scope.editFutureEvents = function(event){
+    $scope.editFutureEvents = function(clickE){
+        $rootScope.e = clickE;
         $scope.kindOfEdition = false;
         $scope.editionType = 'all_future';
-        $scope.toggleEditModal(event, $scope.todaysDate, $scope.editionType);
+        $scope.toggleEditModal($scope.the_event, $scope.todaysDate, $scope.editionType);
     };
+   
+ 
 });
 
 
-
+//**************************************EDITEVENTCTRL***************************************************************************************
 
 bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar, Calendars, Events, Repeats,  RepetitionUpdates){
     var self = this;
@@ -1741,9 +1775,10 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
 
 
 
-bmPlannerControllers.controller('mainCalViewCtrl', function($scope, $rootScope, EventsCalendar, Calendars, $timeout){
-        
-    // $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options){
+
+bmPlannerControllers.controller('mainCalViewCtrl', function($scope, $rootScope, EventsCalendar, Calendars, Events, Repeats,  RepetitionUpdates){
+
+    //$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options){
     //     if(toState.url == '/weeklyView')
     //     {
     //         $timeout(function(){
@@ -1752,9 +1787,10 @@ bmPlannerControllers.controller('mainCalViewCtrl', function($scope, $rootScope, 
     //     }
         
     // });
-    
+
     $scope.todays = moment().format('YYYY-MM-DD');
     
+
     $scope.today = function(){
         EventsCalendar.goToToday();
     };
@@ -1768,7 +1804,6 @@ bmPlannerControllers.controller('mainCalViewCtrl', function($scope, $rootScope, 
             return {'color':'black'};
         }
     };
- 
 });
 
 

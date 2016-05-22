@@ -9,9 +9,9 @@
                 <div style="display:inline-block; height:100%; vertical-align:middle"></div>
                 
                 <a class="barDiv-logo" style="text-decoration:none; color:white" href="/">
-                  <div style="font-size:200%; font-weight:bold; text-shadow: 1px 1px 1px #000000">gmPlanner</div>
+                  <div style="font-weight:bold; text-shadow: 2px 2px 1px #9E552E">gmPlanner</div>
                 </a>
-                <div style="display:inline-block; width:75px">
+                <div class="barDiv-logIn">
                     <a class="mainNavbar" href="/users/login">
                         <span>Login</span>
                     </a>
@@ -26,7 +26,7 @@
                
                <div style="width:100%">
                    @if (session('status'))
-                        <div class="alert alert-success">
+                        <div class="mainStatus">
                             {{ session('status') }}
                         </div>
                     @endif

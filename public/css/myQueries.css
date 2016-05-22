@@ -5,30 +5,104 @@
         width:280px;
     }
     
+    .createEventModal-style-content{
+      font-size:75%;
+    }
+    
+    .addModalInputSelect{
+        font-size:80%;
+    }
+
+    .addModalInputDate{
+        width:70px;
+        font-size:80%;
+    }
+
+    .addModalInputTime{
+        font-size:75%;
+        position:relative;
+    }
+
+    .selectRepInter{
+        font-size:75%;
+    }
+    
+    .mainTimeModalDiv{
+        width:130px;
+    }
+
+
     .uSetInput{
         width:170px;
+    }
+
+    .uSetInputFollow{
+        width:150px;
     }
     
 }
 
 @media screen and (min-width: 400px) {
+    
+    
     .createEventModal-style{
         height:475px;
-      /*left:2%;*/
     }
     
     .createEventModal-style-content{
-      font-size:75%;
+      font-size:85%;
+    }
+
+    .addModalInput{
+        font-size:85%;
+    }
+
+    .addModalInputSelect{
+        font-size:90%;
+    }
+
+    .addModalInputDate{
+        width:75px;
+        font-size:85%;
+    }
+
+    .addModalInputTime{
+        font-size:80%;
+        position:relative;
+    }
+
+    .selectRepInter{
+        font-size:80%;
     }
     
+    .mainTimeModalDiv{
+        width:180px;
+    }
+
+
     .uSetInput{
         width:200px;
         height:30px;
     }
+
+    .uSetInputFollow{
+        width:180px;
+        height:30px;
+    }
     
     .secondBody{
-        font-size:90%;
+        font-size:95%;
     }
+
+     .barDiv{
+        font-size:110%;
+    }
+
+    .barDiv-logIn{
+       width:70px
+    }
+
+   
     
     .barDiv-logo{
         margin-right:50px;
@@ -64,22 +138,40 @@
         display: none;
     }
     
-    
+    .divSep{
+        margin-bottom: 10px;
+    }
+
+    .navButton{
+        margin-left:25px;
+    }
     .createEventModal-style{
       width:75%;
       margin-left:12%;
     }
     
-    .createEventModal-style-content{
-      font-size:80%;
+
+    .addModalInput{
+        font-size:90%;
+        margin-bottom: 10px;
     }
-    
+
+    .addModalInputSelect{
+        font-size:95%;
+    }
+
+    .addModalInputDate{
+        width:80px;
+        font-size:90%;
+    }
+
+
     .AddEditForm{
         margin-left:25px
     }
     
     .barMenu{
-        width:150px;
+        width:170px;
         padding:15px;
     }
     
@@ -101,10 +193,15 @@
         width:250px;
         height:35px;
     }
+    .uSetInputFollow{
+        width:230px;
+        height:35px;
+    }
     
     
     .barDiv-logo{
         margin-right:50px;
+        font-size: 200%
     }
     
     .tableDiv{
@@ -114,6 +211,11 @@
 }
 
 @media screen and (min-width: 600px) {
+    
+    questionModal{
+        font-size:80%;
+    }
+
     .createEventModal-style{
       width:70%;
       margin-left:14.5%;
@@ -149,13 +251,16 @@
         width:300px;
         height:40px;
     }
+    .uSetInputFollow{
+        width:280px;
+        height:40px;
+    }
     
     .themePics{
         height:80px;
     }
     
      .userSettingsDiv{
-       margin-top:0;
        font-size:95%;
     }
     
@@ -180,6 +285,14 @@
         width:350px;
     }
     
+     .barDiv{
+        font-size:130%;
+    }
+
+    .barDiv-logIn{
+       width:90px
+    }
+
     .barDiv-logo{
         margin-right:150px;
     }
@@ -193,19 +306,12 @@
 
 @media screen and (min-width: 800px) {
   
-
-    .theMainDiv{
-        width:100%;
-        display:inline-block;
-        /*min-height:500px;*/
-        /*padding-left:2%;*/
-        /*padding-right:2%;*/
-        /*padding-top:0;*/
-        /*padding-bottom:2%;*/
+    .barDiv-logo{
+        font-size:220%;
     }
-    
+
     .userName{
-        font-size:120%;
+        font-size:150%;
     }
     
     
@@ -214,16 +320,15 @@
         float:left;
         width:25%;
         margin:0;
-        margin-top:20px;
-        margin-bottom:20px;
+        margin-top:85px;
+        margin-bottom:10px;
         font-size:95%;
     }
     
     #calendarDiv{
        position:relative;
        width:70%;
-       margin-top:20px;
-       margin-bottom:20px;
+       margin-bottom:10px;
        margin-left:2%;
        margin-right:2%;
        font-size:95%;
@@ -232,26 +337,17 @@
    
     .userSettingsDivLeft{
        margin-right:2%;
-       margin-top:20px;
-       margin-bottom:20px;
+       margin-bottom:10px;
        width:45%;
-       /*height:75%;*/
-       /*min-height:450px;*/
-       /*padding:2%;*/
-       /*margin-top:0;*/
-       font-size:100%;
+       font-size:105%;
         border-bottom:none;
         vertical-align:top;
     }
     
      .userSettingsDivRight{
         width:45%;
-        margin-top:20px;
-        /*height:75%;*/
-        /*min-height: 450px;*/
-        /*padding:2%;*/
-        /*margin-top:0;*/
-        font-size:100%;
+        margin-top:90px;
+        font-size:105%;
         border-left:2px solid #f2f2f2;
     }
     
@@ -266,7 +362,6 @@
     }
     
      .userSettingsDiv{
-       margin-top:0;
        font-size:105%;
     }
     
@@ -283,11 +378,13 @@
     
     .questionModal{
         font-size:85%;
-        width: 350px;
+        width: 260px;
+        height:210px;
     }
     
     .createQuestionModal-style{
-        width:350px;
+        width:260px;
+        height:210px;
     }
     
     
@@ -364,7 +461,7 @@
 @media screen and (min-width: 1000px) {
    
    .barMenu{
-        width:180px;
+        width:200px;
         padding:20px;
         font-size:105%;
     }
@@ -373,9 +470,6 @@
         height:25px;
     }
     
-    .barDiv-logo{
-        margin-right:450px;
-    }
     
     .tableDiv{
         width:980px;
@@ -392,10 +486,33 @@
 
 
 @media screen and (min-height:500px ){
-    
-    
-    .AddEditForm{
-        margin-top: 50px;
+  .barDiv{
+    height:100px;
+  }
+}
+
+@media screen and (min-height:800px ){
+  .barDiv{
+    height:130px;
+  }
+
+  .navBarInclude{
+    height:100px;
+  }
+
+  .userSettingsDivLeft{
+        margin-top:120px;
+    }
+
+   
+
+
+    .userSettingsDiv{
+        margin-top:115px;
+    }
+
+    #calendarDiv{
+        margin-top:120px;
     }
     
 }
@@ -428,6 +545,14 @@
         height:60px;
     }
   
+}
+
+@media screen and (min-height:500px ) and (min-width:400px){
+
+    .AddEditForm{
+        margin-top: 50px;
+    }
+    
 }
 
 @media screen and (min-height: 550px) and (min-width:550px){
@@ -474,20 +599,36 @@
         width:85px;
         height:85px;
     }
+
+    .mainInput{
+        height:45px;
+    }
+
+    .secondBodyDiv{
+        margin-top:75px;
+    }
     
 }
 
 @media screen and (min-height: 800px) and (min-width:800px){
     .secondBody{
-        font-size:125%;
+        font-size:130%;
     }
     
+    .secondBodyDiv{
+        margin-top:100px;
+    }
+
     .mainCircleDisplay{
         height:90%;
     }
     
     .mainCircle{
         font-size:250%;
+    }
+
+    .mainInput{
+        height:50px;
     }
     
     .mainCircleNav{
@@ -498,5 +639,13 @@
         margin-top:20px;
         width:100px;
         height:100px;
+    }
+
+    #listCalToolsDiv{
+        margin-top:110px;
+    }
+
+     .userSettingsDivRight{
+        margin-top:120px;
     }
 }

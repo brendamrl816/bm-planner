@@ -386,22 +386,45 @@ bmPlannerDirectives.directive('addeventmodal', function(Style) {
                         top = '20%';
                         scope.style.top = top;
 
-                    }else{
-                        scope.style.top = '10%';
-                            window.scrollTo(0, window.innerHeight * .10);
+                    }else if(window.innerWidth < 500 && window.innerHeight != element.parent().prop('scrollHeight') )
+                    {
+                        top = '20%';
+                        scope.style.top = top;
+                        window.scrollTo(0, element.parent().prop('scrollHeight') * (.15));
+                    }
+                    else{
+                        top = '15%';
+                        scope.style.top = top;
+                            window.scrollTo(0, element.parent().prop('scrollHeight') * (.10));
                     }
 
                     
                   
                     $(window).resize(function(){
-                        if(window.innerWidth < 800)
+                        if(window.innerWidth >= 800)
                         {
                             scope.$apply(function(){
-                                scope.style.top = '10%';
+                                top= '20%';
+                                scope.style.top = top;
                             });
-                            window.scrollTo(0, window.innerHeight * .10);
+                            window.scrollTo(0, element.parent().prop('scrollHeight') * (.15));
                         }
-                        
+                        else if(window.innerWidth >= 500)
+                        {
+                            scope.$apply(function(){
+                                 top= '15%';
+                                scope.style.top = top;
+                            });
+                            window.scrollTo(0, element.parent().prop('scrollHeight') * (.10));
+                        }
+                        else if(window.innerWidth < 500)
+                        {
+                            scope.$apply(function(){
+                                top = '10%';
+                                scope.style.top = top;
+                            });
+                            window.scrollTo(0, element.parent().prop('scrollHeight') * (.05));
+                        }
                     });
                  
                 }
@@ -424,6 +447,10 @@ bmPlannerDirectives.directive('addeventmodal', function(Style) {
            scope.hide_modal = function() {
                scope.showmodal = false;
            };
+
+           // scope.style= function(){
+           //      return {'left':left, 'top':top};
+           //  };
            
            scope.contentStyle = function(){
                 return {'background-color':'rgba(' + Style.css.body_backgroundColor + ', 0.8)'};
@@ -459,6 +486,8 @@ bmPlannerDirectives.directive('questionmodal', function(Style) {
        link: function(scope, element, attrs){
           
             scope.style={};
+            var top = 0;
+            var left = 0;
             
             if(attrs.width){
                scope.style.width = attrs.width;
@@ -474,17 +503,14 @@ bmPlannerDirectives.directive('questionmodal', function(Style) {
            
            
             scope.$watch('question', function(value){
-              scope.isClickable = !value;
-                if(value == false)
-                {
-                  window.removeEventListener('click', eventfunction); 
-                }
+             
                 if(value == true)
                 {
-                    
                      angular.element(document.body).append(element);
-                     var top =  event.pageY;
-                     var left = event.pageX;
+
+                     var e = scope.$root.e;
+                     top =  e.pageY;
+                     left = e.pageX;
                      
                      var windowHeight = window.innerHeight + window.scrollY;
                      if(top + 200 > windowHeight)
@@ -502,12 +528,10 @@ bmPlannerDirectives.directive('questionmodal', function(Style) {
                      
                      if(windowWidth > 300)
                      {
-                         scope.style.left = left;
+                        left = left;
                      }else{
-                         scope.style.left = '5%';
-                     }
-                     scope.style.top = top;
-                    
+                        left = '5%';
+                     }               
                 }
             });
             
@@ -534,31 +558,28 @@ bmPlannerDirectives.directive('questionmodal', function(Style) {
                 }
             }
                 
-                window.addEventListener('click', function(){
-                    if(scope.isClickable == false)
-                    {
-                        window.addEventListener('click', eventfunction);
-                    }
-                    
-                });
-                
+            window.addEventListener('click', function(){
+                 window.addEventListener('click', eventfunction);                
+            });
+
+            scope.style= function(){
+                return {'left':left, 'top':top};
+            };
+
             scope.hfStyle = function(){
-                return {'font-weight':'bold', 'background-color':'rgba(' + Style.css.buttons_borderColor + ', 0.6)'};
+                return {'font-weight':'bold', 'background-color':'rgba(' + Style.css.buttons_borderColor + ', 0.8)'};
             };
           
        },
-       
-       
-       
+
         
        
        template: '<div class="createQuestionModal" ng-show="question">\
-                    <div  class="createQuestionModal-style" ng-style="style">\
+                    <div  class="createQuestionModal-style" ng-style="style()">\
                         <div class="createQuestionModal-header" ng-style="hfStyle()">&nbsp</div>\
                         <div class="createQuestionModal-close" ng-click="hideQuestionModal()">X</div>\
                         <br>\
                         <div class="createQuestionModal-style-content" ng-transclude></div>\
-                        <div class="createQuestionModal-footer" ng-style="hfStyle()">&nbsp</div>\
                     </div>\
                   </div>'
    }; 
@@ -581,6 +602,8 @@ bmPlannerDirectives.directive('continuemodal', function(Style) {
        link: function(scope, element, attrs){
           
             scope.style={};
+            var top = 0;
+            var left= 0;
             
             if(attrs.width){
                scope.style.width = attrs.width;
@@ -596,6 +619,7 @@ bmPlannerDirectives.directive('continuemodal', function(Style) {
            
            
             scope.$watch('question', function(value){
+
               scope.isClickable = !value;
                 if(value == false)
                 {
@@ -604,8 +628,11 @@ bmPlannerDirectives.directive('continuemodal', function(Style) {
                 if(value == true)
                 {
                     angular.element(document.body).append(element);
-                     var top = event.pageY - event.target.offsetTop - event.offsetY;
-                     var left = event.pageX - event.target.offsetLeft - event.offsetX;
+
+                    var e = scope.$root.e;
+
+                     top = e.pageY - e.target.offsetTop - e.offsetY;
+                     left = e.pageX - e.target.offsetLeft - e.offsetX;
                      
                      var windowHeight = window.innerHeight + window.scrollY;
                      if(top + 200 > windowHeight)
@@ -621,12 +648,11 @@ bmPlannerDirectives.directive('continuemodal', function(Style) {
                          left = left - diff;
                      }
                      
-                     scope.style.top = top;
                      if(windowWidth > 300)
                      {
-                         scope.style.left = left;
+                         left = left;
                      }else{
-                         scope.style.left = '5%';
+                         left = '5%';
                      }
                 }
             });
@@ -661,20 +687,22 @@ bmPlannerDirectives.directive('continuemodal', function(Style) {
                     }
                     
                 });
-                
+
+            scope.style= function(){
+                return {'left':left, 'top':top};
+            };
             scope.hfStyle = function(){
-                return {'font-weight':'bold', 'background-color':'rgba(' + Style.css.buttons_borderColor + ', 0.6)'};
+                return {'font-weight':'bold', 'background-color':'rgba(' + Style.css.buttons_borderColor + ', 0.8)'};
             };
           
        },
        
        template: '<div class="createQuestionModal" ng-show="question">\
-                    <div  class="createQuestionModal-style" ng-style="style">\
+                    <div  class="createQuestionModal-style" ng-style="style()">\
                     <div class="createQuestionModal-header" ng-style="hfStyle()">&nbsp</div>\
                         <div class="createQuestionModal-close" ng-click="hideQuestionModal()">X</div>\
                         <br>\
                         <div class="createQuestionModal-style-content" ng-transclude></div>\
-                        <div class="createQuestionModal-footer" ng-style="hfStyle()">&nbsp</div>\
                     </div>\
                   </div>'
    }; 
@@ -698,6 +726,8 @@ bmPlannerDirectives.directive('menumodal', function(Style) {
        link: function(scope, element, attrs){
           
            scope.style={};
+           var top=0;
+           var left=0;
            
            scope.hideQuestionModal = function() {
                scope.question = false;
@@ -705,6 +735,7 @@ bmPlannerDirectives.directive('menumodal', function(Style) {
            
            
             scope.$watch('question', function(value){
+                
               scope.isClickable = !value;
                 if(value == false)
                 {
@@ -712,28 +743,23 @@ bmPlannerDirectives.directive('menumodal', function(Style) {
                 }
                 if(value == true)
                 {
-                     angular.element(document.body).append(element);
-                     
-                     var top =  event.pageY;
-                     var left = event.pageX;
+                    angular.element(document.body).append(element);
+                     var e = scope.$root.e;
+                     top = e.pageY;
+                     left =e.pageX;
                      
                      var windowHeight = window.innerHeight + window.scrollY;
-                     if(top + 250 > windowHeight)
+                     if(top + 245 > windowHeight)
                      {
-                         var diff = (top + 250) - windowHeight;
+                         var diff = (top + 245) - windowHeight;
                          top = top - diff;
                      }
                      
                      if(left + 220 > window.innerWidth)
                      {
-                         var diff = (left + 200) - window.innerWidth;
+                         var diff = (left + 220) - window.innerWidth;
                          left = left - diff;
                      }
-                     
-                     scope.style.width = '200px';
-                     scope.style.height = '250px';
-                     scope.style.top = top;
-                     scope.style.left = left;
                    
                 }
             });
@@ -747,6 +773,7 @@ bmPlannerDirectives.directive('menumodal', function(Style) {
             });
             
             element.bind('click', function(){
+                
                 if(scope.isActive == true){
                     window.removeEventListener('click', eventfunction); 
                 }
@@ -761,31 +788,75 @@ bmPlannerDirectives.directive('menumodal', function(Style) {
                 }
             }
                 
-                window.addEventListener('click', function(){
-                    if(scope.isClickable == false)
-                    {
-                        window.addEventListener('click', eventfunction);
-                    }
-                    
-                });
+            window.addEventListener('click', function(){
+                if(scope.isClickable == false)
+                {
+                    window.addEventListener('click', eventfunction);
+                }
+                
+            });
 
             scope.hfStyle = function(){
                 return {'font-weight':'bold', 'background-color':'rgba(' + Style.css.buttons_borderColor + ', 0.8)'};
+            };
+
+            scope.style= function(){
+                return {'width':'180px', 'height':'230px', 'left':left, 'top':top};
             };
                 
           
        },
        
        template: '<div class="createQuestionModal" ng-show="question">\
-                    <div  class="createQuestionModal-style" ng-style="style">\
+                    <div  class="createQuestionModal-style" ng-style="style()">\
                     <div class="createQuestionModal-header" ng-style="hfStyle()">&nbsp</div>\
                         <div class="createQuestionModal-style-content" ng-transclude></div>\
-                        <div class="createQuestionModal-footer" ng-style="hfStyle()">&nbsp</div>\
                     </div>\
                   </div>'
    }; 
 });
 
+
+
+bmPlannerDirectives.directive('password', function() {
+    return {
+        require: 'ngModel',
+
+        link: function(scope, element, attrs, modelCtrl) {
+
+            var model_value='';
+            var real_value;
+            var displayValue = '*';
+
+            modelCtrl.$parsers.push(function(viewValue){
+           
+                console.log(viewValue);
+                console.log(model_value);
+
+                displayValue = viewValue.replace(/\S/gi, '*');
+                model_value = model_value.concat(viewValue.charAt(viewValue.length - 1));
+                modelCtrl.$viewValue=displayValue;
+                modelCtrl.$render();
+                
+                return model_value;
+            });
+
+            modelCtrl.$formatters.push(function(value){
+                return model_value;
+            });
+
+            scope.$watch(attrs['ngModel'], function(newVal, oldVal){
+                if(modelCtrl.$modelValue == undefined){
+                    model_value="";
+                    modelCtrl.$viewValue="";
+                    modelCtrl.$render();
+                }                   
+              
+            });
+            
+        }
+    };
+});
 
 // bmPlannerDirectives.directive('navlink',  function($http, $rootScope, Style) {
    

@@ -1,7 +1,7 @@
   
    <div style="display:inline-block">
        <div style="float:left" ng-transclude></div>  
-       <div style="float:left; margin-top:3px; margin-left:3px; cursor:hand" ng-click="toggleShowMiniCalendar()"><i class="fa fa-calendar"></i></div>
+       <div style="float:left; margin-top:3px; margin-left:3px; cursor:pointer" ng-click="toggleShowMiniCalendar()"><i class="fa fa-calendar"></i></div>
     </div>
     
     <div style="position:relative" ng-show="showMiniCalendar">
@@ -27,7 +27,7 @@
             
             <table class="miniCalTable">
                 <tr ng-repeat="week in weeks">
-                    <td style="border:none; " ng-repeat="day in week.days"><span style="cursor:hand" ng-click="miniCalCtrl.select(day); toggleShowMiniCalendar()">{{day.dateOfMonth}}</span></td>
+                    <td style="border:none; " ng-repeat="day in week.days"><span style="cursor:pointer" ng-click="miniCalCtrl.select(day); toggleShowMiniCalendar()">{{day.dateOfMonth}}</span></td>
                 </tr>
             </table>    
         </div>

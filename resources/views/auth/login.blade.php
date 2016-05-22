@@ -8,7 +8,7 @@
              <div class="barDiv">
                 <div style="display:inline-block; height:100%; vertical-align:middle"></div>
                 <a class="barDiv-logo" style="text-decoration:none; color:white" href="/">
-                      <div style="font-size:200%; font-weight:bold; text-shadow: 1px 1px 1px #000000">gmPlanner</div>
+                      <div style="font-weight:bold; text-shadow: 2px 2px 1px #9E552E">gmPlanner</div>
                       <!--<img class="userPic" style="top:0; position:absolute" src="" alt="logoPic">-->
                 </a>
                 <div style="font-weight:bold; text-shadow: 1px 1px 1px #000000; display:inline-block">No account?</div>
@@ -24,7 +24,7 @@
                    
                     <div style="width:100%">
                          @if (session('status'))
-                            <div class="alert alert-success">
+                            <div class="mainStatus">
                                 {{ session('status') }}
                             </div>
                         @endif
@@ -37,7 +37,7 @@
                 
                   
                     <div style="display:inline-block; vertical-align:middle">
-                        <form method="post" action="/users/login" style="float:left">
+                        <form method="post" action="/users/login">
                             {!! csrf_field() !!}
                             
                             <div style="margin-top:15px">
@@ -59,7 +59,7 @@
                         
                         </form>
                         
-                        <div style="margin-top:20px; width:100%">
+                        <div style="margin-top:35px; width:100%">
                             <a style="text-decoration:none" href="/forgotPassword"><button style="color:blue; background-color:transparent; font-weight:bold">&#9755; Forgot Password?</button></a>
                         </div>
   

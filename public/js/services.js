@@ -11,7 +11,7 @@ bmPlannerServices.factory('User', function($http, Calendars) {
     {
         $http.get('/settings').success(function(response) {
             User.info = response;
-            User.info.dob = new Date(User.info.dob);
+            User.info.dob = moment(User.info.dob, 'MM-DD-YYYY');
             User.displayName = User.info.first_name;
         });   
     };

@@ -31,14 +31,13 @@
         
     @else
       
-    <div class="mainBackground"><img class="mainBackground-image" src="/pictures/wood.jpg"></div> 
+    <div class="mainBackground"><img class="mainBackground-image" src="/pictures/main.jpg"></div> 
     
         <div class="mainBody">
             <div class="barDiv">&nbsp</div>
             <div class="mainCircleDisplay"></div>
                 <div class="mainCircle">
-                    <img class="logo" src="/pictures/logo.png">
-                    <div style="font-size:200%">gmPlanner</div>
+                    <div style="font-size:200%; text-shadow:2px 2px 1px #9E552E">gmPlanner</div>
                     <div class="mainCircleNav">Get organized and get it done!</div>
                     <br>
                     <div class="mainCircleNav">

@@ -6,16 +6,20 @@
                  
                    
                     
-                    <div style="width:100%; margin-top:25px; display:inline-block; text-align:center">
-                        <div class="messageTextArea" style="display:inline-block; height:inherit">
-                            <div ng-style="style.statusStyle()"  style="float:left; width:100%; margin-bottom:10px" ng-show="c.successMessage">Your email has been sent!</div>
+                    <div style="width:100%;  display:inline-block; text-align:center">
+                        <div class="messageTextArea" style="display:inline-block; min-height:100px; max-height:100px; height:100px">
+                            <div ng-style="style.statusStyle()"  style="float:left; width:100%; height:50px;  margin-bottom:10px">&nbsp
+                                <div ng-show="c.successMessage">
+                                    Your email has been sent!
+                                </div>
+                            </div>
                             <div style="float:left; font-weight:bold; font-size:120%; height:20px">
                                 Send us a message:
                             </div>
                         </div>
                      </div>
                     
-                    <div style="margin-top:20px; width:100%; text-align:center">
+                    <div style="margin-top:10px; width:100%; text-align:center">
                         <input class="uSetInput" ng-style="style.modalInputStyle()"  type="text" placeholder="*Subject" id="subject" name="subject" ng-model="c.subject" required>
                     </div>
                    
