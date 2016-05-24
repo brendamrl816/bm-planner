@@ -13,26 +13,26 @@
         <div class="themeHolder">
             <div class="themePics">
                 <input type="radio" ng-model="editStyle.chosenTheme" value="default">Default
-                <img  style=" width:90%; height:90%; border: 5px solid white; border-radius:5px" src="/pictures/default.png" alt="default theme">
+                <img  style=" width:90%; height:90%; border-radius:2px" src="/pictures/default.png" alt="default theme">
             </div>
         
             <div class="themePics">
                 <input type="radio" ng-model="editStyle.chosenTheme" value="theme1">Theme 1
-                <img  style="width:90%; height:90%; border: 5px solid white; border-radius:5px" src="/pictures/theme1.png" alt="theme 1">
+                <img  style="width:90%; height:90%;  border-radius:2px" src="/pictures/theme1.png" alt="theme 1">
             </div>
             <div class="themePics">
                 <input type="radio" ng-model="editStyle.chosenTheme" value="theme2">Theme 2
             
-                <img  style="width:90%; height:90%; border: 5px solid white; border-radius:5px" src="/pictures/theme2.png" alt="theme 2">
+                <img  style="width:90%; height:90%; border-radius:2px" src="/pictures/theme2.png" alt="theme 2">
             </div>
 
             <div class="themePics">
                 <input type="radio" ng-model="editStyle.chosenTheme" value="theme3">Theme 3
-                <img  style="width:90%; height:90%;  border: 5px solid white; border-radius:5px" src="/pictures/theme3.png" alt="theme 3">
+                <img  style="width:90%; height:90%; border-radius:2px" src="/pictures/theme3.png" alt="theme 3">
             </div>
             <div class="themePics">
                 <input type="radio" ng-model="editStyle.chosenTheme" value="theme4">Theme 4
-                <img  style="width:90%; height:90%; border: 5px solid white; border-radius:5px" src="/pictures/theme4.png" alt="theme 4">
+                <img  style="width:90%; height:90%;  border-radius:2px" src="/pictures/theme4.png" alt="theme 4">
             </div>
             
         </div>    
@@ -57,13 +57,13 @@
                     
                     <div style="margin:10px">
                         <span ng-show="userEditForm.first_name.$error.required" style="color:red; font-size:90%; margin-bottom:5px">*required</span>
-                        <input class="uSetInput" ng-style="style.modalInputStyle()" type="text"   name="first_name" ng-model="u.user.info.first_name" required>
+                        <input class="uSetInput" ng-style="style.inputStyle()" type="text"   name="first_name" ng-model="u.user.info.first_name" required>
                     </div>
                     
                    
                     <div style="margin:10px">
                         <span ng-show="userEditForm.last_name.$error.required" style="color:red; font-size:90%; margin-bottom:5px">*required</span>
-                        <input class="uSetInput" ng-style="style.modalInputStyle()" type="text"  placeholder="Last Name" id="name"  name="last_name" ng-model="u.user.info.last_name" required>
+                        <input class="uSetInput" ng-style="style.inputStyle()" type="text"  placeholder="Last Name" id="name"  name="last_name" ng-model="u.user.info.last_name" required>
                         
                     </div>
                     
@@ -72,7 +72,7 @@
                         <span ng-show="userEditForm.dob.$error.required" style="color:red; font-size:90%; margin-bottom:5px">*required</span>
                         <div class="uSetInput">
                             <minicalendars selected="u.user.info.dob">
-                               <input startdate type="text" class="usetInputFollow" ng-style="style.modalInputStyle()" ng-model="u.user.info.dob" ng-model-options="{ updateOn: 'blur'}">
+                               <input startdate type="text" class="usetInputFollow" ng-style="style.inputStyle()" ng-model="u.user.info.dob" ng-model-options="{ updateOn: 'blur'}">
                             </minicalendars>
                         </div>
                     </div>
@@ -81,17 +81,17 @@
                     <div style="margin:10px">
                         <span ng-show="userEditForm.email.$error.email" style="display:inline-block; color:red; font-size:90%; margin-bottom:5px">*Email form is invalid</span>
                         <span ng-show="userEditForm.email.$error.required" style="display:inline-block; color:red; font-size:90%; margin-bottom:5px">*required</span>
-                        <input class="uSetInput" ng-style="style.modalInputStyle()" type="email" placeholder="Email" id="email" placeholder="Email" name="email"
+                        <input class="uSetInput" ng-style="style.inputStyle()" type="email" placeholder="Email" id="email" placeholder="Email" name="email"
                                 ng-model="u.user.info.email" required>
                                
                     </div>      
 
                     <div style="margin:10px">
-                        <input password class="uSetInput" ng-style="style.modalInputStyle()" type="text" placeholder="New Password" name="password" ng-model="u.newpass">
+                        <input password class="uSetInput" ng-style="style.inputStyle()" type="text" placeholder="New Password" name="password" ng-model="u.newpass">
                     </div>
 
                     <div style="margin:10px">
-                        <input password class="uSetInput" ng-style="style.modalInputStyle()" type="text" autocomplete="off" placeholder="Confirm New Password" name="password_confirmation" ng-model="u.newpassconfirm">
+                        <input password class="uSetInput" ng-style="style.inputStyle()" type="text" autocomplete="off" placeholder="Confirm New Password" name="password_confirmation" ng-model="u.newpassconfirm">
                     </div>
                     
 
@@ -104,7 +104,7 @@
                             <div style="float:left"><span ng-show="userEditForm.old_pass.$invalid" ng-style="style.errorStyle()">*</span> Enter your current password:</div>
                         </div>
                         
-                        <input password class="uSetInput" ng-style="style.modalInputStyle()" type="text" autocomplete="off" placeholder="Current Password" name="old_pass" ng-model="u.oldpass" required>
+                        <input password class="uSetInput" ng-style="style.inputStyle()" type="text" autocomplete="off" placeholder="Current Password" name="old_pass" ng-model="u.oldpass" required>
                         
                     </div>
                     

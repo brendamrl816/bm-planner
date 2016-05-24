@@ -17,13 +17,9 @@ class CreateStylesTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('theme_name');
             $table->string('body_backgroundColor');
-            $table->string('body_color');
-            $table->string('body_fontFamily');
             $table->string('buttons_backgroundColor');
             $table->string('buttons_borderColor');
             $table->string('navBar_backgroundColor');
-            $table->string('navBar_color');
-            $table->string('navBar_borderColor');
             $table->string('menuModal_backgroundColor');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');

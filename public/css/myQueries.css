@@ -6,7 +6,7 @@
     }
     
     .createEventModal-style-content{
-      font-size:75%;
+      font-size:65%;
     }
     
     .addModalInputSelect{
@@ -50,7 +50,7 @@
     }
     
     .createEventModal-style-content{
-      font-size:85%;
+      font-size:80%;
     }
 
     .addModalInput{
@@ -143,7 +143,7 @@
     }
 
     .navButton{
-        margin-left:25px;
+        margin-left:15px;
     }
     .createEventModal-style{
       width:75%;
@@ -171,7 +171,7 @@
     }
     
     .barMenu{
-        width:170px;
+        width:155px;
         padding:15px;
     }
     
@@ -309,9 +309,13 @@
     .barDiv-logo{
         font-size:220%;
     }
+    
+    .navBarDiv{
+        font-size:90%;
+    }
 
     .userName{
-        font-size:150%;
+        font-size:200%;
     }
     
     
@@ -461,7 +465,7 @@
 @media screen and (min-width: 1000px) {
    
    .barMenu{
-        width:200px;
+        width:180px;
         padding:20px;
         font-size:105%;
     }
@@ -582,9 +586,9 @@
 
 @media screen and (min-height: 650px) and (min-width:650px){
     
-    .mainCircleDisplay{
-        height:95%;
-    }
+    /*.mainCircleDisplay{*/
+    /*    height:95%;*/
+    /*}*/
     
     .mainCircle{
         font-size:190%;
@@ -619,9 +623,9 @@
         margin-top:100px;
     }
 
-    .mainCircleDisplay{
-        height:90%;
-    }
+    /*.mainCircleDisplay{*/
+    /*    height:90%;*/
+    /*}*/
     
     .mainCircle{
         font-size:250%;

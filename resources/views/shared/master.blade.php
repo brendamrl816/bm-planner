@@ -15,12 +15,8 @@
         <script src="/js/controllers.js"></script>
         <script src="/js/services.js"></script>
         <script src="/js/directives.js"></script>
-        <script src="/js/animations.js"></script>
         <link rel="stylesheet" type="text/css" href="/css/myStyle.css">
         <link rel="stylesheet" type="text/css" href="/css/myQueries.css">
-        
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-        <script src="/js/jqueryfunctions.js"></script>
     </head>
 
 

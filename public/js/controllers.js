@@ -115,7 +115,7 @@ bmPlannerControllers.controller('styleCtrl', function(Style, $scope, $rootScope)
     self.theStyle = Style;
     
     self.homeView = function(){
-      return {'background-color': 'rgba(' + self.theStyle.css.body_backgroundColor + ', 1)'};
+      return {'background-color': 'rgba(' + self.theStyle.css.body_backgroundColor + ', 0.8)'};
     };
     
    
@@ -132,28 +132,27 @@ bmPlannerControllers.controller('styleCtrl', function(Style, $scope, $rootScope)
         return {'text-decoration':'none',  'background-color':'rgba(' + self.theStyle.css.buttons_borderColor + ', 0.4)', 'border-radius':'2px', 'border':'none', 'box-shadow':'0px 1px 0px' + self.theStyle.css.buttons_borderColor};  
     };
     
-    
     self.inputStyle = function(){
-        return { 'background-color':'transparent', 'box-shadow':'1px 1px 1px 1px rgba(' + self.theStyle.css.buttons_borderColor + ', 1)', 
+        return { 'box-shadow':'0px 0px 2px 0px rgba(' + self.theStyle.css.buttons_borderColor + ', 1)', 
                 'border-radius':'2px', 'padding':'2px'};
     };
     
     self.modalInputStyle = function(){
-        return { 'background-color':'rgba(' + self.theStyle.css.body_backgroundColor + ', 1)', 'box-shadow':'1px 1px 1px 1px rgba(' + self.theStyle.css.buttons_borderColor + ', 1)', 
+        return { 'background-color':'transparent', 'border':'1px solid rgba(' + self.theStyle.css.buttons_borderColor + ', 1)', 
                 'border-radius':'2px', 'padding':'1px'};
     };
    
     self.modalStyle = function(){
-        return {'box-shadow':' 1px 1px 5px 1px rgba(' + self.theStyle.css.buttons_borderColor + ', 0.8)'};  
+        return {'box-shadow':' 1px 0px 1px 0px rgba(' + self.theStyle.css.buttons_borderColor + ', 0.8)'};  
     };
     
   
     self.statusStyle = function(){
-        return {'color':'rgba(' + self.theStyle.css.buttons_borderColor + ', 1)', 'font-weight':'bold', 'font-size':'110%', 'text-shadow':' 1px 1px 0px brown'};
+        return {'color':'brown', 'font-weight':'bold', 'font-size':'110%'};
     };
     
     self.errorStyle = function(){
-        return {'color':'rgba(' + self.theStyle.css.buttons_backgroundColor + ', 1)', 'font-style':'oblique', 'font-weight':'bolder',  'text-shadow':' 1px 2px 0px #000000', 'font-size':'120%', 'margin-right':'5px'};
+        return {'color':'brown', 'font-style':'oblique', 'font-weight':'bolder',   'font-size':'120%', 'margin-right':'5px'};
     };
     
     self.navbarStyle = function(){
@@ -183,63 +182,47 @@ bmPlannerControllers.controller('editStyleCtrl', function(Style, $window, $scope
         switch(self.chosenTheme){
             case 'default':
                 data.theme_name = "default";
-                data.body_backgroundColor = '218, 173, 134';
-                data.body_color = '#663300';
-                data.body_fontFamily = 'Arial, Helvetica, sans-serif';
-                data.buttons_backgroundColor = '223, 141, 70';
-                data.buttons_borderColor = '89, 56, 28';
-                data.navBar_backgroundColor = '89,56,28';
-                data.navBar_color = '#ffffff';
-                // data.navBar_borderColor = '#ffad99';
-                data.menuModal_backgroundColor = '118, 180, 192';
+                data.body_backgroundColor = '189, 129, 97';
+                data.buttons_backgroundColor = '117, 168, 202';
+                data.buttons_borderColor = '89, 105, 114';
+                data.navBar_backgroundColor = '201, 216, 197';
+                data.menuModal_backgroundColor = '255, 246, 253';
                 break;
             case 'theme1':
                 data.theme_name = "theme1";
                 data.body_backgroundColor = '218, 173, 134';
                 data.body_color = '#663300';
-                data.body_fontFamily = 'Arial, Helvetica, sans-serif';
                 data.buttons_backgroundColor = '223, 141, 70';
                 data.buttons_borderColor = '89, 56, 28';
                 data.navBar_backgroundColor = '89,56,28';
-                data.navBar_color = '#ffffff';
-                // data.navBar_borderColor = '#ffad99';
                 data.menuModal_backgroundColor = '118, 180, 192';
                 break;
             case 'theme2':
                 data.theme_name = "theme2";
-                data.body_backgroundColor = '#ffffff';
+                data.body_backgroundColor = '199, 166, 147';
                 data.body_color = '#000000';
-                data.body_fontFamily = 'Arial, Helvetica, sans-serif';
-                data.buttons_backgroundColor = '#b3daff';
-                data.buttons_borderColor = '#0e92f1';
-                data.navBar_backgroundColor = '#99ceff';
-                data.navBar_color = '#ffffff';
-                data.navBar_borderColor = '#80c1ff';
-                data.menuModal_backgroundColor = '#f9fcff';
+                data.buttons_backgroundColor = '170, 111, 146';
+                data.buttons_borderColor = '91, 54, 74';
+                data.navBar_backgroundColor = '94, 2, 49';
+                data.menuModal_backgroundColor = '255, 229, 214';
                 break;
             case 'theme3':
                 data.theme_name = "theme3";
-                data.body_backgroundColor = '#ffffff';
+                data.body_backgroundColor = '199, 166, 147';
                 data.body_color = '#663300';
-                data.body_fontFamily = 'Arial, Helvetica, sans-serif';
-                data.buttons_backgroundColor = '#ffccff';
-                data.buttons_borderColor = '#b300b3';
-                data.navBar_backgroundColor = '#ffb3ff';
-                data.navBar_color = '#ffffff';
-                data.navBar_borderColor = '#ff99ff';
-                data.menuModal_backgroundColor = '#fff2ff';
+                data.buttons_backgroundColor = '118, 41, 29';
+                data.buttons_borderColor = '80, 57, 47';
+                data.navBar_backgroundColor = '63, 176, 172';
+                data.menuModal_backgroundColor = '255, 239, 178';
                 break;
             case 'theme4':
                 data.theme_name = "theme4";
-                data.body_backgroundColor = '#ffffff';
+                data.body_backgroundColor = '201, 158, 143';
                 data.body_color = '#000000';
-                data.body_fontFamily = 'Arial, Helvetica, sans-serif';
-                data.buttons_backgroundColor = '#dbd6d6';
-                data.buttons_borderColor = '#262626';
-                data.navBar_backgroundColor = '#c3bbbb';
-                data.navBar_color = '#ffffff';
-                data.navBar_borderColor = '#737373';
-                data.menuModal_backgroundColor = '#e6e6e6';
+                data.buttons_backgroundColor = '169, 201, 143';
+                data.buttons_borderColor = '98,124, 76';
+                data.navBar_backgroundColor = '196, 143, 201';
+                data.menuModal_backgroundColor = '252, 245, 205';
                 break;
         }
         

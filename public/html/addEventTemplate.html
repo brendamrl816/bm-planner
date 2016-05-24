@@ -8,7 +8,7 @@
                 
                 <div class="divSep">
                     Calendar:&#32; 
-                    <select class="addModalInputSelect" ng-style="style.modalInputStyle()" name="calendar" ng-model="add.calendar_id" ng-options="calendar as calendar.name for calendar in add.calendars track by calendar.id"></select>
+                    <select class="addModalInputSelect" ng-style="style.inputStyle()" name="calendar" ng-model="add.calendar_id" ng-options="calendar as calendar.name for calendar in add.calendars track by calendar.id"></select>
                 </div> 
                 
                 <div class="divSep">
@@ -19,14 +19,14 @@
                     <div style="float:left">
                         <minicalendars selected="add.startDate">
                            <div style="display:inline-block">Start:</div>
-                           <input startdate type="text" class="addModalInputDate" ng-style="style.modalInputStyle()" ng-model="add.startDate" ng-model-options="{ updateOn: 'blur'}">
+                           <input startdate type="text" class="addModalInputDate" ng-style="style.inputStyle()" ng-model="add.startDate" ng-model-options="{ updateOn: 'blur'}">
                         </minicalendars>
                     </div>
                         
                     
                     <div class="mainTimeModalDiv" ng-show="!add.allDay">
                                <div class="modalTimeDiv">
-                                    <select ng-style="style.modalInputStyle()" class="addModalInputTime z-index3"  onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();'  ng-model="add.startHour">
+                                    <select ng-style="style.inputStyle()" class="addModalInputTime z-index3"  onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();'  ng-model="add.startHour">
                                             <option value="12">12</option>
                                             <option value="01">01</option>
                                             <option value="02">02</option>
@@ -45,7 +45,7 @@
                                    <div>:</div>
                                </div>
                                <div class="modalTimeDiv">
-                                   <select ng-style="style.modalInputStyle()"  class="addModalInputTime z-index3" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();' ng-model="add.startMinutes">
+                                   <select ng-style="style.inputStyle()"  class="addModalInputTime z-index3" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();' ng-model="add.startMinutes">
                                                 <option value="00">00</option>
                                                 <option value="01">01</option>
                                                 <option value="02">02</option>
@@ -110,7 +110,7 @@
                                    
                                </div>
                                <div class="modalTimeDiv" >
-                                        <select ng-style="style.modalInputStyle()" class="addModalInputTime" ng-model="add.startMeridiem">
+                                        <select ng-style="style.inputStyle()" class="addModalInputTime" ng-model="add.startMeridiem">
                                             <option value="am">AM</option>
                                             <option value="pm">PM</option>
                                         </select>
@@ -123,14 +123,14 @@
                 <div style="display:inline-block; width:95%;" class="divSep">
                     <div style="float:left">
                        <minicalendars selected="add.endDate">
-                            End:&nbsp<input ng-style="style.modalInputStyle()" class="addModalInputDate" enddate type="text"  ng-model="add.endDate" ng-model-options="{ updateOn: 'blur', allowInvalid:true}">
+                            End:&nbsp<input ng-style="style.inputStyle()" class="addModalInputDate" enddate type="text"  ng-model="add.endDate" ng-model-options="{ updateOn: 'blur', allowInvalid:true}">
                         </minicalendars> 
                     </div>
                     
                     
                     <div class="mainTimeModalDiv" ng-show="!add.allDay">
                                <div class="modalTimeDiv">
-                                    <select ng-style="style.modalInputStyle()"  class="addModalInputTime z-index2" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();' ng-model="add.endHour">
+                                    <select ng-style="style.inputStyle()"  class="addModalInputTime z-index2" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();' ng-model="add.endHour">
                                             <option value="12">12</option>
                                             <option value="01">01</option>
                                             <option value="02">02</option>
@@ -151,7 +151,7 @@
                                 </div>
                              
                                <div class="modalTimeDiv">
-                                   <select ng-style="style.modalInputStyle()" class="addModalInputTime z-index2" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();' ng-model="add.endMinutes">
+                                   <select ng-style="style.inputStyle()" class="addModalInputTime z-index2" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();' ng-model="add.endMinutes">
                                                 <option value="00">00</option>
                                                 <option value="01">01</option>
                                                 <option value="02">02</option>
@@ -215,7 +215,7 @@
                                     </select>
                                </div>
                                <div class="modalTimeDiv">
-                                   <select ng-style="style.modalInputStyle()" class="addModalInputTime" ng-model="add.endMeridiem">
+                                   <select ng-style="style.inputStyle()" class="addModalInputTime" ng-model="add.endMeridiem">
                                             <option value="am">AM</option>
                                             <option value="pm">PM</option>
                                     </select>
@@ -241,7 +241,7 @@
                     <div style="display:inline-block" class="divSep">
                         <div ng-style="style.errorStyle()" style="float:left; margin-right:5px" ng-show="addForm.selectRepeatOcurrence.$invalid">*</div>
                         
-                        <select class="addModalInputSelect" style="float:left" ng-style="style.modalInputStyle()" ng-required="add.repeats" ng-model="add.repeatOccurrence" ng-change="add.changeRepeatOptions(add.repeatOccurrence)" name="selectRepeatOcurrence">
+                        <select class="addModalInputSelect" style="float:left" ng-style="style.inputStyle()" ng-required="add.repeats" ng-model="add.repeatOccurrence" ng-change="add.changeRepeatOptions(add.repeatOccurrence)" name="selectRepeatOcurrence">
                             <option value="">Please Select</option>
                             <option value="daily">Daily</option>
                             <option value="weekday">Every weekday(Mon-Fri)</option>
@@ -254,7 +254,7 @@
                         <div style="display:inline-block; margin-left:2%" ng-show="add.intervalSelection">
                             <span style="float:left">Every: </span>
                             <div style="float:left; height:20px">
-                                <select ng-style="style.modalInputStyle()" class="selectRepInter" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();' ng-model="add.repeatInterval">
+                                <select ng-style="style.inputStyle()" class="selectRepInter" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();' ng-model="add.repeatInterval">
                                 <option value="1">01</option>
                                 <option value="2">02</option>
                                 <option value="3">03</option>
@@ -304,9 +304,9 @@
                         </div>
                         <input type="radio" style="margin-top:4px; float:left"  ng-model="add.repeatEndValue" value="date"> 
                         <div style="margin-left:0; float:left">date</div>
-                        <input class="addModalInputDate" style="float:left; margin-left:4px" ng-style="style.modalInputStyle()" placeholder="not selected" ng-if="add.repeatEndValue != 'date'" ng-click="add.repeatEndValue = 'date'">
+                        <input class="addModalInputDate" style="float:left; margin-left:4px" ng-style="style.inputStyle()" placeholder="not selected" ng-if="add.repeatEndValue != 'date'" ng-click="add.repeatEndValue = 'date'">
                         <minicalendars style="display:inline-block" selected="add.repeatEndDate" ng-if="add.repeatEndValue == 'date'" >
-                            <input class="addModalInputDate" style="float:right" enddate type="text"  ng-style="style.modalInputStyle()"  ng-model="add.repeatEndDate" ng-model-options="{ updateOn: 'blur', allowInvalid:true}">
+                            <input class="addModalInputDate" style="float:right" enddate type="text"  ng-style="style.inputStyle()"  ng-model="add.repeatEndDate" ng-model-options="{ updateOn: 'blur', allowInvalid:true}">
                         </minicalendars>
         
                         

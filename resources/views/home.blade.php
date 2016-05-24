@@ -37,7 +37,7 @@
             <div class="barDiv">&nbsp</div>
             <div class="mainCircleDisplay"></div>
                 <div class="mainCircle">
-                    <div style="font-size:200%; text-shadow:2px 2px 1px #9E552E">gmPlanner</div>
+                    <div style="font-size:200%; text-shadow:2px 2px 1px #75A8CA">gmPlanner</div>
                     <div class="mainCircleNav">Get organized and get it done!</div>
                     <br>
                     <div class="mainCircleNav">

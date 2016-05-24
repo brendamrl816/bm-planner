@@ -13,16 +13,12 @@ class StyleSeeder extends Seeder
     public function run()
     {
         Style::create(array(
-            'theme_name'=>'default',
-            'body_backgroundColor'=> '#ffffff',
-            'body_color'=> '#663300',
-            'body_fontFamily'=> 'Arial, Helvetica, sans-serif',
-            'buttons_backgroundColor'=>'#99ffcc',
-            'buttons_borderColor'=> '#b4febe',
-            'navBar_backgroundColor'=> '#66ffb3',
-            'navBar_color'=> '#ffffff',
-            'navBar_borderColor'=> '#79ecb3',
-            'menuModal_backgroundColor'=> '#E1F5E6',
+             'theme_name'=>'default',
+            'body_backgroundColor'=> '189, 129, 97',
+            'buttons_backgroundColor'=>'168, 182, 191',
+            'buttons_borderColor'=> '89, 105, 114',
+            'navBar_backgroundColor'=> '201, 216, 197',
+            'menuModal_backgroundColor'=> '255, 246, 253',
             'user_id'=> 1,
         ));
     }

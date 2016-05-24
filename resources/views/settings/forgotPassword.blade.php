@@ -9,7 +9,7 @@
                 <div style="display:inline-block; height:100%; vertical-align:middle"></div>
                 
                 <a class="barDiv-logo" style="text-decoration:none; color:white" href="/">
-                  <div style="font-weight:bold; text-shadow: 2px 2px 1px #9E552E">gmPlanner</div>
+                  <div style="font-weight:bold; text-shadow: 2px 2px 1px #75A8CA">gmPlanner</div>
                 </a>
                 <div class="barDiv-logIn">
                     <a class="mainNavbar" href="/users/login">

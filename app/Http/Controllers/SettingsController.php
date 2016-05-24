@@ -101,25 +101,17 @@ class SettingsController extends Controller
     {
         $theme_name = Input::get('theme_name');
         $body_backgroundColor = Input::get('body_backgroundColor');
-        $body_color = Input::get('body_color');
-        $body_fontFamily = Input::get('body_fontFamily');
         $buttons_backgroundColor=Input::get('buttons_backgroundColor');
         $buttons_borderColor=Input::get('buttons_borderColor');
         $navBar_backgroundColor=Input::get('navBar_backgroundColor');
-        $navBar_color=Input::get('navBar_color');
-        $navBar_borderColor=Input::get('navBar_borderColor');
         $menuModal_backgroundColor=Input::get('menuModal_backgroundColor');
         
         DB::table('styles')->where('id', '=', $id)->update([
             'theme_name'=> $theme_name,
             'body_backgroundColor'=> $body_backgroundColor,
-            'body_color'=>  $body_color,
-            'body_fontFamily'=> $body_fontFamily,
             'buttons_backgroundColor'=>$buttons_backgroundColor,
             'buttons_borderColor'=> $buttons_borderColor,
             'navBar_backgroundColor'=> $navBar_backgroundColor,
-            'navBar_color'=> $navBar_color,
-            'navBar_borderColor'=> $navBar_borderColor,
             'menuModal_backgroundColor'=> $menuModal_backgroundColor
         ]);
         

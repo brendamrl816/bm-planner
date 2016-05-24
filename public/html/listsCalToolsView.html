@@ -21,9 +21,9 @@
                                 </button>
                             </div>
                             <div class="editColor"; style="margin-left:20%">
-                                    <div style="float:left">
+                                    <div class="editColor-content">
                                         Edit Color:
-                                        <button style="height:15px; cursor: context-menu; width:15px; margin-right:5px" ng-style="{'background-color':'rgb(' +listMenu.color+ ')', 'margin-right':'5px'}"></button>
+                                        <button style="height:15px; vertical-align:middle; cursor: context-menu; width:15px; margin-right:5px" ng-style="{'background-color':'rgb(' +listMenu.color+ ')', 'margin-right':'5px'}"></button>
                                     </div>
                                     
                                     <colorpicker selected="listMenu.color"></colorpicker>
@@ -84,9 +84,9 @@
                             <input ng-style="style.inputStyle()" type="text" placeholder="List Name" class="addModalTextInput" ng-model="todolist.listName">
                         </div>
                         <div class="editColor">
-                            <div style="margin-left:15%; font-size:90%">
-                            <div style="float:left">
-                                List Color: <button ng-style="{'background-color':'rgb(' +todolist.color+ ')'}" style="height:15px;width:15px; cursor: context-menu; margin-right:5px"></button>
+                            <div style="margin-left:15%">
+                            <div class="editColor-content">
+                                List Color: <button ng-style="{'background-color':'rgb(' +todolist.color+ ')'}" style="height:15px; width:15px; vertical-align:middle; cursor: context-menu; margin-right:5px"></button>
                             </div>
                            
                                 <colorpicker selected="todolist.color"></colorpicker>
@@ -132,8 +132,8 @@
                             </div>
         
                             <div class="editColor" style="margin-left:20%">
-                                    <div style="width:100%; text-align:left">
-                                       Edit color: <button style="height:15px; width:15px; cursor: context-menu; margin-right:5px" ng-style="{'background-color':'rgb(' + calmenu.colorToUpdate + ')'}"></button>
+                                    <div class="editColor-content">
+                                       Edit color: <button style="height:15px; width:15px; vertical-align:middle; cursor: context-menu; margin-right:5px" ng-style="{'background-color':'rgb(' + calmenu.colorToUpdate + ')'}"></button>
                                     </div>
                                     <colorpicker selected="calmenu.colorToUpdate"></colorpicker>
                             </div>
@@ -188,9 +188,9 @@
                 </div>
                 
                 <div class="editColor">
-                    <div style="margin-left:15%; font-size:90%">
-                        <div style="float:left">
-                            Color: <button style="height:15px; width:15px; cursor: context-menu; margin-right:5px" ng-style="{'background-color':'rgb(' +calie.color+ ')', 'margin-right':'5px'}"></button>
+                    <div style="margin-left:15%">
+                        <div class="editColor-content">
+                            Color: <button style="height:15px; width:15px; vertical-align:middle; cursor: context-menu; margin-right:5px" ng-style="{'background-color':'rgb(' +calie.color+ ')', 'margin-right':'5px'}"></button>
                         </div>
 
                         <div>
@@ -199,7 +199,7 @@
                     </div>
                 </div>
                 
-                <div class="divInput">
+                <div class="divInput" style="text-align:center">
                     <div class="split">
                         <button ng-style="style.buttonStyle()" class="all" ng-click="add()">add</button>
                     </div>

@@ -8,13 +8,13 @@
              <div class="barDiv">
                 <div style="display:inline-block; height:100%; vertical-align:middle"></div>
                 <a class="barDiv-logo" style="text-decoration:none; color:white" href="/">
-                      <div style="font-weight:bold; text-shadow: 2px 2px 1px #9E552E">gmPlanner</div>
+                      <div style="font-weight:bold; text-shadow: 2px 2px 1px #75A8CA">gmPlanner</div>
                       <!--<img class="userPic" style="top:0; position:absolute" src="" alt="logoPic">-->
                 </a>
                 <div style="font-weight:bold; text-shadow: 1px 1px 1px #000000; display:inline-block">No account?</div>
                 
                 <div class="barDiv-signUp">
-                    <a  style="text-decoration:none; font-weight:bold; color:blue"  href="/users/register"><div>sign up</div></a>
+                    <a  style="text-decoration:none; font-weight:bold; color:#75A8CA"  href="/users/register"><div>sign up</div></a>
                 </div>
             </div>
             

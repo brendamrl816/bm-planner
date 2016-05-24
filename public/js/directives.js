@@ -371,7 +371,7 @@ bmPlannerDirectives.directive('addeventmodal', function(Style) {
            scope.style={};
            
             scope.darkStyle = function(){
-                return {'background-color':'rgba(' + Style.css.buttons_borderColor + ', 1)'};
+                return {'background-color':'rgba(' + Style.css.navBar_backgroundColor + ', 1)'};
             };
             
         
@@ -404,10 +404,10 @@ bmPlannerDirectives.directive('addeventmodal', function(Style) {
                         if(window.innerWidth >= 800)
                         {
                             scope.$apply(function(){
-                                top= '20%';
+                                top= '15%';
                                 scope.style.top = top;
                             });
-                            window.scrollTo(0, element.parent().prop('scrollHeight') * (.15));
+                            window.scrollTo(0, element.parent().prop('scrollHeight') * (.10));
                         }
                         else if(window.innerWidth >= 500)
                         {
@@ -453,7 +453,7 @@ bmPlannerDirectives.directive('addeventmodal', function(Style) {
            //  };
            
            scope.contentStyle = function(){
-                return {'background-color':'rgba(' + Style.css.body_backgroundColor + ', 0.8)'};
+                return {'background-color':'rgba(' + Style.css.body_backgroundColor + ', 0.7)'};
             };
            
        },
@@ -601,7 +601,7 @@ bmPlannerDirectives.directive('continuemodal', function(Style) {
        
        link: function(scope, element, attrs){
           
-            scope.style={};
+            // scope.style={};
             var top = 0;
             var left= 0;
             
@@ -630,9 +630,9 @@ bmPlannerDirectives.directive('continuemodal', function(Style) {
                     angular.element(document.body).append(element);
 
                     var e = scope.$root.e;
-
-                     top = e.pageY - e.target.offsetTop - e.offsetY;
-                     left = e.pageX - e.target.offsetLeft - e.offsetX;
+                  
+                     top = e.pageY - e.layerY;
+                     left = e.pageX - e.layerX;
                      
                      var windowHeight = window.innerHeight + window.scrollY;
                      if(top + 200 > windowHeight)
@@ -830,8 +830,6 @@ bmPlannerDirectives.directive('password', function() {
 
             modelCtrl.$parsers.push(function(viewValue){
            
-                console.log(viewValue);
-                console.log(model_value);
 
                 displayValue = viewValue.replace(/\S/gi, '*');
                 model_value = model_value.concat(viewValue.charAt(viewValue.length - 1));

@@ -73,7 +73,7 @@ class CalendarController extends Controller
         $events = DB::table('events')->where('calendar_id', '=', $id)->get();
         foreach($events as $event)
         {
-            DB::table('repetitions')->where('eventId', '=', $event->id)->delete();
+            DB::table('repetitions')->where('event_id', '=', $event->id)->delete();
             DB::table('eventchanges')->where('event_id', '=', $event->id)->delete();
         }
         
