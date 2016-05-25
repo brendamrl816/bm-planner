@@ -15,7 +15,7 @@ class StyleSeeder extends Seeder
         Style::create(array(
              'theme_name'=>'default',
             'body_backgroundColor'=> '189, 129, 97',
-            'buttons_backgroundColor'=>'168, 182, 191',
+            'buttons_backgroundColor'=>'117, 168, 202',
             'buttons_borderColor'=> '89, 105, 114',
             'navBar_backgroundColor'=> '201, 216, 197',
             'menuModal_backgroundColor'=> '255, 246, 253',

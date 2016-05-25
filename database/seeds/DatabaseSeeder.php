@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         Model::unguard();
+        
         $this->call('UserSeeder');
         $this->call('StyleSeeder');
         $this->call('CalendarSeeder');
@@ -25,8 +26,9 @@ class DatabaseSeeder extends Seeder
         $this->call('EventChangeTableSeeder');
         $this->call('TodolistTableSeeder');
         $this->call('TaskSeeder');
-    
-
+        $this->call('RoleSeeder');
+        $this->call('RoleUserSeeder');
+       
         Model::reguard();
     }
 }
