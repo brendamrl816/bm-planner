@@ -1,4 +1,4 @@
-<div style=" display:inline-block; width:5%; height:70%"></div>
+<div style=" display:inline-block; width:5%; height:80%"></div>
 
 <div style="display:inline-block; width:90%">
 <!--***************************   Theme Settings ******************************************************** -->
@@ -13,26 +13,22 @@
         <div class="themeHolder">
             <div class="themePics">
                 <input type="radio" ng-model="editStyle.chosenTheme" value="default">Default
-                <img  style=" width:90%; height:90%; border-radius:2px" src="/pictures/default.png" alt="default theme">
+                <img  style=" width:90%; height:90%; border-radius:2px; box-shadow:1px 1px 2px 1px gray" src="/pictures/default.png" alt="default theme">
             </div>
         
             <div class="themePics">
                 <input type="radio" ng-model="editStyle.chosenTheme" value="theme1">Theme 1
-                <img  style="width:90%; height:90%;  border-radius:2px" src="/pictures/theme1.png" alt="theme 1">
+                <img  style="width:90%; height:90%;  border-radius:2px;  box-shadow:1px 1px 2px 1px gray" src="/pictures/theme1.png" alt="theme 1">
             </div>
             <div class="themePics">
                 <input type="radio" ng-model="editStyle.chosenTheme" value="theme2">Theme 2
             
-                <img  style="width:90%; height:90%; border-radius:2px" src="/pictures/theme2.png" alt="theme 2">
+                <img  style="width:90%; height:90%; border-radius:2px; box-shadow:1px 1px 2px 1px gray" src="/pictures/theme2.png" alt="theme 2">
             </div>
 
             <div class="themePics">
                 <input type="radio" ng-model="editStyle.chosenTheme" value="theme3">Theme 3
-                <img  style="width:90%; height:90%; border-radius:2px" src="/pictures/theme3.png" alt="theme 3">
-            </div>
-            <div class="themePics">
-                <input type="radio" ng-model="editStyle.chosenTheme" value="theme4">Theme 4
-                <img  style="width:90%; height:90%;  border-radius:2px" src="/pictures/theme4.png" alt="theme 4">
+                <img  style="width:90%; height:90%; border-radius:2px; box-shadow:1px 1px 2px 1px gray" src="/pictures/theme3.png" alt="theme 3">
             </div>
             
         </div>    

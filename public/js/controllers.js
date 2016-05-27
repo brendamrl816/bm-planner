@@ -182,7 +182,7 @@ bmPlannerControllers.controller('editStyleCtrl', function(Style, $window, $scope
         switch(self.chosenTheme){
             case 'default':
                 data.theme_name = "default";
-                data.body_backgroundColor = '189, 129, 97';
+                data.body_backgroundColor = '218, 173, 134';
                 data.buttons_backgroundColor = '117, 168, 202';
                 data.buttons_borderColor = '89, 105, 114';
                 data.navBar_backgroundColor = '201, 216, 197';
@@ -214,15 +214,6 @@ bmPlannerControllers.controller('editStyleCtrl', function(Style, $window, $scope
                 data.buttons_borderColor = '80, 57, 47';
                 data.navBar_backgroundColor = '63, 176, 172';
                 data.menuModal_backgroundColor = '255, 239, 178';
-                break;
-            case 'theme4':
-                data.theme_name = "theme4";
-                data.body_backgroundColor = '201, 158, 143';
-                data.body_color = '#000000';
-                data.buttons_backgroundColor = '169, 201, 143';
-                data.buttons_borderColor = '98,124, 76';
-                data.navBar_backgroundColor = '196, 143, 201';
-                data.menuModal_backgroundColor = '252, 245, 205';
                 break;
         }
         
@@ -881,14 +872,14 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
        
         if($scope.event.length_days  > (6 - $scope.day.itsDate.day()))
         {
-            return {'width': ((100 * ( 6 - $scope.day.itsDate.day() + 1) ) ) + '%', 'border':border, 'border-right':'none'};
+            return {'width': ((100 * ( 6 - $scope.day.itsDate.day() + 1) ) ) + '%', 'border':border, 'border-right':'none', 'top':$scope.event.top};
         }
         else if($scope.day.itsDate.day() == 0 && $scope.day.itsDate.format('YYYY-MM-DD') != $scope.event.eventStartsOnFormatted)
         {
-            return {'width': ((100 * ( $scope.event.length_days - (6 - moment($scope.event.eventStartsOn, 'YYY-MM-DD HH:mm:ss').day() + 1)) ) ) + '%',  'border':border, 'border-left':'none'};
+            return {'width': ((100 * ( $scope.event.length_days - (6 - moment($scope.event.eventStartsOn, 'YYY-MM-DD HH:mm:ss').day() + 1)) ) ) + '%',  'border':border, 'border-left':'none', 'top':$scope.event.top};
         }
         else{
-            return {'width':(100 * ($scope.event.length_days ) ) + '%', 'border':border};
+            return {'width':(100 * ($scope.event.length_days ) ) + '%', 'border':border, 'top':$scope.event.top};
         }
     };
 
@@ -1780,11 +1771,12 @@ bmPlannerControllers.controller('mainCalViewCtrl', function($scope, $rootScope, 
     
     $scope.getStyle = function(day)
     {
+        var z = 20 - day.format('d')
         if(day < moment().subtract(1, 'd'))
         {
-            return {'color':'#333333', 'opacity':'0.7'};
+            return {'color':'#4d4d4d', 'opacity':'0.8', 'z-index':z};
         }else{
-            return {'color':'black'};
+            return {'color':'black', 'z-index':z};
         }
     };
 });

@@ -31,10 +31,8 @@
         
     @else
       
-    <div class="mainBackground"><img class="mainBackground-image" src="/pictures/main.jpg"></div> 
-    
+    <div class="mainBackground"><div class="mainBackground-image1"></div></div> 
         <div class="mainBody">
-            <div class="barDiv">&nbsp</div>
             <div class="mainCircleDisplay"></div>
                 <div class="mainCircle">
                     <div style="font-size:200%; text-shadow:2px 2px 1px #75A8CA">gmPlanner</div>

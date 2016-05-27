@@ -30,7 +30,7 @@ select{
 
 
 select:focus{
-    background-color :rgba(189, 129, 97, 1);
+    background-color : #DAAD86;
 }
 
 button{
@@ -40,7 +40,8 @@ button{
 }
 
 button:hover{
-    font-weight:bolder;
+   /*background-color: #DAAD86 !important;*/
+   box-shadow: 0px 0px 1px 1px gray !important;
 }
 
 button[disabled]{
@@ -127,7 +128,7 @@ input:-webkit-autofill:focus {
 }
 
 .mainBackground{
-    background-color:rgba(189, 129, 97, 0.8);
+    background-color:rgba(1218, 173, 134, 0.8);
     position:fixed;
     z-index:-2;
     width:100%;
@@ -136,10 +137,20 @@ input:-webkit-autofill:focus {
     left:0;
 }
 
+
 .mainBackground-image{
     opacity: 0.3;
     width:100%;
     height:100%;
+}
+
+.mainBackground-image1{
+    display:block;
+    background-image: url('/pictures/main.jpg');
+    opacity: 0.4;
+    width:100%;
+    height:100%;
+    background-size: cover;
 }
 
 .mainCircleDisplay{
@@ -397,11 +408,12 @@ input:-webkit-autofill:focus {
 }
 
 .themePics{
+    position: relative;
     display:inline-block;
     margin-top:10px;
     margin-bottom: 10px;
     width:48%;
-    height:60px;
+    height:100px;
 }
 
 .uSetInput{
@@ -436,7 +448,6 @@ input:-webkit-autofill:focus {
 }
 
 .frontFont{
-    font-family: Comic Sans, Comic Sans MS;
     font-stretch: semi-expanded;
     font-weight:bold;
 }
@@ -446,7 +457,7 @@ input:-webkit-autofill:focus {
 
 #smallScreenCalendar{
     /*background-image:url('/pictures/blankpage.jpg'); */
-    /*background-color:rgba(255, 255, 255, 0.2);*/
+    background-color:rgba(255, 255, 255, 0.7);
     display:inline-block;
     border: 1px solid black;
     min-height:100px; 
@@ -553,6 +564,7 @@ input:-webkit-autofill:focus {
 }
 
 .calHeader{
+    margin-top:10px;
     color:black;
     width:100%;
     font-size: 115%;
@@ -565,16 +577,23 @@ input:-webkit-autofill:focus {
 }
 
 .calHeaderArrows{
+    font-size:150%;
+    display:inline-block;
+    cursor:pointer;
+    margin-left:2%;
+}
+
+.calHeaderMiniArrows{
     display:inline-block;
     cursor:pointer;
     margin-left:2%;
 }
 
 .miniCalDisplay {
-    background-color:rgba(255, 255, 255, 1);
+    background-color:rgba(191, 161, 145, 1);
     position:absolute;
     z-index: 10;
-    box-shadow: inset 0px -1px 25px #e6e6e6;
+    /*box-shadow: inset 0px -1px 25px #e6e6e6;*/
 }
 
 
@@ -585,11 +604,24 @@ input:-webkit-autofill:focus {
     width:95%;
 }
 
+.monthlyDayCell{
+    position:relative;
+    background-color: rgba(255, 255, 255, 0.6);
+    display:table-cell; 
+    width:14%; 
+    border:1px solid #999999; 
+    border-top:none;
+    z-index:-1;
+}
+
 #monthlyDateTable{
+    display:table;
     margin-top:10px;
-    width:100%; 
+    width:100%;
+    height:20px;
     font-size:90%; 
-    font-weight:bold
+    font-weight:bold;
+    border:1px solid #999999;
 }
 
 #monthlyDateTable td{
@@ -619,6 +651,7 @@ input:-webkit-autofill:focus {
 
 
 .createEventModal-dark {
+    /*background-image:url('/pictures/wood.jpg'); */
     width:100%;
     height:100%;
     position: absolute;
@@ -627,26 +660,34 @@ input:-webkit-autofill:focus {
     left: 0;
 }
 
+.createEventModal-dark-image{
+    z-index:9998; 
+    position:absolute; 
+    width:100%; 
+    height:100%; 
+    top:0; left:0; 
+    background-image:url("/pictures/wood.jpg");
+    opacity:0.3;
+}
+
 
 
 .createEventModal-style{
-    background-image:url('/pictures/wood.jpg'); 
+    background-color: rgba(255, 255, 255, 0.6);
     z-index: 10000;
     position: absolute;
-    
     width:90%;
     height:450px;
 
      /*to center the content */
     left: 5%;
-   
     border-radius:5px;
-    background-color: #fff;
-    box-shadow: inset 0px -1px 25px gray;
+    box-shadow: inset 0px -1px 10px gray;
     /*overflow: auto;*/
 }
 
 .createEventModal-style-content{
+   /*background-color: rgba(255, 255, 255, 0.7);*/
    left:0;
    top:0;
    width:100%;
@@ -740,7 +781,7 @@ input:-webkit-autofill:focus {
     padding-left:10px;
     padding-right:10px;
     width:180px;
-    height:235px;
+    height:230px;
     border-radius:4px;
     font-size:90%;
 }
@@ -798,7 +839,7 @@ input:-webkit-autofill:focus {
     padding-left:10px;
     padding-right:10px;
     width: 200px;
-    height: 215px;
+    height: 210px;
 }
 
 .createQuestionModal-header{

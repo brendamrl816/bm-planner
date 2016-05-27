@@ -371,7 +371,7 @@ bmPlannerDirectives.directive('addeventmodal', function(Style) {
            scope.style={};
            
             scope.darkStyle = function(){
-                return {'background-color':'rgba(' + Style.css.navBar_backgroundColor + ', 1)'};
+                return {'background-color':'rgba(' + Style.css.body_backgroundColor + ', 1)'};
             };
             
         
@@ -452,16 +452,15 @@ bmPlannerDirectives.directive('addeventmodal', function(Style) {
            //      return {'left':left, 'top':top};
            //  };
            
-           scope.contentStyle = function(){
-                return {'background-color':'rgba(' + Style.css.body_backgroundColor + ', 0.7)'};
-            };
            
        },
        
        template: '<div class="createEventModal" ng-show="showmodal">\
-                    <div class="createEventModal-dark" ng-style=darkStyle() ng-click="hide_modal()"></div>\
+                    <div class="createEventModal-dark" ng-style=darkStyle() ng-click="hide_modal()">\
+                        <div class="createEventModal-dark-image">&nbsp</div>\
+                    </div>\
                     <div class="createEventModal-style" ng-style="style">\
-                        <div ng-style="contentStyle()" class="createEventModal-style-content" ng-transclude></div>\
+                        <div class="createEventModal-style-content" ng-transclude></div>\
                     </div>\
                 </div>'
        

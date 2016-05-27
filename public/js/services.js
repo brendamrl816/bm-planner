@@ -880,7 +880,7 @@ bmPlannerServices.factory('EventsCalendar', function(Events, Repeats, Repetition
                                             repeatWeekly: response[i][n]['event'].repeatWeekly,
                                             repeatYearly: response[i][n]['event'].repeatYearly,
                                             eventStartsOn: response[i][n]['eventStartsOn'],
-                                             eventStartsOnFormatted : moment(response[i][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'),
+                                            eventStartsOnFormatted : moment(response[i][n]['eventStartsOn'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'),
                                             startTimeDisplay:  moment(response[i][n]['event'].startDate, 'YYYY-MM-DD HH:mm:ss').format('hh:mma'),
                                             endTimeDisplay:  moment(response[i][n]['event'].endDate, 'YYYY-MM-DD HH:mm:ss').format('hh:mma'),
                                             
