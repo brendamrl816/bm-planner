@@ -3,10 +3,10 @@
 
 @section('content')
 
-<div class="secondCover">
+<div class="mainBackground"><img class="mainBackground-image" src="/pictures/wood.jpg"></div>
         <div class="secondBody">
             
-            <div class="barDiv">
+             <div class="barDiv">
                 <div style="display:inline-block; height:100%; vertical-align:middle"></div>
                 
                 <a class="barDiv-logo" style="text-decoration:none; color:white" href="/">
@@ -28,7 +28,7 @@
             
             <div class="secondBodyDiv">
                 
-                <h2>Edit User</h2>
+               <h2>Edit User</h2>
             
                  @if (session('status'))
                     <div>
@@ -72,11 +72,12 @@
     
                        
                 </form>
-           
+            
+                    
             </div>
-        </div>
-   </div>
-   
+        
+</div>
+
    
 
 @endsection

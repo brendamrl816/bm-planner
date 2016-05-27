@@ -4,7 +4,7 @@
 
 @section('content')
    
-<div class="secondCover">
+<div class="mainBackground"><img class="mainBackground-image" src="/pictures/wood.jpg"></div>
         <div class="secondBody">
             
             <div class="barDiv">
@@ -29,7 +29,7 @@
             
             <div class="secondBodyDiv">
                 
-                <h2>Edit User</h2>
+                <h2>Create a Role</h2>
             
                  @if (session('status'))
                     <div>
@@ -64,8 +64,6 @@
         
             </div>
         </div>
-   </div>
-   
 
 @endsection
 
