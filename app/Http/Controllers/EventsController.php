@@ -303,6 +303,7 @@ class EventsController extends Controller
             usort($days[$i], function($a, $b){
                 return strcmp($a['event']->startDate, $b['event']->startDate);
             });
+            
             usort($days[$i], function($a, $b){
                 return strcmp($a['eventStartsOn'], $b['eventStartsOn']);
             });

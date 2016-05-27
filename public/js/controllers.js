@@ -695,7 +695,7 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
         if(self.allDay == true)
         {
             self.startDate.hour(0);
-            self.startDate.minutes(0);
+            self.startDate.minutes(1);
             self.endDate.hour(23);
             self.endDate.minutes(59);
         }else{
@@ -713,7 +713,10 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
             || ((self.endDate.diff(self.startDate, 'days') == 1) && (self.endDate.format('HH:mm a') == '00:00 am' && self.startDate.format('HH:mm a') == '00:00 am')))
         {
             eventToSend.length_days = 0;
-        }else{
+        }else if(((self.endDate.diff(self.startDate, 'days') == 1) && (self.endDate.format('HH:mm a') == '00:00 am' || self.startDate.format('HH:mm a') == '00:00 am'))){
+             eventToSend.length_days = 1;
+        }
+        else{
             eventToSend.length_days = Math.ceil(self.endDate.diff(self.startDate, 'days', true));
             if(eventToSend.length_hours/eventToSend.length_days < 12)
             {
@@ -877,6 +880,9 @@ bmPlannerControllers.controller('eventCtrl', function($scope, EventsCalendar, Ca
         else if($scope.day.itsDate.day() == 0 && $scope.day.itsDate.format('YYYY-MM-DD') != $scope.event.eventStartsOnFormatted)
         {
             return {'width': ((100 * ( $scope.event.length_days - (6 - moment($scope.event.eventStartsOn, 'YYY-MM-DD HH:mm:ss').day() + 1)) ) ) + '%',  'border':border, 'border-left':'none', 'top':$scope.event.top};
+        }
+        else if($scope.event.allDay == true && $scope.event.length_days ==0){
+            return {'width': '100%',  'border':border,  'top':$scope.event.top, 'border-radius':'20px'};
         }
         else{
             return {'width':(100 * ($scope.event.length_days ) ) + '%', 'border':border, 'top':$scope.event.top};
