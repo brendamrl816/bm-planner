@@ -26,17 +26,23 @@ class EmailsController extends Controller
     
     public function send(Request $request)
     {
+        
+        $email = Auth::user()->email;
+        
         $data = array(
         'user' => Auth::user()->first_name,
         'user_id'=>Auth::id(),
-        'user_email' => Auth::user()->email,
         'subject' => $request->get('subject'),
         'content' => $request->get('content')
         );
+        
+        $email = Auth::user()->email;
+        
     
-        Mail::send('emails.sendEmail', $data, function($message){
+        Mail::send('emails.sendEmail', $data, function($message)use($email){
             $message->from('gmplanner.team@gmail.com', 'gmPlanner');
             $message->to('gmplanner.team@gmail.com')->subject('Email from user');
+            $message->replyTo($email);
         });
     }
     
@@ -58,6 +64,7 @@ class EmailsController extends Controller
             Mail::send('emails.forgotPassEmail', $data, function($message) use($email){
             $message->from('gmplanner.team@gmail.com', 'gmPlanner');
             $message->to($email)->subject('Temporary Password');
+          
             });
             
             // return view('settings.forgotPassword')->with('status', 'A temporary password has been emailed to you');
