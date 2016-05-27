@@ -27,8 +27,8 @@
         font-size:75%;
     }
     
-    .mainTimeModalDiv{
-        width:130px;
+    .repeatIntervalModal{
+        margin-top:0px;
     }
 
 
@@ -76,8 +76,11 @@
     }
     
     .mainTimeModalDiv{
-        width:180px;
+        margin-top:0;
     }
+    
+    
+
 
 
     .uSetInput{

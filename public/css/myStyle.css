@@ -745,9 +745,10 @@ input:-webkit-autofill:focus {
 .mainTimeModalDiv{
     margin-left:5px;
     display:inline-block;
-    width:120px;
+    width:180px;
     height:20px;
     margin-bottom:2%;
+    margin-top:5px;
 }
 
 
@@ -756,6 +757,14 @@ input:-webkit-autofill:focus {
     margin-left:2%;
     height:100%;
     position:relative;
+}
+
+.repeatIntervalModal{
+    margin-top:5px;
+    float:left; 
+    margin-left:2%; 
+    position:relative; 
+    height:20px
 }
 
 .addForm{

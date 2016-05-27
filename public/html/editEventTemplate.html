@@ -122,7 +122,7 @@
     <div style="display:inline-block; width:95%; position:relative" class="divSep">
         <div style="float:left">
             <minicalendars selected="edit.endDate">
-                End: <input ng-style="style.inputStyle()" class="addModalInputDate" enddate type="text" ng-model="edit.endDate" ng-model-options="{ updateOn: 'blur', allowInvalid:true}">
+                End: &nbsp<input ng-style="style.inputStyle()" class="addModalInputDate" enddate type="text" ng-model="edit.endDate" ng-model-options="{ updateOn: 'blur', allowInvalid:true}">
             </minicalendars>
         </div>
             
@@ -247,7 +247,7 @@
                 <option value="yearly">Yearly</option>
             </select>
             
-            <div style="float:left; margin-left:2%; position:relative; height:20px" ng-show="edit.intervalSelection">
+            <div class="repeatIntervalModal" ng-show="edit.intervalSelection">
                 <span style="float:left">Every: </span>
                 <div style="float:left">
                     <select ng-style="style.inputStyle()" class="selectRepInter z-index2" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();' ng-model="edit.repeatInterval">
