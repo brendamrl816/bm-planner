@@ -1,21 +1,16 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Email;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmailFormRequest;
 use App\Http\Requests\ForgotPassRequest;
 use Illuminate\Support\Facades\Hash;
 use DB;
-
-
 class EmailsController extends Controller
 {
     
