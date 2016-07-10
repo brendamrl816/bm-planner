@@ -701,38 +701,50 @@ bmPlannerControllers.controller('addEventCtrl', function($scope, $http, EventsCa
         eventToSend.calendar_id = self.calendar_id.id;
         
         
+        
+        self.startDate.hour(getHour(self.startHour, self.startMeridiem));
+        self.startDate.minutes(self.startMinutes);
+        self.endDate.hour(getHour(self.endHour, self.endMeridiem));
+        self.endDate.minutes(self.endMinutes);
+
+        var tempEnd = self.endDate.clone();
+
         if(self.allDay == true)
         {
+            if(self.endDate.format('HH:mm a') == '00:00 am'){
+                self.endDate.subtract(1, 'd');
+            }
             self.startDate.hour(0);
             self.startDate.minutes(0);
-            self.endDate.hour(23);
-            self.endDate.minutes(59);
-        }else{
-
-            self.startDate.hour(getHour(self.startHour, self.startMeridiem));
-            self.startDate.minutes(self.startMinutes);
-            self.endDate.hour(getHour(self.endHour, self.endMeridiem));
-            self.endDate.minutes(self.endMinutes);
+            self.endDate.hour(24);
+            self.endDate.minutes(0);
         }
-            eventToSend.startDate = self.startDate.format('YYYY-MM-DD ')+ getTimeToSend(self.startHour, self.startMinutes, self.startMeridiem);
-            eventToSend.endDate= self.endDate.format('YYYY-MM-DD ') + getTimeToSend(self.endHour, self.endMinutes, self.endMeridiem);
+
+
+        eventToSend.startDate = self.startDate.format('YYYY-MM-DD ') + self.startDate.hour() + ':' + self.startDate.minutes() + ':' + '00';
+        eventToSend.endDate= self.endDate.format('YYYY-MM-DD ') + self.endDate.hour() + ':' + self.endDate.minutes() + ':' + '00';
+
+        if(self.endDate.format('HH:mm a') == '00:00 am' || self.allDay == true){
+            tempEnd.subtract(1, 'd');
+            tempEnd.hour(23);
+            tempEnd.minutes(59);
+            eventToSend.length_hours =(tempEnd.diff(self.startDate, 'hours', true)) + 0.02;
+        }else{
+            eventToSend.length_hours =(tempEnd.diff(self.startDate, 'hours', true)) ;
+        }
         
-        eventToSend.length_hours =(self.endDate.diff(self.startDate, 'hours', true));
-        if(self.endDate.format('MM-DD-YY') == self.startDate.format('MM-DD-YY') || ((self.endDate.diff(self.startDate, 'days') == 0) && (self.endDate.format('HH:mm a') == '00:00 am' || self.startDate.format('HH:mm a') == '00:00 am'))
-            || ((self.endDate.diff(self.startDate, 'days') == 1) && (self.endDate.format('HH:mm a') == '00:00 am' && self.startDate.format('HH:mm a') == '00:00 am')))
+        
+        if(tempEnd.format('MM-DD-YY') == self.startDate.format('MM-DD-YY'))
         {
             eventToSend.length_days = 0;
         }else{
-            eventToSend.length_days = Math.ceil(self.endDate.diff(self.startDate, 'days', true));
+            eventToSend.length_days = Math.ceil(tempEnd.diff(self.startDate, 'days', true));
             if(eventToSend.length_hours/eventToSend.length_days < 12)
             {
                 eventToSend.length_days = eventToSend.length_days + 1;
             }
         }
         
-      
-        // eventToSend.startTimeDisplay = self.startHour +':'+self.startMinutes+ self.startMeridiem;
-        // eventToSend.endTimeDisplay = self.endHour +':' + self.endMinutes+ self.endMeridiem;
 
         eventToSend.repeats=self.repeats;
         eventToSend.allDay = self.allDay;
@@ -1371,32 +1383,51 @@ bmPlannerControllers.controller("editEventCtrl", function($scope, EventsCalendar
         var editData = {};
         editData.name = self.name;
         editData.calendar_id = self.calendar_id.id;
-        
+
         self.startDate.hour(getHour(self.startHour, self.startMeridiem));
         self.startDate.minutes(self.startMinutes);
         self.endDate.hour(getHour(self.endHour, self.endMeridiem));
         self.endDate.minutes(self.endMinutes);
-        
+
+        var tempEnd = self.endDate.clone();
+
         if(self.allDay == true)
         {
-            editData.startDate = self.startDate.format('YYYY-MM-DD ') + '00:00:00';
-            editData.endDate= self.endDate.format('YYYY-MM-DD ') + '23:59:00';
-        }else{
-            editData.startDate = self.startDate.format('YYYY-MM-DD ')+ getTimeToSend(self.startHour, self.startMinutes, self.startMeridiem);
-            editData.endDate= self.endDate.format('YYYY-MM-DD ') + getTimeToSend(self.endHour, self.endMinutes, self.endMeridiem);
+            if(self.endDate.format('HH:mm a') == '00:00 am'){
+                self.endDate.subtract(1, 'd');
+            }
+            self.startDate.hour(0);
+            self.startDate.minutes(0);
+            self.endDate.hour(24);
+            self.endDate.minutes(0);
         }
-       
-        editData.length_hours = (self.endDate.diff(self.startDate, 'hours', true));
-        if(self.endDate.format('MM-DD-YY') == self.startDate.format('MM-DD-YY') || (self.endDate.diff(self.startDate, 'days') == 0 && self.endDate.format('HH:mm') == '00:00'))
+
+
+        editData.startDate = self.startDate.format('YYYY-MM-DD ') + self.startDate.hour() + ':' + self.startDate.minutes() + ':' + '00';
+        editData.endDate= self.endDate.format('YYYY-MM-DD ') + self.endDate.hour() + ':' + self.endDate.minutes() + ':' + '00';
+
+        if(self.endDate.format('HH:mm a') == '00:00 am' || self.allDay == true){
+            tempEnd.subtract(1, 'd');
+            tempEnd.hour(23);
+            tempEnd.minutes(59);
+            editData.length_hours =(tempEnd.diff(self.startDate, 'hours', true)) + 0.02;
+        }else{
+            editData.length_hours =(tempEnd.diff(self.startDate, 'hours', true)) ;
+        }
+        
+        
+        if(tempEnd.format('MM-DD-YY') == self.startDate.format('MM-DD-YY'))
         {
             editData.length_days = 0;
         }else{
-            editData.length_days = Math.ceil(self.endDate.diff(self.startDate, 'days', true));
+            editData.length_days = Math.ceil(tempEnd.diff(self.startDate, 'days', true));
             if(editData.length_hours/editData.length_days < 12)
             {
-               editData.length_days = editData.length_days + 1;
+                editData.length_days = editData.length_days + 1;
             }
         }
+        
+        
         
         editData.repeats = self.repeats;
         editData.allDay = self.allDay;
