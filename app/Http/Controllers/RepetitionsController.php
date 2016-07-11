@@ -92,7 +92,7 @@ class RepetitionsController extends Controller
         $id = Input::get('event_id');
         $newRepeatEndDate = Input::get('newRepeatEndDate');
         
-        DB::table('repetitions')->where('event_id', '=', $id)->update([ 'repeatEndDate'=>$newRepeatEndDate]);
+        DB::table('repetitions')->where('event_id', '=', $id)->update([ 'repeatEndDate'=>$newRepeatEndDate, 'neverEnds'=>false]);
         
         return Response::json(array('success'=>true));
     }
